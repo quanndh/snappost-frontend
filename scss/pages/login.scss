@@ -1,0 +1,66 @@
+.login-container{
+    height: 100%;
+
+    .login-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 65%;
+        // margin-right: "60px";
+
+        .title{
+            font-weight: 600;
+            align-self: flex-start;
+            // padding-bottom: "20px";
+
+        }
+
+        .form-container {
+           width: 60%;
+        }
+
+        .dashline{
+            margin: 0 auto;
+            text-align: center;
+            // max-width: 65%;
+            position: relative;
+            color: #bcbcbc;
+
+            span {
+                background: #fff;
+            }
+        }
+
+        .dashline:before{
+            content: "";
+            display: block;
+            width: 48%;
+            height: 1px;
+            background: #bcbcbc;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            z-index: -10;
+        }
+
+        .dashline:after{
+            content: "";
+            display: block;
+            width: 48%;
+            height: 1px;
+            background: #bcbcbc;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            z-index: -10;
+        }
+        
+    }
+}

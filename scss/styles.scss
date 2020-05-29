@@ -1,0 +1,109 @@
+@import "./variables/var.scss";
+@import "./nprogress.scss";
+@import "./scroll-progress.scss";
+@import "./custom.scss";
+
+// Page
+@import "./pages/home.scss";
+@import './pages/login.scss';
+@import './pages//profile.scss';
+
+html, body, .root, h1{
+    font-family: sans-serif;
+
+    .icon-button {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+    
+    .icon-button:hover{
+        color: $main-color;
+    }
+
+    .chat-container {
+        width: auto;
+        height: 450px;
+        position: fixed;
+        bottom: -24px;
+        display: flex;
+        align-items: flex-end;
+        // justify-content: space-around;
+
+        .chatBox{
+            width: 300px;
+            border-radius: 24px;
+            margin-left: 20px;
+
+            .chatBox-header {
+                height: 50px;
+                box-shadow: 0 4px 2px -2px #cecece;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                justify-content: space-between;
+            }
+
+            .chatBox-body {
+                height: 300px;
+            }
+
+            .chatBox-input{
+                height: 80px;
+                max-height: 80px;
+                border-top: 1px solid #bcbcbc;
+            }
+        }
+
+    }
+
+    .contact-bar-container {
+        width: 100%;
+        max-width: 400px;
+        height: 100vh;
+        border-left: 1px solid #bcbcbc;
+        position: fixed;
+
+        .contact-bar-people {
+            height: 95vh;
+            overflow-y: scroll;
+            width: 310px;
+
+            .contact-bar-people-item{
+                cursor: pointer;
+            }
+
+            .contact-bar-people-item:hover{
+                background-color: rgba(0, 0, 0, 0.123);
+            }
+        }
+
+        .contact-bar-people::-webkit-scrollbar {
+            display: none;
+        }
+
+        .contact-bar-seachbox {
+            height: 6vh;
+        }
+    }
+
+    .route-link {
+        cursor: pointer;
+    }
+
+    .logo{
+        margin-left: 0;
+        padding-left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .avatar {
+        font-size: 44px;
+    }
+}
+
+.link {
+    color: $main-color;
+    cursor: pointer;
+}
