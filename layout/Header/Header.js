@@ -170,10 +170,10 @@ export default function Header() {
 							<Toolbar style={{ paddingLeft: 0 }}>
 								<CustomTooltip title="Snappost">
 									<div className="logo">
-										<Link href="/a">
+										<Link href="/">
 											<img src="/static/assets/appLogo.png" className="route-link" style={{ marginRight: 10 }} />
 										</Link>
-										<Link href="/a" >
+										<Link href="/" >
 											<Typography className={classes.title} className="route-link" variant="h6" noWrap>
 												Snappost
 											</Typography>
