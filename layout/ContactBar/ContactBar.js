@@ -50,7 +50,15 @@ const People = (props) => {
     const { item } = props;
 
     return (
-        <ListItem onMouseOver={() => { setShowVideo(true) }} onMouseLeave={() => { setShowVideo(false) }} className="contact-bar-people-item">
+        <ListItem
+            onMouseOver={() => {
+                setShowVideo(true)
+            }}
+            onMouseLeave={() => {
+                setShowVideo(false)
+            }}
+            className="contact-bar-people-item"
+        >
             <ListItemAvatar>
                 <StyledBadge
                     overlap="circle"
@@ -70,17 +78,17 @@ const People = (props) => {
                 </StyledBadge>
             </ListItemAvatar>
             <ListItemText primary={item.name} />
-            {
-                showVideo && (
-                    <ListItemSecondaryAction>
-                        <CustomTooltip title="Video call">
-                            <IconButton edge="end">
-                                <VideocamIcon />
-                            </IconButton>
-                        </CustomTooltip>
-                    </ListItemSecondaryAction>
-                )
-            }
+            {/* {
+                showVideo && ( */}
+            <ListItemSecondaryAction style={{ display: showVideo ? "block" : "none" }}>
+                <CustomTooltip title="Video call">
+                    <IconButton edge="end">
+                        <VideocamIcon />
+                    </IconButton>
+                </CustomTooltip>
+            </ListItemSecondaryAction>
+            {/* )
+            } */}
         </ListItem>
     )
 }
@@ -120,7 +128,7 @@ const ContactBar = () => {
 
     let renderListContact = data.length ? (data.map((item, index) => {
         return (
-            <People item={item} />
+            <People item={item} key={index} />
         )
     })) : null
 

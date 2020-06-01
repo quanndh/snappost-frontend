@@ -1,25 +1,23 @@
+const express = require('express')
 
-const { createServer } = require('https');
-const { parse } = require('url');
-const next = require('next');
-const fs = require('fs');
+const app = express();
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+app.listen(9000, (err) => {
+    console.log(err)
+})
 
-// const httpsOptions = {
-//     key: fs.readFileSync('./certificates/localhost.key'),
-//     cert: fs.readFileSync('./certificates/localhost.crt')
-// };
+app.get("/", (req, res) => {
+    res.send({ name: "quan" })
+})
 
-app.prepare().then(() => {
-    createServer({}, (req, res) => {
-        const parsedUrl = parse(req.url, true);
-        handle(req, res, parsedUrl);
+app.get("/profiles", (req, res) => {
+    res.send({ data: ["quan", "nghia", "bach"] })
+})
 
-    }).listen(3000, err => {
-        if (err) throw err;
-        console.log('> Ready on https://localhost:3000');
-    });
-});
+app.get("/profiles/:id", (req, res) => {
+    console.log(req.params.id)
+    res.send({ name: req.params.id })
+})
+
+
+

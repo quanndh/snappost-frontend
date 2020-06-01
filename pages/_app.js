@@ -11,6 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import ContactBar from '../layout/ContactBar/ContactBar';
 import ChatContainer from '../layout/ChatContainer/ChatContainer';
 import 'emoji-mart/css/emoji-mart.css'
+import {
+	RecoilRoot,
+} from 'recoil';
+import LightOff from '../components/LightOff/LightOff';
 
 const theme = createMuiTheme({
 	palette: {
@@ -19,12 +23,12 @@ const theme = createMuiTheme({
 
 });
 
-
 Router.events.on('routeChangeStart', url => {
 	NProgress.start()
 })
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
+
 
 export default function MyApp({ Component, pageProps }) {
 	let router = useRouter();
@@ -42,10 +46,12 @@ export default function MyApp({ Component, pageProps }) {
 	}
 
 	const body = () => {
+
 		if (pathname !== "/auth") {
 			return (
-				<Grid container style={{ backgroundColor: "#E9EBEE", height: "100%" }}>
-					<Grid item xs={10} >
+				<Grid container style={{ backgroundColor: "#E9EBEE", height: "100%", position: 'relative' }}>
+					<Grid item xs={10}>
+						<LightOff />
 						<Component {...pageProps} />
 						<ChatContainer />
 					</Grid>
@@ -62,9 +68,11 @@ export default function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
-				{header()}
-				<div id="dzb-progress-bar" />
-				{body()}
+				<RecoilRoot>
+					{header()}
+					<div id="dzb-progress-bar" />
+					{body()}
+				</RecoilRoot>
 			</Provider>
 		</ThemeProvider>
 	);

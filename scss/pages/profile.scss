@@ -1,66 +1,83 @@
 .profile-container {
-        margin-top: 70px;
+    margin-top: 70px;
 
-        .profile-header{
-            border-radius: 10px;
+    .profile-header{
+        border-radius: $main-radius;
+        width: 100%;
+        height: 400px;
+        position: relative;
+
+        .profile-wall-pic {
             width: 100%;
-            height: 400px;
-            position: relative;
-
-            .profile-wall-pic {
-                width: 100%;
-                height: 100%;
-            }
-
-            .profile-user{
-                position: absolute;
-                bottom: -40px;
-                left: 60px;
-                color: white;
-                display: flex;
-                align-items: center; 
-            }
-
-            .profile-avatar {
-                width: 200px;
-                height: 200px;
-                border-radius: 100px;
-                border: 4px solid #fff;
-                margin-right: 20px;
-            }
+            height: 100%;
         }
 
-        .profile-nav-container{
-            border-radius: 4px;
-            width: 100%;
-            background-color: white;
-            height: 60px;
+        .profile-user{
+            position: absolute;
+            bottom: -40px;
+            left: 60px;
+            color: white;
             display: flex;
-            justify-content: flex-end;
-            padding: 0;
+            align-items: center; 
+        }
 
-            .profile-nav {
-                width: 75%;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                padding: 0;
-
-                .profile-nav-item {
-                    text-align: center;
-                    line-height: 60px;
-                    width: 100%;
-                    height: 100%;
-                    border-left: 1px solid #cecece;
-                    color: $main-color;
-                    cursor: pointer;
-                    z-index: 2;
-                }
-
-                .profile-nav-item:hover{
-                    background-color: rgba(0, 0, 0, 0.123);
-                }
-            }
-
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 100px;
+            border: 4px solid #fff;
+            margin-right: 20px;
         }
     }
+
+    .profile-nav-container{
+        border-radius: 4px;
+        width: 100%;
+        background-color: white;
+        height: 60px;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+        margin-bottom: 12px;
+        border: $border;
+
+
+        .profile-nav {
+            width: 75%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0;
+
+            .profile-nav-item {
+                text-align: center;
+                line-height: 60px;
+                width: 100%;
+                height: 100%;
+                border-left: $border;
+                color: $main-color;
+                cursor: pointer;
+                z-index: 2;
+            }
+
+            .profile-nav-item:hover{
+                background-color: rgba(0, 0, 0, 0.123);
+            }
+        }
+    }
+
+    .profile-body {
+
+        .profile-description {
+            padding: 20px;
+            border: $border;
+
+            .personal-description-container {
+                height: auto;
+                width: 100%;
+            }
+        }
+        
+    }
+    
+}

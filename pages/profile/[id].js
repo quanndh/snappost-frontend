@@ -1,11 +1,18 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import Container from '@material-ui/core/Container';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
+import CreatePostInput from '../../components/CreatePostInput/CreatePostInput';
+import PersonalDescription from '../../components/PersonalDescription/PersonalDescription';
+import Paper from '@material-ui/core/Paper';
 
 const Profile = (props) => {
+
     const router = useRouter()
-    const { id } = router.query
+    const { id } = router.query;
+
+
+
     return (
         <Container className="profile-container" maxWidth="lg">
             <div className="profile-header">
@@ -26,8 +33,29 @@ const Profile = (props) => {
                     <Typography variant="h5" className="profile-nav-item">Infor</Typography>
                 </div>
             </div>
-        </Container>
+
+            <Grid container spacing={3} className="profile-body">
+                <Grid item xs={5}>
+                    <Paper elevation={0} className="profile-description">
+                        <PersonalDescription />
+                    </Paper>
+                </Grid>
+                <Grid item xs={7}>
+                    <CreatePostInput />
+                </Grid>
+            </Grid>
+        </Container >
     )
 }
+
+// export async function getServerSideProps({ params }) {
+//     console.log(params)
+//     let rs = await fetch("http://localhost:9000/profiles/" + params.id);
+//     rs = await rs.json();
+//     console.log(rs)
+//     return {
+//         props: { ...rs }
+//     }
+// }
 
 export default Profile;
