@@ -161,7 +161,7 @@ export default function Header() {
 		<div className={classes.grow} style={{
 			position: "fixed",
 			width: "100%",
-			zIndex: 100000,
+			zIndex: 9998,
 		}}>
 			<AppBar position="static">
 				<Grid container>

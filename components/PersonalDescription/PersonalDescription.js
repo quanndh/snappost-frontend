@@ -15,7 +15,7 @@ const PersonalDescription = () => {
     }
 
     return (
-        <div elevation={0} className="personal-description-container">
+        <div className="personal-description-container">
             <Typography variant="h5">Description</Typography>
             <br />
             {

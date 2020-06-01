@@ -78,8 +78,6 @@ const People = (props) => {
                 </StyledBadge>
             </ListItemAvatar>
             <ListItemText primary={item.name} />
-            {/* {
-                showVideo && ( */}
             <ListItemSecondaryAction style={{ display: showVideo ? "block" : "none" }}>
                 <CustomTooltip title="Video call">
                     <IconButton edge="end">
@@ -87,14 +85,11 @@ const People = (props) => {
                     </IconButton>
                 </CustomTooltip>
             </ListItemSecondaryAction>
-            {/* )
-            } */}
         </ListItem>
     )
 }
 
 const ContactBar = () => {
-
 
     const data = [
         { name: "quan" },
@@ -131,7 +126,6 @@ const ContactBar = () => {
             <People item={item} key={index} />
         )
     })) : null
-
 
     return (
         <div className="contact-bar-container" id="contactBar">

@@ -10,6 +10,7 @@
 
 html, body, .root, h1{
     font-family: sans-serif;
+    height: auto;
 
     .lightoff {
         position: absolute;
@@ -64,13 +65,11 @@ html, body, .root, h1{
                 font-weight: 500;
                 font-size: 20px;
                 height: auto;
-                // line-height: 80px;
                 display: block;
                 margin-bottom: 60px;
                 margin-left: 20px;
-                // word-break: break-all;
 
-                p{
+                p {
                     word-break: break-all;
                 }
             }
@@ -115,7 +114,6 @@ html, body, .root, h1{
         bottom: -24px;
         display: flex;
         align-items: flex-end;
-        // justify-content: space-around;
 
         .chatBox{
             width: 300px;

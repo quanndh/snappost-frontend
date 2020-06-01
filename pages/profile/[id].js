@@ -5,6 +5,7 @@ import { Typography, Grid } from '@material-ui/core';
 import CreatePostInput from '../../components/CreatePostInput/CreatePostInput';
 import PersonalDescription from '../../components/PersonalDescription/PersonalDescription';
 import Paper from '@material-ui/core/Paper';
+import PersonalInformation from '../../components/PersonalInformation/PersonalInformation';
 
 const Profile = (props) => {
 
@@ -38,6 +39,8 @@ const Profile = (props) => {
                 <Grid item xs={5}>
                     <Paper elevation={0} className="profile-description">
                         <PersonalDescription />
+                        <PersonalInformation />
+
                     </Paper>
                 </Grid>
                 <Grid item xs={7}>

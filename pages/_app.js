@@ -24,11 +24,15 @@ const theme = createMuiTheme({
 });
 
 Router.events.on('routeChangeStart', url => {
+	console.log(`Loading: ${url}`);
 	NProgress.start()
 })
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
 
+Router.events.on('routeChangeComplete', () => {
+	NProgress.done()
+})
+
+Router.events.on('routeChangeError', () => NProgress.done())
 
 export default function MyApp({ Component, pageProps }) {
 	let router = useRouter();
@@ -70,7 +74,6 @@ export default function MyApp({ Component, pageProps }) {
 			<Provider store={store}>
 				<RecoilRoot>
 					{header()}
-					<div id="dzb-progress-bar" />
 					{body()}
 				</RecoilRoot>
 			</Provider>
