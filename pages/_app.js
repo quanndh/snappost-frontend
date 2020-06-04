@@ -59,7 +59,7 @@ export default function MyApp({ Component, pageProps }) {
 						<Component {...pageProps} />
 						<ChatContainer />
 					</Grid>
-					<Grid item xs={2}>
+					<Grid item xs={2} style={{ zIndex: 1, position: "relative" }}>
 						<ContactBar />
 					</Grid>
 				</Grid>

@@ -222,12 +222,7 @@ export default function Header() {
 									</CustomTooltip>
 
 									<Popper open={openNotification} anchorEl={notificationRef.current} role={undefined} transition disablePortal
-									// modifiers={{
-									// 	arrow: {
-									// 		enabled: true,
-									// 		element: arrowRef,
-									// 	},
-									// }}
+
 									>
 										{({ TransitionProps, placement }) => (
 											<Grow
@@ -277,12 +272,7 @@ export default function Header() {
 									</CustomTooltip>
 
 									<Popper open={openMore} anchorEl={moreRef.current} role={undefined} transition disablePortal
-									// modifiers={{
-									// 	arrow: {
-									// 		enabled: true,
-									// 		element: arrowRef,
-									// 	},
-									// }}
+
 									>
 										{({ TransitionProps, placement }) => (
 											<Grow

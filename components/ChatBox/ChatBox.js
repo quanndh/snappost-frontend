@@ -55,7 +55,6 @@ const ChatBox = (props) => {
     const addEmoji = (emojiObject) => {
         // setChosenEmoji(emojiObject);
         setMessage(message + emojiObject.native)
-        console.log(emojiObject)
     }
 
     const handleChange = (e) => {
@@ -83,15 +82,15 @@ const ChatBox = (props) => {
                     >
                         {
                             item.avatar ? (
-                                <Avatar alt={item.name} src={item.avatar} className="avatar" />
+                                <Avatar alt={item.name} src={item.avatar} className="chatbox-avatar" />
                             ) : (
-                                    <AccountCircleSharpIcon color="disabled" className="avatar" />
+                                    <AccountCircleSharpIcon color="disabled" className="chatbox-avatar" />
                                 )
                         }
                     </StyledBadge>
-                    <Typography variant="h6">
-                        <b>quan Nguyen</b>
-                    </Typography>
+
+                    <b>quan Nguyen</b>
+
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     {
@@ -145,11 +144,10 @@ const ChatBox = (props) => {
                                                 <Picker
                                                     color="#1e88e5"
                                                     set='facebook'
-                                                    style={{ position: 'absolute', bottom: 50, left: 70, zIndex: 10 }}
+                                                    style={{ position: 'absolute', bottom: 50, left: 70, zIndex: 20 }}
                                                     onSelect={addEmoji}
                                                     title='Pick your emoji…'
                                                     emoji='point_up'
-                                                    i18n={{ search: 'Recherche', categories: { search: 'Résultats de recherche', recent: 'Récents' } }}
                                                 />
                                             </ClickAwayListener>
                                         )

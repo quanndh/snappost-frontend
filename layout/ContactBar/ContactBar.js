@@ -70,9 +70,9 @@ const People = (props) => {
                 >
                     {
                         item.avatar ? (
-                            <Avatar alt={item.name} src={item.avatar} className="avatar" />
+                            <Avatar alt={item.name} src={item.avatar} className="chat-avatar" />
                         ) : (
-                                <AccountCircleSharpIcon color="disabled" className="avatar" />
+                                <AccountCircleSharpIcon color="disabled" className="chat-avatar" />
                             )
                     }
                 </StyledBadge>

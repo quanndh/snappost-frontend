@@ -6,13 +6,12 @@ import CreatePostInput from '../../components/CreatePostInput/CreatePostInput';
 import PersonalDescription from '../../components/PersonalDescription/PersonalDescription';
 import Paper from '@material-ui/core/Paper';
 import PersonalInformation from '../../components/PersonalInformation/PersonalInformation';
+import Post from '../../components/Post/Post';
 
 const Profile = (props) => {
 
     const router = useRouter()
     const { id } = router.query;
-
-
 
     return (
         <Container className="profile-container" maxWidth="lg">
@@ -45,6 +44,7 @@ const Profile = (props) => {
                 </Grid>
                 <Grid item xs={7}>
                     <CreatePostInput />
+                    <Post />
                 </Grid>
             </Grid>
         </Container >

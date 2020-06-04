@@ -9,7 +9,6 @@ export default {
             })
             textArr.push(text)
         })
-        console.log(textArr)
         html = textArr.join("<br />")
         return html
     }

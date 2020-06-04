@@ -29,18 +29,37 @@ html, body, .root, h1{
         color: $main-color;
     }
 
+    .post-container {
+        border: $border;
+        width: 100%;
+        border-radius: $main-radius;
+        display: flex;
+        flex-direction: column;
+
+        .post-header {
+            // display: flex;
+            // align-items: center;
+            width: 100%;
+            // justify-content: space-between;
+            padding: 16px;
+            
+            p {
+                margin: 0
+            }
+        }
+
+        .post-text {
+            padding: 8px;
+        }
+    }
+
     .create-post-container{
         height: auto;
         border-radius: $main-radius;
         background-color: white;
         border: $border;
         position: relative;
-
-        .avatar {
-            font-size: $normal-avatar;
-            margin-bottom: 40px;
-
-        }
+        margin-bottom: 16px;
 
         .create-post-body {
             height: 70%;
@@ -51,6 +70,10 @@ html, body, .root, h1{
             align-items: flex-start;
             padding-top: 16px ;
             padding-bottom: 16px;
+
+            .avatar {
+                margin-bottom: 40px;
+            }
 
             .create-post-input {
                 width: 100%;
@@ -67,7 +90,6 @@ html, body, .root, h1{
                 height: auto;
                 display: block;
                 margin-bottom: 60px;
-                margin-left: 20px;
 
                 p {
                     word-break: break-all;
@@ -114,6 +136,7 @@ html, body, .root, h1{
         bottom: -24px;
         display: flex;
         align-items: flex-end;
+        z-index: 3;
 
         .chatBox{
             width: 300px;
@@ -127,6 +150,10 @@ html, body, .root, h1{
                 align-items: center;
                 cursor: pointer;
                 justify-content: space-between;
+
+                p {
+                    font-size: 16px;
+                }
             }
 
             .chatBox-body {
@@ -139,7 +166,6 @@ html, body, .root, h1{
                 border-top: 1px solid #bcbcbc;
             }
         }
-
     }
 
     .contact-bar-container {
@@ -148,6 +174,7 @@ html, body, .root, h1{
         height: 100vh;
         border-left: 1px solid #bcbcbc;
         position: fixed;
+        z-index: 1;
 
         .contact-bar-people {
             height: 95vh;
@@ -185,13 +212,36 @@ html, body, .root, h1{
         align-items: center;
     }
 
-    .avatar {
+    .chat-avatar {
         font-size: $chat-avatar;
         // margin-right: 8px;
     }
+
+    .chatbox-avatar {
+        font-size: $chatbox-avatar;
+    }
+
+    .avatar {
+        font-size: $normal-avatar;
+        margin-right: 12px;
+    }
+
+    .link {
+        color: $main-color;
+        cursor: pointer;
+    }
+
+    .username {
+        font-size: 24px;
+        color: $main-color;
+        font-weight: 500;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .username:hover{
+        text-decoration: underline;
+    }
 }
 
-.link {
-    color: $main-color;
-    cursor: pointer;
-}
+

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
 import Avatar from '@material-ui/core/Avatar';
-import { Typography, InputBase, ClickAwayListener, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import GifIcon from '@material-ui/icons/Gif';
@@ -79,8 +79,15 @@ const CreatePostInput = (props) => {
                 {
                     showCreatePost && (
                         <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
-                            <Button color="primary" disabled={value[0].children[0].text === ""} style={{ width: "100%", }} variant="contained">Snap</Button>
-
+                            <Button
+                                color="primary"
+                                disabled={value[0].children[0].text === ""}
+                                style={{ width: "100%", }}
+                                variant="contained"
+                                onClick={() => localStorage.setItem("value", JSON.stringify(value))}
+                            >
+                                Snap
+                            </Button>
                         </div>
                     )
                 }
