@@ -53,7 +53,7 @@ export default function MyApp({ Component, pageProps }) {
 
 		if (pathname !== "/auth") {
 			return (
-				<Grid container style={{ backgroundColor: "#E9EBEE", height: "100%", position: 'relative' }}>
+				<Grid container style={{ height: "100%", position: 'relative' }}>
 					<Grid item xs={10}>
 						<LightOff />
 						<Component {...pageProps} />

@@ -7,6 +7,9 @@
 @import "./pages/home.scss";
 @import './pages/login.scss';
 @import './pages//profile.scss';
+@import './pages/newfeed.scss';
+@import './image-gallery.scss';
+@import './side-menu.scss';
 
 html, body, .root, h1{
     font-family: sans-serif;
@@ -50,6 +53,11 @@ html, body, .root, h1{
 
         .post-text {
             padding: 8px;
+        }
+
+        .post-media {
+            padding: 24px;
+            padding-top: 0;
         }
     }
 

@@ -1,0 +1,19 @@
+.side-menu-container {
+  position: sticky;
+  top: 85px;
+
+  display: flex;
+  flex-direction: column;
+  .side-menu-item {
+    display: flex;
+    > div {
+      display: flex;
+      align-items: center;
+      height: 30px;
+    }
+
+    .side-menu__logo {
+      flex-basis: 25%;
+    }
+  }
+}

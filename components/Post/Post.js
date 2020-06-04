@@ -4,6 +4,19 @@ import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReactHtmlParser from 'react-html-parser';
 import Helper from '../../services/Helper/helper';
+import ImageGallery from '../ImageGallery';
+
+let images = [
+    "https://picsum.photos/id/1/200/300",
+    "https://picsum.photos/id/2/200/300",
+    "https://picsum.photos/id/3/200/300",
+    "https://picsum.photos/id/4/200/300",
+    "https://picsum.photos/id/5/200/300",
+    "https://picsum.photos/id/6/200/300",
+    "https://picsum.photos/id/7/200/300",
+    "https://picsum.photos/id/8/200/300",
+    "https://picsum.photos/id/9/200/300",
+]
 
 const Post = (props) => {
 
@@ -14,17 +27,6 @@ const Post = (props) => {
         jsonValue = JSON.parse(jsonValue);
         setValue(jsonValue)
     }, [])
-
-    let images = [
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg"
-    ]
 
     return (
         <Paper elevation={0} className="post-container">
@@ -39,11 +41,15 @@ const Post = (props) => {
                     </div>
                     <MoreVertIcon />
                 </div>
+
                 <div className="post-text">
+                    Ahihihi 📱
                     {ReactHtmlParser(Helper.jsonToHtml(value || []))}
                 </div>
             </div>
+
             <div className="post-media">
+                <ImageGallery images={images} startCount={5} />
             </div>
         </Paper>
     )
