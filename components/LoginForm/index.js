@@ -8,6 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DataService from '../../network/DataService';
+import helper from '../../services/Helper/helper';
+import ApiService from '../../services/ApiService/ApiService';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -19,6 +23,7 @@ const LoginForm = (props) => {
     const [openForget, setOpenForget] = React.useState(false);
     const [resetEmail, setResetEmail] = useState("")
     const [resetDisable, setResetDisable] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClickOpen = () => {
         setOpenForget(true);
@@ -42,6 +47,17 @@ const LoginForm = (props) => {
         e.persist();
         handleChange(e);
         setFieldTouched(name, true, false);
+    }
+
+    const handleLogin = async () => {
+        setIsLoading(true)
+        let rs = await DataService.login({ email: loginEmail, password: loginPassword })
+        setIsLoading(false)
+        if (rs.code !== 0) {
+            helper.activateToast("error", rs.message)
+        } else {
+            ApiService.login(rs.data, rs.token)
+        }
     }
 
     return (
@@ -113,7 +129,9 @@ const LoginForm = (props) => {
                     variant="outlined"
                 />
 
-                <Button disabled={(errors.loginEmail || errors.loginPassword || loginEmail === "" || loginPassword === "") ? true : false} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>login</Button>
+                <Button onClick={handleLogin} disabled={(errors.loginEmail || errors.loginPassword || loginEmail === "" || loginPassword === "") ? true : false} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
+                    {isLoading ? <CircularProgress /> : "Login"}
+                </Button>
             </div>
 
             <br />

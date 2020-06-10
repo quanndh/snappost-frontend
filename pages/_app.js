@@ -13,10 +13,8 @@ import ChatContainer from '../layout/ChatContainer/ChatContainer';
 import 'emoji-mart/css/emoji-mart.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer, Slide } from 'react-toastify';
-import {
-	RecoilRoot,
-} from 'recoil';
 import LightOff from '../components/LightOff/LightOff';
+import ApiService from '../services/ApiService/ApiService';
 
 const theme = createMuiTheme({
 	palette: {
@@ -43,6 +41,7 @@ export default function MyApp({ Component, pageProps }) {
 
 	useEffect(() => {
 		setPathname(router.pathname)
+		ApiService.setStore(store)
 	}, [router.pathname])
 
 	const header = () => {
@@ -74,16 +73,14 @@ export default function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
-				<RecoilRoot>
-					{header()}
-					{body()}
-					<ToastContainer
-						pauseOnFocusLoss={false}
-						autoClose={3000}
-						position={toast.POSITION.BOTTOM_LEFT}
-						transition={Slide}
-					/>
-				</RecoilRoot>
+				{header()}
+				{body()}
+				<ToastContainer
+					pauseOnFocusLoss={false}
+					autoClose={3000}
+					position={toast.POSITION.BOTTOM_LEFT}
+					transition={Slide}
+				/>
 			</Provider>
 		</ThemeProvider>
 	);

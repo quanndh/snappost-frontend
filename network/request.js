@@ -1,15 +1,15 @@
 
 import axios from 'axios'
 import config from '../constants';
+import ApiService from '../services/ApiService/ApiService';
 
 const request = async (url, data, method) => {
 
     url = config.apiHost + url;
-    let token = localStorage.getItem('TOKEN');
     let headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        "Authorization": `Bearer ${ApiService.getToken()}`,
     }
     console.log("%c-----------" + method + "------------", 'color: green; font-size: 16px')
     console.log(url, data, headers)

@@ -5,8 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import Post from '../components/Post/Post';
 import SideMenu from '../components/SideMenu';
 import CreatePostInput from '../components/CreatePostInput/CreatePostInput';
+import AuthComponent from '../components/AuthComponent/AuthComponent';
 
-export default function Index() {
+const Index = () => {
 
 	useEffect(() => {
 	}, []);
@@ -27,3 +28,5 @@ export default function Index() {
 		</div>
 	);
 }
+
+export default AuthComponent(Index);

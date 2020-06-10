@@ -7,6 +7,7 @@ import PersonalDescription from '../../components/PersonalDescription/PersonalDe
 import Paper from '@material-ui/core/Paper';
 import PersonalInformation from '../../components/PersonalInformation/PersonalInformation';
 import Post from '../../components/Post/Post';
+import AuthComponent from '../../components/AuthComponent/AuthComponent';
 
 const Profile = (props) => {
 
@@ -61,4 +62,4 @@ const Profile = (props) => {
 //     }
 // }
 
-export default Profile;
+export default AuthComponent(Profile);

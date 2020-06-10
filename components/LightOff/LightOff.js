@@ -1,16 +1,16 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
-import AtomProvider from '../../recoil/AtomProvider';
+import { connect } from 'react-redux'
+import ApiService from '../../services/ApiService/ApiService';
 
 const LightOff = props => {
 
-    const [showCreatePost, setShowCreatePost] = useRecoilState(AtomProvider.showCreatePost);
+    const { showCreatePost } = props
 
     return (
         <>
             {
                 showCreatePost ? <div className="lightoff" onClick={() => {
-                    if (showCreatePost) setShowCreatePost(false);
+                    if (showCreatePost) ApiService.toggleCreatePost();
                 }} /> : null
             }
         </>
@@ -18,4 +18,10 @@ const LightOff = props => {
     )
 }
 
-export default LightOff;
+const mapStateToProps = state => {
+    return {
+        showCreatePost: state.uiReducer.showCreatePost
+    }
+}
+
+export default connect(mapStateToProps)(LightOff);

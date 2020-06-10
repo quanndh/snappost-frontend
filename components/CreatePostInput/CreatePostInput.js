@@ -5,13 +5,12 @@ import { Button } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import GifIcon from '@material-ui/icons/Gif';
-import { useRecoilState } from 'recoil';
-import AtomProvide from '../../recoil/AtomProvider';
 import ReactHtmlParser from 'react-html-parser';
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import Helper from '../../services/Helper/helper';
-
+import { connect } from 'react-redux'
+import ApiService from '../../services/ApiService/ApiService';
 
 const CreatePostInput = (props) => {
 
@@ -25,11 +24,11 @@ const CreatePostInput = (props) => {
         },
     ])
 
-    const [showCreatePost, setShowCreatePost] = useRecoilState(AtomProvide.showCreatePost)
+    const { showCreatePost } = props;
 
     const handleOpenCreate = () => {
         if (!showCreatePost) {
-            setShowCreatePost(true)
+            ApiService.toggleCreatePost()
         }
     }
 
@@ -96,4 +95,10 @@ const CreatePostInput = (props) => {
     )
 }
 
-export default CreatePostInput;
+const mapStateToProps = state => {
+    return {
+        showCreatePost: state.uiReducer.showCreatePost
+    }
+}
+
+export default connect(mapStateToProps)(CreatePostInput);
