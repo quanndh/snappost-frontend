@@ -4,5 +4,5 @@ export default {
     showCreatePost: atom({
         key: 'showCreatePost',
         default: false,
-    })
+    }),
 }

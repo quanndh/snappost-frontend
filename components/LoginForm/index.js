@@ -29,7 +29,7 @@ const LoginForm = (props) => {
     };
 
     const {
-        values: { email, password },
+        values: { loginEmail, loginPassword },
         errors,
         touched,
         handleSubmit,
@@ -93,27 +93,27 @@ const LoginForm = (props) => {
             <div className="form-container">
                 <TextField
                     style={{ width: "100%", marginBottom: 36 }}
-                    name="email"
+                    name="loginEmail"
                     label="Your Email Address"
                     variant="outlined"
-                    helperText={touched.email ? errors.email : ""}
-                    error={touched.email && Boolean(errors.email)}
-                    value={email}
-                    onChange={change.bind(null, "email")}
+                    helperText={touched.loginEmail ? errors.loginEmail : ""}
+                    error={touched.loginEmail && Boolean(errors.loginEmail)}
+                    value={loginEmail}
+                    onChange={change.bind(null, "loginEmail")}
                 />
                 <TextField
                     type="password"
-                    helperText={touched.password ? errors.password : ""}
-                    error={touched.password && Boolean(errors.password)}
-                    onChange={change.bind(null, "password")}
-                    value={password}
+                    helperText={touched.loginPassword ? errors.loginPassword : ""}
+                    error={touched.loginPassword && Boolean(errors.loginPassword)}
+                    onChange={change.bind(null, "loginPassword")}
+                    value={loginPassword}
                     style={{ width: "100%", marginBottom: 36 }}
-                    name="password"
+                    name="loginPassword"
                     label="Your Password"
                     variant="outlined"
                 />
 
-                <Button disabled={(errors.email || errors.password || email === "" || password === "") ? true : false} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>login</Button>
+                <Button disabled={(errors.loginEmail || errors.loginPassword || loginEmail === "" || loginPassword === "") ? true : false} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>login</Button>
             </div>
 
             <br />

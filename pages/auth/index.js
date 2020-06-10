@@ -8,10 +8,10 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const loginSchema = Yup.object({
-    email: Yup.string("Enter your email")
+    loginEmail: Yup.string("Enter your email")
         .email("Enter a valid email")
         .required("Email is required"),
-    password: Yup.string("")
+    loginPassword: Yup.string("")
         .min(6, "Password must contain at least 6 characters")
         .required("Enter your password"),
 })
@@ -31,7 +31,7 @@ const signupSchema = Yup.object({
         .required("Enter your password"),
 })
 
-const loginInit = { email: "", password: "" }
+const loginInit = { loginEmail: "", loginPassword: "" }
 
 const signupInit = { firstName: "", lastName: "", email: "", password: "", phone: "" }
 

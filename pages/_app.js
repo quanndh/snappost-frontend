@@ -11,6 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import ContactBar from '../layout/ContactBar/ContactBar';
 import ChatContainer from '../layout/ChatContainer/ChatContainer';
 import 'emoji-mart/css/emoji-mart.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer, Slide } from 'react-toastify';
 import {
 	RecoilRoot,
 } from 'recoil';
@@ -53,7 +55,7 @@ export default function MyApp({ Component, pageProps }) {
 
 		if (pathname !== "/auth") {
 			return (
-				<Grid container style={{ height: "100%", position: 'relative' }}>
+				<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
 					<Grid item xs={10}>
 						<LightOff />
 						<Component {...pageProps} />
@@ -75,6 +77,12 @@ export default function MyApp({ Component, pageProps }) {
 				<RecoilRoot>
 					{header()}
 					{body()}
+					<ToastContainer
+						pauseOnFocusLoss={false}
+						autoClose={3000}
+						position={toast.POSITION.BOTTOM_LEFT}
+						transition={Slide}
+					/>
 				</RecoilRoot>
 			</Provider>
 		</ThemeProvider>

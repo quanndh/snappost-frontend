@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DataService from '../../network/DataService';
+import helper from '../../services/Helper/helper';
 
 const SignupForm = (props) => {
 
     const [isError, setIsError] = useState(true);
+    const [gender, setGender] = useState("0")
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         values: { firstName, lastName, phone, email, password },
         errors,
         touched,
-        handleSubmit,
         handleChange,
         isValid,
         setFieldTouched
@@ -28,12 +35,31 @@ const SignupForm = (props) => {
         }
     }
 
+    const handleSubmit = async () => {
+        const newUser = {
+            firstName,
+            lastName,
+            email,
+            password,
+            phone,
+            gender
+        }
+        setIsLoading(true)
+        let rs = await DataService.signup(newUser);
+        setIsLoading(false);
+        if (rs.code !== 0) {
+            helper.activateToast("error", rs.message)
+        } else {
+            helper.activateToast("success", rs.message)
+        }
+    }
+
     return (
         <>
             <Typography className="title" variant="subtitle1">Become a member of Snappost</Typography>
             <br />
             <div className="form-container">
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 36 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
                     <TextField
                         name="firstName"
                         helperText={touched.firstName ? errors.firstName : ""}
@@ -62,17 +88,22 @@ const SignupForm = (props) => {
                     error={touched.phone && Boolean(errors.phone)}
                     value={phone}
                     onChange={change.bind(null, "phone")}
-                    style={{ width: "100%", marginBottom: 36 }}
+                    style={{ width: "100%", marginBottom: 20 }}
                     label="Your Phone Number"
                     variant="outlined"
                 />
+                <RadioGroup style={{ width: "100%", marginBottom: 20 }} row aria-label="gender" name="gender1" value={gender} onChange={e => setGender(e.target.value)}>
+                    <FormControlLabel value="0" control={<Radio color="primary" />} label="Female" />
+                    <FormControlLabel value="1" control={<Radio color="primary" />} label="Male" />
+                    <FormControlLabel value="2" control={<Radio color="primary" />} label="Other" />
+                </RadioGroup>
                 <TextField
                     name="email"
                     helperText={touched.email ? errors.email : ""}
                     error={touched.email && Boolean(errors.email)}
                     value={email}
                     onChange={change.bind(null, "email")}
-                    style={{ width: "100%", marginBottom: 36 }}
+                    style={{ width: "100%", marginBottom: 20 }}
                     label="Your Email Address"
                     variant="outlined"
                 />
@@ -82,17 +113,19 @@ const SignupForm = (props) => {
                     error={touched.password && Boolean(errors.password)}
                     value={password}
                     onChange={change.bind(null, "password")}
-                    style={{ width: "100%", marginBottom: 36 }}
+                    style={{ width: "100%", marginBottom: 20 }}
                     label="Your Password"
                     variant="outlined"
+                    type="password"
                 />
 
-                <Button disabled={Boolean(isError)} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>Begin your adventure</Button>
+                <Button onClick={handleSubmit} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
+                    {isLoading ? <CircularProgress /> : "Begin your adventure"}
+                </Button>
             </div>
 
             <br />
             <Typography className="title" variant="subtitle1">Already have account? <span onClick={props.changeRoute} className="link">Login here.</span></Typography>
-
         </>
     )
 }

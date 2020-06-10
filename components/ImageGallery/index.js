@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import PreviewImage from "./PreviewImage";
 
 const ImageGallery = ({ images, startCount }) => {
-  const [ openPreview, setOpenPreview ] = useState(false);
-  const [ countImg, setCountImg ] = useState(0);
-  const [ indexOfImage, setIndexOfImage ] = useState(0);
+  const [openPreview, setOpenPreview] = useState(false);
+  const [countImg, setCountImg] = useState(0);
+  const [indexOfImage, setIndexOfImage] = useState(0);
 
   useEffect(() => {
     if (images && images.length > startCount) {
@@ -38,7 +38,7 @@ const ImageGallery = ({ images, startCount }) => {
         {images.slice(0, startCount).map((img, index) => (
           <div key={img + index} className="image-gallery__item" onClick={onClickToImage(index)}>
             <img src={img} />
-            <div className={classNames("overlay", {"is-more": activeOverlay(index, countImg)})}>
+            <div className={classNames("overlay", { "is-more": activeOverlay(index, countImg) })}>
               <span className="image-count"> {activeOverlay(index, countImg) && '+ ' + countImg}</span>
             </div>
           </div>

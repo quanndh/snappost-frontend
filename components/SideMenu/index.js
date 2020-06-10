@@ -9,22 +9,22 @@ const SideMenu = (props) => {
     {
       image: <AccountCircleSharpIcon />,
       label: 'Quan Nguyen',
-      onClick: () => {}
+      onClick: () => { }
     },
     {
       image: <FcHome />,
       label: 'Home',
-      onClick: () => {}
+      onClick: () => { }
     },
     {
       image: <FcSms />,
       label: 'Messenger',
-      onClick: () => {}
+      onClick: () => { }
     },
     {
       image: <FcFilm />,
       label: 'Watch',
-      onClick: () => {}
+      onClick: () => { }
     },
   ]
 

@@ -9,7 +9,6 @@ const ChatContainer = () => {
     return (
         <div className="chat-container" style={{ right: width - 50 }}>
             <ChatBox />
-            <ChatBox />
         </div>
     )
 }

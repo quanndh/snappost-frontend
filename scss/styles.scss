@@ -11,7 +11,7 @@
 @import './image-gallery.scss';
 @import './side-menu.scss';
 
-html, body, .root, h1{
+html, body, .root{
     font-family: sans-serif;
     height: auto;
 
@@ -38,13 +38,11 @@ html, body, .root, h1{
         border-radius: $main-radius;
         display: flex;
         flex-direction: column;
+        padding: 16px;
+        padding-bottom: 10px;
 
         .post-header {
-            // display: flex;
-            // align-items: center;
-            width: 100%;
-            // justify-content: space-between;
-            padding: 16px;
+            margin-bottom: 10px;
             
             p {
                 margin: 0
@@ -52,12 +50,65 @@ html, body, .root, h1{
         }
 
         .post-text {
-            padding: 8px;
+            margin-top: 10px;
+            max-height: 200px;
+            word-break: break-all;
+            overflow: hidden;
         }
 
         .post-media {
-            padding: 24px;
             padding-top: 0;
+            border-bottom: $border;
+        }
+
+        .post-info {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: $border;
+            margin-bottom: 10px;
+
+            .post-info-item {
+                display: flex;
+                align-items: flex-end;
+                font-size: 18px;
+
+                span {
+                    margin-left: 8px;
+                }
+            }
+        }
+
+        .post-action {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-around !important;
+
+            .post-action-button {
+                padding: 10px;
+                width: 28%;
+                height: 40px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $secondary-color;
+
+                span {
+                    font-weight: 600;
+                    margin-left: 8px;
+                }
+
+                .like {
+                    color: $main-color;
+                }
+            }
+            
+            .post-action-button:hover {
+                background-color: rgba($color: #928c8c, $alpha: 0.1);
+                border-radius: $main-radius;;
+            }
         }
     }
 
@@ -183,6 +234,7 @@ html, body, .root, h1{
         border-left: 1px solid #bcbcbc;
         position: fixed;
         z-index: 1;
+        background-color: $bg-color-newfeed;
 
         .contact-bar-people {
             height: 95vh;
