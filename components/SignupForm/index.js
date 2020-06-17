@@ -8,6 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DataService from '../../network/DataService';
 import helper from '../../services/Helper/helper';
+import Router from 'next/router'
 
 const SignupForm = (props) => {
 
@@ -50,7 +51,8 @@ const SignupForm = (props) => {
         if (rs.code !== 0) {
             helper.activateToast("error", rs.message)
         } else {
-            helper.activateToast("success", rs.message)
+            ApiService.login(rs.data, rs.token)
+            // Router.push("/")
         }
     }
 

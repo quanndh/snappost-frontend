@@ -13,36 +13,28 @@ export default function (BaseComponent) {
         }
 
         componentDidMount() {
+            this._checkAndRedirect();
             this.setState({
                 token: localStorage.getItem('token')
             })
-            this._checkAndRedirect()
         }
 
-        componentDidUpdate(prevProps, prevState) {
-            if (prevState.token !== this.state.token) {
-                this._checkAndRedirect();
-            }
+        componentDidUpdate() {
+            this._checkAndRedirect();
         }
 
         _checkAndRedirect() {
-            const { router } = this.props;
+            const { token, router } = this.props;
 
-            if (this.state.token == "") {
-                if (router.pathname != "/auth") {
-                    router.push("/auth")
-                }
-            } else {
-                if (router.pathname == "/auth") {
-                    router.push("/")
-                }
+            if (token || this.state.token != "") {
+                router.push("/")
             }
         }
 
         render() {
             return (
                 <div>
-                    {(this.state.token == "") ? <BaseComponent {...this.props} /> : null}
+                    {(this.props.token != "" || this.state.token != "") ? <BaseComponent {...this.props} /> : null}
                 </div>
             );
         }

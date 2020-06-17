@@ -20,8 +20,8 @@ const Index = () => {
 						<SideMenu />
 					</Grid>
 					<Grid item xs={12} md={7} className="newfeed-right">
-						<CreatePostInput />
-						<Post />
+						<CreatePostInput style={{ zIndex: 4 }} />
+						<Post style={{ zIndex: 3 }} />
 					</Grid>
 				</Grid>
 			</Container>
@@ -29,4 +29,4 @@ const Index = () => {
 	);
 }
 
-export default AuthComponent(Index);
+export default Index;

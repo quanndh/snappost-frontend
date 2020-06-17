@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import SocialButton from '../../components/SocialButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import PublicComponent from '../../components/PublicComponent/PublicComponent';
 
 const loginSchema = Yup.object({
     loginEmail: Yup.string("Enter your email")

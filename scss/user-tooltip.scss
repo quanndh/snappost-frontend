@@ -1,0 +1,81 @@
+.user-tooltip-container {
+    width: 500px;
+    height: 300px;
+    position: relative;
+    border: $border;
+    border-radius: $main-radius;
+    z-index: 30;
+
+    .user-tooltip-header {
+        width: 100%;
+        height: 50%;
+        padding: 0;
+        position: relative;
+
+        .user-tooltip-wallpic {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+        .user-tooltip-avatar {
+            width: 100%;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            display: flex;
+            cursor: pointer;
+
+            img {
+                padding: 3px;
+                background-color: white;
+                border: 1px solid  $secondary-color;
+                border-radius: $main-radius;
+                width: 25%;
+                margin-right: 20px;
+            }
+
+            h5{
+                padding-top: 20px;
+                color: white;
+            }
+        }
+    }
+
+    .user-tooltip-info{
+        padding-left: 20px;
+        width: 70%;
+        float: right;
+        display: block;
+
+        p {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: $secondary-color;
+        }
+    }
+
+    .user-tooltip-action {
+        width: 100%;
+        background-color: rgba($color: $secondary-color, $alpha: 0.2);
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+        border-top: $border;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .user-tooltip-action-item {
+            cursor: pointer;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+    }
+    
+}

@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
+import React, { useState, useMemo, useRef } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Button } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
@@ -7,24 +6,69 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import GifIcon from '@material-ui/icons/Gif';
 import ReactHtmlParser from 'react-html-parser';
 import { createEditor } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
 import Helper from '../../services/Helper/helper';
 import { connect } from 'react-redux'
 import ApiService from '../../services/ApiService/ApiService';
+import DataService from '../../network/DataService';
+import CustomInput from '../CustomInput/CustomInput';
+import { EditorState } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import 'draft-js-linkify-plugin/lib/plugin.css';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import 'draft-js-hashtag-plugin/lib/plugin.css';
+import Mention from '../Mention/Mention';
+
+const mentionPlugin = createMentionPlugin({
+    mentionComponent: (mentionProps) => (
+        <Mention mentionProps={mentionProps} />
+    ),
+});
+
+const linkifyPlugin = createLinkifyPlugin();
+
+let plugins = [mentionPlugin, linkifyPlugin]
 
 const CreatePostInput = (props) => {
 
-    const { item } = props;
-
-    const editor = useMemo(() => withReact(createEditor()), [])
-    const [value, setValue] = useState([
-        {
-            type: 'paragraph',
-            children: [{ text: '' }],
-        },
-    ])
+    const { user } = props;
 
     const { showCreatePost } = props;
+
+    const editor = useRef(null)
+
+    const [content, setContent] = useState(EditorState.createEmpty())
+
+    const [suggestions, setSuggestions] = useState([]);
+
+
+
+    const focus = () => {
+        editor.current.focus();
+    };
+
+    const onSearchChange = ({ value }) => {
+        if (value) {
+            setTimeout(async () => {
+                let rs = await DataService.findTagFriend({ name: value });
+                let data = [];
+                rs.data.map(item => {
+                    data.push({
+                        id: item.id,
+                        name: item.firstName + " " + item.lastName,
+                        avatar: item.avatar,
+                        wallImage: item.wallImage
+                    })
+                })
+                setSuggestions(data)
+            }, 200)
+        }
+    };
+
+    const onChange = (editorState) => {
+        setContent(editorState)
+    };
 
     const handleOpenCreate = () => {
         if (!showCreatePost) {
@@ -32,40 +76,61 @@ const CreatePostInput = (props) => {
         }
     }
 
+    const hanldeUpload = async (e) => {
+        let rs;
+        if (e.target.files[0].type.includes("image")) {
+            rs = await DataService.uploadImage({ data: e.target.files[0], type: "images" })
+        } else {
+            rs = await DataService.uploadFile({ data: e.target.files[0], type: "files" })
+        }
+        console.log(rs)
+    }
+
+    const { MentionSuggestions } = mentionPlugin;
+
     return (
         <div style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
+            <input
+                accept="*"
+                style={{ display: "none" }}
+                id="upload"
+                multiple
+                type="file"
+                onChange={hanldeUpload}
+            />
             <div className="create-post-container" onClick={handleOpenCreate}>
                 <div className="create-post-body">
                     <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
-                        {
-                            item?.avatar ? (
-                                <Avatar alt={item.name} src={item.avatar} className="avatar" />
-                            ) : (
-                                    <AccountCircleSharpIcon color="disabled" className="avatar" />
-                                )
-                        }
+
+                        <Avatar alt={user.firstName} src={user.avatar} className="avatar" />
 
                         <div className="create-post-text" style={{ width: "80%" }}>
-                            {
-                                showCreatePost ? (
-                                    <Slate style={{ marginLeft: 20 }} editor={editor} value={value} onChange={newValue => setValue(newValue)}>
-                                        <Editable autoFocus={true} autoCorrect="true" placeholder="What is snapping in your head?" />
-
-                                    </Slate>
-                                ) : (
-                                        <div style={{ overflowY: "hidden", color: value[0].children[0].text !== "" ? 'black' : "#bcbcbc" }}>
-                                            {value[0].children[0].text !== "" ? ReactHtmlParser(Helper.jsonToHtml(value)) : "What is snapping in your head?"}
-                                        </div>
-                                    )
-                            }
+                            <div onClick={focus}>
+                                <Editor
+                                    readOnly={!showCreatePost}
+                                    editorState={content}
+                                    onChange={onChange}
+                                    plugins={plugins}
+                                    ref={editor}
+                                    placeholder={'Snap your feeling here...'}
+                                />
+                                <MentionSuggestions
+                                    onSearchChange={onSearchChange}
+                                    suggestions={suggestions}
+                                // onAddMention={onAddMention}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="create-post-option">
-                    <div className="create-post-option-item">
-                        <ImageIcon />
-                        <span>Video/Image</span>
-                    </div>
+                    <label htmlFor="upload">
+                        <div className="create-post-option-item">
+                            <ImageIcon />
+                            <span>Video/Image</span>
+                        </div>
+                    </label>
+
                     <div className="create-post-option-item">
                         <AssignmentIndIcon />
                         <span>Tag friend</span>
@@ -80,7 +145,7 @@ const CreatePostInput = (props) => {
                         <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
                             <Button
                                 color="primary"
-                                disabled={value[0].children[0].text === ""}
+                                disabled={"value[0].children[0].text" === ""}
                                 style={{ width: "100%", }}
                                 variant="contained"
                                 onClick={() => localStorage.setItem("value", JSON.stringify(value))}
@@ -97,7 +162,8 @@ const CreatePostInput = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showCreatePost: state.uiReducer.showCreatePost
+        showCreatePost: state.uiReducer.showCreatePost,
+        user: state.userReducer.user
     }
 }
 

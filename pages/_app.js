@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer, Slide } from 'react-toastify';
 import LightOff from '../components/LightOff/LightOff';
 import ApiService from '../services/ApiService/ApiService';
+import { connect, useSelector } from "react-redux";
 
 const theme = createMuiTheme({
 	palette: {
@@ -42,6 +43,20 @@ export default function MyApp({ Component, pageProps }) {
 	useEffect(() => {
 		setPathname(router.pathname)
 		ApiService.setStore(store)
+
+		let user = JSON.parse(localStorage.getItem('user'));
+		let token = localStorage.getItem('token');
+
+		ApiService.login(user, token)
+
+		if (pathname == "/auth" && user) {
+			Router.push('/')
+		}
+
+		if (pathname != "/auth" && !user) {
+			Router.push('/auth')
+		}
+
 	}, [router.pathname])
 
 	const header = () => {

@@ -4,19 +4,49 @@ import { GoogleLogin } from 'react-google-login';
 import { FacebookAppId, GoogleClientId, GithubClientId } from '../../constants';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import Button from '@material-ui/core/Button';
+import DataService from '../../network/DataService';
+import helpers from '../../services/Helper/helper';
+import ApiService from '../../services/ApiService/ApiService';
+import Router from 'next/router'
 
 const SocialButton = () => {
 
-    const responseFacebook = (response) => {
-        console.log(response);
+    const responseFacebook = async (response) => {
+        console.log(response)
+        const { name, email, userID, picture } = response;
+        const user = {
+            name,
+            email,
+            id: userID,
+            avatar: picture.data.url,
+            type: "facebook"
+        }
+        let rs = await DataService.loginSocialNetwork(user);
+        if (rs.code != 0) {
+            helpers.activateToast("error", rs.message)
+        } else {
+            ApiService.login(rs.data, rs.token)
+            Router.push("/")
+        }
     }
 
-    const componentClicked = () => {
-        console.log('click')
-    }
+    const responseGoogle = async (response) => {
+        let { name, email, googleId, imageUrl } = response.profileObj;
+        const user = {
+            name,
+            email,
+            id: googleId,
+            avatar: imageUrl,
+            type: "google"
+        }
+        let rs = await DataService.loginSocialNetwork(user);
+        if (rs.code != 0) {
+            helpers.activateToast("error", rs.message)
+        } else {
+            ApiService.login(rs.data, rs.token)
+            Router.push("/")
+        }
 
-    const responseGoogle = (response) => {
-        console.log(response);
     }
 
     return (
@@ -25,7 +55,6 @@ const SocialButton = () => {
                 appId={FacebookAppId}
                 autoLoad={false}
                 fields="name,email,picture"
-                onClick={componentClicked}
                 callback={responseFacebook}
                 render={renderProps => (
                     <Button

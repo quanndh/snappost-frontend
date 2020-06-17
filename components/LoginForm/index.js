@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DataService from '../../network/DataService';
 import helper from '../../services/Helper/helper';
 import ApiService from '../../services/ApiService/ApiService';
+import Router from 'next/router'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -57,6 +58,7 @@ const LoginForm = (props) => {
             helper.activateToast("error", rs.message)
         } else {
             ApiService.login(rs.data, rs.token)
+            Router.push("/")
         }
     }
 

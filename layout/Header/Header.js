@@ -8,7 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Container from '@material-ui/core/Container';
@@ -24,6 +24,7 @@ import { Divider } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
 	grow: {
@@ -97,7 +98,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function Header() {
+function Header({ user }) {
 	const classes = useStyles();
 
 	const [openMore, setOpenMore] = React.useState(false);
@@ -221,9 +222,7 @@ export default function Header() {
 										</IconButton>
 									</CustomTooltip>
 
-									<Popper open={openNotification} anchorEl={notificationRef.current} role={undefined} transition disablePortal
-
-									>
+									<Popper open={openNotification} anchorEl={notificationRef.current} role={undefined} transition disablePortal>
 										{({ TransitionProps, placement }) => (
 											<Grow
 												{...TransitionProps}
@@ -233,7 +232,7 @@ export default function Header() {
 													<ClickAwayListener onClickAway={handleClose}>
 														<MenuList autoFocusItem={openNotification} id="menu-list-grow-notification" onKeyDown={handleListKeyDown}>
 															<MenuItem onClick={handleClose} style={{ display: 'flex', alignItems: "center" }}>
-																<AccountCircle color="action" style={{ fontSize: 50, marginRight: 8 }} />
+																<Avatar alt={user.firstName} src={user.avatar} style={{ fontSize: 50, marginRight: 8 }} />
 																<div>
 																	<Typography variant="h5">Quan Nguyen</Typography>
 																	<Typography variant="subtitile1">@quannguyen</Typography>
@@ -281,22 +280,25 @@ export default function Header() {
 											>
 												<Paper style={{ minWidth: 350, minHeight: 200 }}>
 													<ClickAwayListener onClickAway={handleClose}>
-														<MenuList autoFocusItem={openMore} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-															<MenuItem onClick={handleClose} style={{ display: 'flex', alignItems: "center" }}>
-																<AccountCircle color="action" style={{ fontSize: 50, marginRight: 8 }} />
-																<div>
-																	<Typography variant="h5">Quan Nguyen</Typography>
-																	<Typography variant="subtitile1">@quannguyen</Typography>
-																</div>
-															</MenuItem>
+														<MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
+															<Link href={`/profile/${user.id}`}>
+																<MenuItem style={{ display: 'flex', alignItems: "center" }}>
+																	<Avatar alt={user.firstName} src={user.avatar} style={{ fontSize: 50, marginRight: 8 }} />
+																	<div>
+																		<Typography variant="h5">{user.firstName} {user.lastName}</Typography>
+																		<Typography variant="subtitle1">@quannguyen</Typography>
+																	</div>
+																</MenuItem>
+															</Link>
+
 															<Divider />
 															<MenuItem style={{ marginTop: 12 }}>
 																<SettingsIcon color="action" fontSize="large" style={{ marginRight: 8 }} />
-																<Typography variant="subtitile1">Setting</Typography>
+																<Typography variant="subtitle1">Setting</Typography>
 															</MenuItem>
 															<MenuItem style={{ marginTop: 8 }}>
 																<ExitToAppIcon color="action" fontSize="large" style={{ marginRight: 8 }} />
-																<Typography variant="subtitile1">Logout</Typography>
+																<Typography variant="subtitle1">Logout</Typography>
 															</MenuItem>
 														</MenuList>
 													</ClickAwayListener>
@@ -317,3 +319,11 @@ export default function Header() {
 		</div>
 	);
 }
+
+const mapStateToProps = state => {
+	return {
+		user: state.userReducer.user
+	}
+}
+
+export default connect(mapStateToProps)(Header);

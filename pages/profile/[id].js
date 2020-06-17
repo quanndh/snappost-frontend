@@ -62,4 +62,4 @@ const Profile = (props) => {
 //     }
 // }
 
-export default AuthComponent(Profile);
+export default Profile;
