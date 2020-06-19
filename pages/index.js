@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import 'typeface-roboto';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -6,10 +6,19 @@ import Post from '../components/Post/Post';
 import SideMenu from '../components/SideMenu';
 import CreatePostInput from '../components/CreatePostInput/CreatePostInput';
 import AuthComponent from '../components/AuthComponent/AuthComponent';
+import DataService from '../network/DataService';
 
 const Index = () => {
 
+	const [posts, setPosts] = useState([]);
+
+	const getNewFeedPost = async () => {
+		let rs = await DataService.getPost({ limit: 1, skip: 0 });
+		setPosts(rs.data)
+	}
+
 	useEffect(() => {
+		getNewFeedPost()
 	}, []);
 
 	return (
@@ -21,7 +30,11 @@ const Index = () => {
 					</Grid>
 					<Grid item xs={12} md={7} className="newfeed-right">
 						<CreatePostInput style={{ zIndex: 4 }} />
-						<Post style={{ zIndex: 3 }} />
+						{
+							posts?.length > 0 ? posts.map(post => {
+								return <Post key={post.id} style={{ zIndex: 3 }} data={post} />
+							}) : null
+						}
 					</Grid>
 				</Grid>
 			</Container>

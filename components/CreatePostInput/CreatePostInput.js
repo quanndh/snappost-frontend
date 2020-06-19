@@ -16,7 +16,6 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
-import 'draft-js-hashtag-plugin/lib/plugin.css';
 import CustomUserName from '../CustomUserName/CustomUserName';
 import CloseIcon from '@material-ui/icons/Close';
 import CustomTooltip from '../CustomTooltip/CustomTooltip';
@@ -146,13 +145,20 @@ const CreatePostInput = (props) => {
     }
 
     const handleCreatePost = async () => {
+        console.log(content.convertTo)
         setLoading(true)
         let data = {
-            content: JSON.stringify(content),
+            content: JSON.stringify(convertToRaw(content.getCurrentContent())),
             images,
             videos
         }
         let rs = await DataService.createPost(data)
+        if (rs.code == 0) {
+            setImages([])
+            setVideos([])
+            setUploadUrl([])
+            setContent(() => EditorState.createWithContent(emptyContentState))
+        }
         setLoading(false)
     }
 

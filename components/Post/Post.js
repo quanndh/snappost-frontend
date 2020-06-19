@@ -10,30 +10,45 @@ import classNames from 'classnames';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
+import { EditorState } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import createMentionPlugin from 'draft-js-mention-plugin';
+import 'draft-js-linkify-plugin/lib/plugin.css';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import CustomUserName from '../CustomUserName/CustomUserName';
+import { convertToRaw, convertFromRaw } from 'draft-js';
 
-let images = [
-    // "https://picsum.photos/id/1/200/300",
-    // "https://picsum.photos/id/2/200/300",
-    // "https://picsum.photos/id/3/200/300",
-    // "https://picsum.photos/id/4/200/300",
-    "https://picsum.photos/id/5/200/300",
-    "https://picsum.photos/id/6/200/300",
-    "https://picsum.photos/id/7/200/300",
-    "https://picsum.photos/id/8/200/300",
-]
+const mentionPlugin = createMentionPlugin({
+    mentionComponent: (mentionProps) => (
+        <CustomUserName mentionProps={mentionProps} />
+    ),
+});
+
+const linkifyPlugin = createLinkifyPlugin();
+
+let plugins = [mentionPlugin, linkifyPlugin]
 
 const Post = (props) => {
 
     const [value, setValue] = useState("");
     const [isLike, setIsLike] = useState(false)
 
+    const { data } = props;
+
     useEffect(() => {
 
     }, [])
 
+    const change = () => {
+
+    }
+
     const toggleLike = () => {
         setIsLike(!isLike)
     }
+
+    const { MentionSuggestions } = mentionPlugin;
 
     return (
         <Paper elevation={0} className="post-container">
@@ -50,12 +65,22 @@ const Post = (props) => {
                 </div>
 
                 <div className="post-text">
-                    {/* {ReactHtmlParser(Helper.jsonToHtml(value || []))} */}
+                    <Editor
+                        readOnly={true}
+                        editorState={data.content ? EditorState.createWithContent(convertFromRaw(JSON.parse(data.content))) : null}
+                        plugins={plugins}
+                        onChange={change}
+                    />
+                    <MentionSuggestions
+                    // onSearchChange={onSearchChange}
+                    // suggestions={suggestions}
+                    // onAddMention={onAddMention}
+                    />
                 </div>
             </div>
 
             <div className="post-media">
-                <ImageGallery images={images} startCount={5} />
+                <ImageGallery images={data?.images} startCount={5} />
             </div>
             <div className="post-info">
                 <div className="post-info-item">

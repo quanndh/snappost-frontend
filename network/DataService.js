@@ -25,5 +25,8 @@ export default {
     },
     createPost: data => {
         return request("/post/create", data, "POST");
+    },
+    getPost: data => {
+        return request('/post/get-posts', data, "POST");
     }
 };
