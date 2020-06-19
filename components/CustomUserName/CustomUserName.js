@@ -4,8 +4,9 @@ import Grow from '@material-ui/core/Grow';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import { Paper } from '@material-ui/core';
+import DataService from '../../network/DataService';
 
-const Mention = props => {
+const CustomUserName = props => {
     let { mentionProps } = props;
 
     const [open, setOpen] = React.useState(false);
@@ -47,7 +48,6 @@ const Mention = props => {
                 {mentionProps.children}
             </span>
 
-            //them mouse over call api lay
             <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={open} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                     <Grow
@@ -65,4 +65,4 @@ const Mention = props => {
     )
 }
 
-export default Mention;
+export default CustomUserName;

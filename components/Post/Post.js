@@ -28,9 +28,7 @@ const Post = (props) => {
     const [isLike, setIsLike] = useState(false)
 
     useEffect(() => {
-        let jsonValue = localStorage.getItem("value");
-        jsonValue = JSON.parse(jsonValue);
-        setValue(jsonValue)
+
     }, [])
 
     const toggleLike = () => {
@@ -52,7 +50,7 @@ const Post = (props) => {
                 </div>
 
                 <div className="post-text">
-                    {ReactHtmlParser(Helper.jsonToHtml(value || []))}
+                    {/* {ReactHtmlParser(Helper.jsonToHtml(value || []))} */}
                 </div>
             </div>
 

@@ -14,10 +14,16 @@ export default {
     uploadImage: data => {
         return upload('/file/upload-image', data)
     },
-    uploadFile: data => {
-        return upload('/file/upload-file', data)
+    uploadVideo: data => {
+        return upload('/file/upload-video', data)
     },
     findTagFriend: data => {
         return request("/user/find-tag-name", data, "POST");
+    },
+    getUserProfile: data => {
+        return request('/user/get-profile', data, "POST")
+    },
+    createPost: data => {
+        return request("/post/create", data, "POST");
     }
 };

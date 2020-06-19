@@ -6,7 +6,7 @@ import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-
 import { EditorState } from 'draft-js';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
-import Mention from '../Mention/Mention';
+import CustomUserName from '../CustomUserName/CustomUserName';
 
 // import "../../node_modules/draft-js-hashtag-plugin/lib/plugin.css"
 // import "../../node_modules/draft-js-mention-plugin/lib/plugin.css"
@@ -57,7 +57,7 @@ export default class CustomInput extends Component {
 
         this.mentionPlugin = createMentionPlugin({
             mentionComponent: (mentionProps) => (
-                <Mention mentionProps={mentionProps} />
+                <CustomUserName mentionProps={mentionProps} />
             ),
         });
     }

@@ -10,19 +10,35 @@ import Helper from '../../services/Helper/helper';
 import { connect } from 'react-redux'
 import ApiService from '../../services/ApiService/ApiService';
 import DataService from '../../network/DataService';
-import CustomInput from '../CustomInput/CustomInput';
 import { EditorState } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import createMentionPlugin from 'draft-js-mention-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import 'draft-js-hashtag-plugin/lib/plugin.css';
-import Mention from '../Mention/Mention';
+import CustomUserName from '../CustomUserName/CustomUserName';
+import CloseIcon from '@material-ui/icons/Close';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
+import draftToHtml from 'draftjs-to-html';
+import { convertToRaw, convertFromRaw } from 'draft-js';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+const emptyContentState = convertFromRaw({
+    entityMap: {},
+    blocks: [
+        {
+            text: '',
+            key: 'foo',
+            type: 'unstyled',
+            entityRanges: [],
+        },
+    ],
+});
 
 const mentionPlugin = createMentionPlugin({
     mentionComponent: (mentionProps) => (
-        <Mention mentionProps={mentionProps} />
+        <CustomUserName mentionProps={mentionProps} />
     ),
 });
 
@@ -38,67 +54,40 @@ const CreatePostInput = (props) => {
 
     const editor = useRef(null)
 
-    const [content, setContent] = useState(EditorState.createEmpty())
-
-    const [suggestions, setSuggestions] = useState([
-        {
-            name: 'Matthew Russell',
-            link: 'https://twitter.com/mrussell247',
-            avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
-        },
-        {
-            name: 'Julian Krispel-Samsel',
-            link: 'https://twitter.com/juliandoesstuff',
-            avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
-        },
-        {
-            name: 'Jyoti Puri',
-            link: 'https://twitter.com/jyopur',
-            avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
-        },
-        {
-            name: 'Max Stoiber',
-            link: 'https://twitter.com/mxstbr',
-            avatar: 'https://pbs.twimg.com/profile_images/763033229993574400/6frGyDyA_400x400.jpg',
-        },
-        {
-            name: 'Nik Graf',
-            link: 'https://twitter.com/nikgraf',
-            avatar: 'https://avatars0.githubusercontent.com/u/223045?v=3&s=400',
-        },
-        {
-            name: 'Pascal Brandt',
-            link: 'https://twitter.com/psbrandt',
-            avatar: 'https://pbs.twimg.com/profile_images/688487813025640448/E6O6I011_400x400.png',
-        },
-    ]);
-
-
+    const [loading, setLoading] = useState(false);
+    const [content, setContent] = useState(() => EditorState.createWithContent(emptyContentState))
+    const [markupContent, setMarkupContent] = useState("<p></p>");
+    const [suggestions, setSuggestions] = useState([]);
+    const [images, setImages] = useState([]);
+    const [videos, setVideos] = useState([]);
+    const [upLoadUrls, setUploadUrl] = useState([]);
 
     const focus = () => {
         editor.current.focus();
     };
-
     const onSearchChange = ({ value }) => {
-        setSuggestions(defaultSuggestionsFilter(value, mentions))
-        // if (value) {
-        //     setTimeout(async () => {
-        //         let rs = await DataService.findTagFriend({ name: value });
-        //         let data = [];
-        //         rs.data.map(item => {
-        //             data.push({
-        //                 id: item.id,
-        //                 name: item.firstName + " " + item.lastName,
-        //                 avatar: item.avatar,
-        //                 wallImage: item.wallImage
-        //             })
-        //         })
-        //         setSuggestions(data)
-        //     }, 200)
-        // }
+        if (value) {
+            setTimeout(async () => {
+                let rs = await DataService.findTagFriend({ name: value });
+                let data = [];
+                rs.data.map(item => {
+                    data.push({
+                        id: item.id,
+                        name: item.firstName + " " + item.lastName,
+                        avatar: item.avatar,
+                        wallImage: item.wallImage
+                    })
+                })
+                setSuggestions(data)
+            }, 200)
+        }
     };
 
     const onChange = (editorState) => {
+        let markup = draftToHtml(
+            convertToRaw(editorState.getCurrentContent())
+        )
+        setMarkupContent(markup)
         setContent(editorState)
     };
 
@@ -110,85 +99,175 @@ const CreatePostInput = (props) => {
 
     const hanldeUpload = async (e) => {
         let rs;
+        let newData = []
         if (e.target.files[0].type.includes("image")) {
             rs = await DataService.uploadImage({ data: e.target.files[0], type: "images" })
+            let newImages = [];
+            rs.data.map(item => {
+                newImages.push(item)
+                newData.push({
+                    type: "image",
+                    url: item.url,
+                    id: item.id
+                })
+            })
+            setImages([...images, ...newImages])
         } else {
-            rs = await DataService.uploadFile({ data: e.target.files[0], type: "files" })
+            rs = await DataService.uploadVideo({ data: e.target.files[0], type: "files" })
+            let newVideos = [];
+            rs.data.map(item => {
+                newVideos.push(item)
+                newData.push({
+                    type: "video",
+                    url: item.url,
+                    id: item.id,
+                })
+            })
+            setVideos([...videos, ...newVideos])
         }
-        console.log(rs)
+        setUploadUrl([...upLoadUrls, ...newData])
+    }
+
+    const handleRemoveImages = (index, removeFile) => {
+        if (removeFile.type === "image") {
+            let filterdImage = images.filter(image => image.id !== removeFile.id);
+            setImages(filterdImage)
+        } else {
+            let filterdVideo = videos.filter(video => video.id !== removeFile.id);
+            setVideos(filterdVideo)
+        }
+        setUploadUrl([...upLoadUrls.slice(0, index), ...upLoadUrls.slice(index + 1, upLoadUrls.length)])
+    }
+
+    const handleLoadMetadata = (e, index) => {
+        let tempUpload = [...upLoadUrls];
+        tempUpload[index].length = e.target.duration
+        setUploadUrl(tempUpload)
+    }
+
+    const handleCreatePost = async () => {
+        setLoading(true)
+        let data = {
+            content: JSON.stringify(content),
+            images,
+            videos
+        }
+        let rs = await DataService.createPost(data)
+        setLoading(false)
     }
 
     const { MentionSuggestions } = mentionPlugin;
 
     return (
-        <div style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
-            <input
-                accept="*"
-                style={{ display: "none" }}
-                id="upload"
-                multiple
-                type="file"
-                onChange={hanldeUpload}
-            />
-            <div className="create-post-container" onClick={handleOpenCreate}>
-                <div className="create-post-body">
-                    <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
+        <>
+            {loading && <LinearProgress />}
+            <div style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
+                <input
+                    accept="*"
+                    style={{ display: "none" }}
+                    id="upload"
+                    multiple
+                    type="file"
+                    onChange={hanldeUpload}
+                />
+                <div className="create-post-container" onClick={handleOpenCreate}>
+                    <div className="create-post-body">
+                        <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
 
-                        <Avatar alt={user.firstName} src={user.avatar} className="avatar" />
+                            <Avatar alt={user.firstName} src={user.avatar} className="avatar" />
 
-                        <div className="create-post-text" style={{ width: "80%" }}>
-                            <div onClick={focus}>
-                                <Editor
-                                    readOnly={!showCreatePost}
-                                    editorState={content}
-                                    onChange={onChange}
-                                    plugins={plugins}
-                                    ref={editor}
-                                    placeholder={'Snap your feeling here...'}
-                                />
-                                <MentionSuggestions
-                                    onSearchChange={onSearchChange}
-                                    suggestions={suggestions}
-                                // onAddMention={onAddMention}
-                                />
+                            <div className="create-post-text" style={{ width: "80%" }}>
+                                <div onClick={focus}>
+                                    <Editor
+                                        readOnly={!showCreatePost}
+                                        editorState={content}
+                                        onChange={onChange}
+                                        plugins={plugins}
+                                        ref={editor}
+                                        placeholder={'Snap your feeling here...'}
+                                    />
+                                    <MentionSuggestions
+                                        onSearchChange={onSearchChange}
+                                        suggestions={suggestions}
+                                    // onAddMention={onAddMention}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="create-post-option">
-                    <label htmlFor="upload">
-                        <div className="create-post-option-item">
-                            <ImageIcon />
-                            <span>Video/Image</span>
-                        </div>
-                    </label>
+                    {
+                        upLoadUrls.length > 0 && (
+                            <div className="create-post-media">
+                                {
+                                    upLoadUrls.map((upLoad, index) => {
+                                        return (
+                                            <div className="create-post-media-item" key={upLoad.id}>
+                                                {
+                                                    upLoad.type === "image" ? (
+                                                        <img src={upLoad.url} />
+                                                    ) : (
+                                                            <>
+                                                                <video src={upLoad.url} onLoadedMetadata={(e) => handleLoadMetadata(e, index)} />
+                                                            </>
+                                                        )
+                                                }
+                                                {upLoad.length && (
+                                                    <div className="duration">
+                                                        <span style={{ color: "white" }}>{Helper.formatSecond(upLoad.length)}</span>
+                                                    </div>
+                                                )}
 
-                    <div className="create-post-option-item">
-                        <AssignmentIndIcon />
-                        <span>Tag friend</span>
-                    </div>
-                    <div className="create-post-option-item">
-                        <GifIcon style={{ fontSize: 44 }} />
-                        <span>Import GIF</span>
-                    </div>
-                </div>
-                {
-                    showCreatePost && (
-                        <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
-                            <Button
-                                color="primary"
-                                disabled={"value[0].children[0].text" === ""}
-                                style={{ width: "100%", }}
-                                variant="contained"
-                                onClick={() => localStorage.setItem("value", JSON.stringify(value))}
-                            >
-                                Snap
-                            </Button>
+                                                <div className="overlay">
+                                                    <CustomTooltip theme="dark" title="Remove">
+                                                        <CloseIcon
+                                                            onClick={() => handleRemoveImages(index, upLoad)}
+                                                            className="create-post-media-item-close"
+                                                        />
+                                                    </CustomTooltip>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        )
+                    }
+                    <div className="create-post-option">
+                        <label htmlFor="upload">
+                            <div className="create-post-option-item">
+                                <ImageIcon />
+                                <span>Video/Image</span>
+                            </div>
+                        </label>
+
+                        <div className="create-post-option-item">
+                            <AssignmentIndIcon />
+                            <span>Tag friend</span>
                         </div>
-                    )
-                }
-            </div>
-        </ div >
+                        <div className="create-post-option-item">
+                            <GifIcon style={{ fontSize: 44 }} />
+                            <span>Import GIF</span>
+                        </div>
+                    </div>
+                    {
+                        showCreatePost && (
+                            <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
+                                <Button
+                                    color="primary"
+                                    disabled={markupContent.trim() == "<p></p>" && upLoadUrls.length === 0}
+                                    style={{ width: "100%", }}
+                                    variant="contained"
+                                    onClick={handleCreatePost}
+                                >
+                                    Snap
+                            </Button>
+                            </div>
+                        )
+                    }
+                </div>
+            </ div >
+        </>
+
     )
 }
 
