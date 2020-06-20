@@ -3,6 +3,7 @@
 @import "./scroll-progress.scss";
 @import "./custom.scss";
 @import './user-tooltip.scss';
+@import './primary-button.scss';
 // Page
 @import "./pages/home.scss";
 @import './pages/login.scss';
@@ -89,29 +90,8 @@ html, body, .root{
                 align-items: center !important;
                 justify-content: space-around !important;
 
-                .post-action-button {
-                    padding: 10px;
+                .primary-button {
                     width: 28%;
-                    height: 40px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: $secondary-color;
-
-                    span {
-                        font-weight: 600;
-                        margin-left: 8px;
-                    }
-
-                    .like {
-                        color: $main-color;
-                    }
-                }
-                
-                .post-action-button:hover {
-                    background-color: rgba($color: #928c8c, $alpha: 0.1);
-                    border-radius: $main-radius;;
                 }
             }
         }
@@ -138,11 +118,6 @@ html, body, .root{
                     margin-bottom: 40px;
                 }
 
-                .create-post-input {
-                    width: 100%;
-                    margin-bottom: 40px;
-                }
-
                 .create-post-input::-webkit-scrollbar {
                     display: none;
                 }
@@ -150,12 +125,19 @@ html, body, .root{
                 .create-post-text {
                     font-weight: 500;
                     font-size: 20px;
-                    height: auto;
+                    height: 100%;
                     display: block;
                     margin-bottom: 60px;
-
+                    
                     p {
                         word-break: break-all;
+                    }
+
+                    .create-post-text-input {
+                        height: 100%;
+                        width: 100%;
+                        border: none;
+                        outline: none;
                     }
                 }
             }
@@ -371,7 +353,6 @@ html, body, .root{
     }
 
     .username {
-        font-size: 24px;
         color: $main-color;
         font-weight: 500;
         margin: 0;

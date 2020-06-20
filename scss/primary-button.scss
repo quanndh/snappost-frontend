@@ -1,0 +1,24 @@
+.primary-button {
+    padding: 10px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $secondary-color;
+    transition: .35s;
+
+    span {
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    .like {
+        color: $main-color;
+    }
+}
+
+.primary-button:hover {
+    background-color: rgba($color: #928c8c, $alpha: 0.2);
+    border-radius: $main-radius;;
+}

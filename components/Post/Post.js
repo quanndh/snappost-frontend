@@ -16,8 +16,9 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
-import CustomUserName from '../CustomUserName/CustomUserName';
+import Username from '../Username/Username';
 import { convertToRaw, convertFromRaw } from 'draft-js';
+import JsxParser from 'react-jsx-parser'
 
 const mentionPlugin = createMentionPlugin({
     mentionComponent: (mentionProps) => (
@@ -48,8 +49,6 @@ const Post = (props) => {
         setIsLike(!isLike)
     }
 
-    const { MentionSuggestions } = mentionPlugin;
-
     return (
         <Paper elevation={0} className="post-container">
             <div className="post-header">
@@ -65,16 +64,10 @@ const Post = (props) => {
                 </div>
 
                 <div className="post-text">
-                    <Editor
-                        readOnly={true}
-                        editorState={data.content ? EditorState.createWithContent(convertFromRaw(JSON.parse(data.content))) : null}
-                        plugins={plugins}
-                        onChange={change}
-                    />
-                    <MentionSuggestions
-                    // onSearchChange={onSearchChange}
-                    // suggestions={suggestions}
-                    // onAddMention={onAddMention}
+                    <JsxParser
+                        bindings={{}}
+                        components={{ Username }}
+                        jsx={Helper.formatMention(data?.content, data?.mentions)}
                     />
                 </div>
             </div>
@@ -93,17 +86,17 @@ const Post = (props) => {
                 </div>
             </div>
             <div className="post-action">
-                <div className="post-action-button" onClick={toggleLike}>
+                <div className="primary-button" onClick={toggleLike}>
                     {
                         isLike ? <ThumbUpIcon color="primary" /> : <ThumbUpOutlinedIcon />
                     }
                     <span className={classNames({ "like": isLike })}>Like</span>
                 </div>
-                <div className="post-action-button">
+                <div className="primary-button">
                     <ChatBubbleOutlineOutlinedIcon />
                     <span>Comment</span>
                 </div>
-                <div className="post-action-button">
+                <div className="primary-button">
                     <ShareOutlinedIcon />
                     <span>Resnap</span>
                 </div>

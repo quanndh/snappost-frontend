@@ -56,6 +56,7 @@ const CreatePostInput = (props) => {
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(() => EditorState.createWithContent(emptyContentState))
     const [markupContent, setMarkupContent] = useState("<p></p>");
+    const [mentions, setMentions] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [images, setImages] = useState([]);
     const [videos, setVideos] = useState([]);
@@ -148,18 +149,25 @@ const CreatePostInput = (props) => {
         console.log(content.convertTo)
         setLoading(true)
         let data = {
-            content: JSON.stringify(convertToRaw(content.getCurrentContent())),
+            content: markupContent,
             images,
-            videos
+            videos,
+            mentions
         }
         let rs = await DataService.createPost(data)
         if (rs.code == 0) {
             setImages([])
             setVideos([])
             setUploadUrl([])
+            setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
         }
         setLoading(false)
+    }
+
+    const onAddMention = (e) => {
+        console.log(e)
+        setMentions([...mentions, e])
     }
 
     const { MentionSuggestions } = mentionPlugin;
@@ -195,7 +203,7 @@ const CreatePostInput = (props) => {
                                     <MentionSuggestions
                                         onSearchChange={onSearchChange}
                                         suggestions={suggestions}
-                                    // onAddMention={onAddMention}
+                                        onAddMention={onAddMention}
                                     />
                                 </div>
                             </div>

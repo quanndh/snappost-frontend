@@ -1,81 +1,62 @@
 .user-tooltip-container {
-    width: 500px;
-    height: 300px;
     position: relative;
     border: $border;
     border-radius: $main-radius;
     z-index: 30;
+    background-color: white;
+    transition: fade .3s;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 
     .user-tooltip-header {
-        width: 100%;
-        height: 50%;
-        padding: 0;
-        position: relative;
-
-        .user-tooltip-wallpic {
-            width: 100%;
-            height: 100%;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
+        display: flex;
 
         .user-tooltip-avatar {
-            width: 100%;
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            display: flex;
-            cursor: pointer;
-
             img {
-                padding: 3px;
-                background-color: white;
-                border: 1px solid  $secondary-color;
-                border-radius: $main-radius;
-                width: 25%;
-                margin-right: 20px;
-            }
-
-            h5{
-                padding-top: 20px;
-                color: white;
+                width: 100px;
+                border-radius: 50px;
             }
         }
-    }
 
-    .user-tooltip-info{
-        padding-left: 20px;
-        width: 70%;
-        float: right;
-        display: block;
-
-        p {
+        .user-tooltip-info {
             display: flex;
-            align-items: center;
-            font-size: 16px;
-            color: $secondary-color;
+            flex-direction: column;
+            margin-left: 20px;
+
+            .user-tooltip-name {
+                font-size: 30px;
+                font-weight: 600;
+                margin-bottom: 20px !important;
+            }
+
+            .user-tooltip-info-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px !important;
+                
+                .icon {
+                    margin-right: 8px;
+                    font-weight: 500;
+                }
+            }
         }
     }
 
     .user-tooltip-action {
         width: 100%;
-        background-color: rgba($color: $secondary-color, $alpha: 0.2);
-        height: 50px;
-        position: absolute;
-        bottom: 0;
-        border-top: $border;
         display: flex;
-        justify-content: flex-end;
-        align-items: center;
+        justify-content: space-between;
 
-        .user-tooltip-action-item {
-            cursor: pointer;
-            margin: 0 10px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
+        .primary-button {
+            width: auto;
+            background-color: rgba($color: #928c8c, $alpha: 0.1);
+        }
+
+        .primary-button:hover {
+            background-color: rgba($color: #928c8c, $alpha: 0.24);
+            border-radius: $main-radius;;
         }
     }
-    
+
 }

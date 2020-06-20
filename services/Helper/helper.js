@@ -26,5 +26,14 @@ export default {
 
     activateToast: (type, message) => {
         toast[type](message)
+    },
+
+    formatMention: (string, mentions) => {
+        mentions.map(m => {
+            string = string.replace(m.name, `<Username name="${m.name}" id="${m.id}"/>`)
+        })
+        string.replace("\n", "")
+        string.replace("p", "div")
+        return string;
     }
 }

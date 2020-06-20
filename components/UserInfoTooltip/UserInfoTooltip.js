@@ -6,6 +6,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import VideocamIcon from '@material-ui/icons/Videocam';
+import Router from 'next/router';
+import WorkIcon from '@material-ui/icons/Work';
 
 const UserInfoTooltip = props => {
     let { user } = props;
@@ -13,30 +15,28 @@ const UserInfoTooltip = props => {
     return (
         <div style={{ zIndex: 30 }} className="user-tooltip-container">
             <div className="user-tooltip-header">
-                <img src={user.wallImage} className="user-tooltip-wallpic" />
                 <div className="user-tooltip-avatar">
-                    <Link href={`/profile/${user.id}`}>
-                        <>
-                            <img src={user.avatar} />
-                            <Typography variant="h5">{user.name}</Typography>
-                        </>
-                    </Link>
+                    <img src={user.avatar} alt="User avatar" />
+                </div>
+                <div className="user-tooltip-info">
+                    <p className="user-tooltip-name">{user.name}</p>
+                    <p className="user-tooltip-info-item"><HomeIcon className="icon" />  Live in Ha Noi</p>
+                    <p className="user-tooltip-info-item"><WorkIcon className="icon" />  Working at Thu Do Multimedia</p>
+                    <p className="user-tooltip-info-item"><PeopleIcon className="icon" />  20 mutual friends</p>
                 </div>
             </div>
-            <div className="user-tooltip-info">
-                <p><HomeIcon /> Live in Ha Noi</p>
-                <p><PeopleIcon /> 10 common friends</p>
-            </div>
+
             <div className="user-tooltip-action">
-                <button className="user-tooltip-action-item">
-                    <VideocamIcon />
-                </button>
-                <button className="user-tooltip-action-item">
+                <div className="primary-button" style={{ width: "70%" }}>
+                    <PersonAddIcon />
+                    <span>Add friend</span>
+                </div>
+                <div className="primary-button">
                     <EmailIcon />
-                </button>
-                <button className="user-tooltip-action-item">
-                    <PersonAddIcon /> Send friend request
-                </button>
+                </div>
+                <div className="primary-button">
+                    <VideocamIcon />
+                </div>
             </div>
         </div >
     )
