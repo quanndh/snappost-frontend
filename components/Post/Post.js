@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Paper, Avatar, Typography, Button, Link } from '@material-ui/core';
 import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ReactHtmlParser from 'react-html-parser';
 import Helper from '../../services/Helper/helper';
 import ImageGallery from '../ImageGallery';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -10,32 +9,18 @@ import classNames from 'classnames';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
-import { EditorState } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import createMentionPlugin from 'draft-js-mention-plugin';
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import 'draft-js-mention-plugin/lib/plugin.css';
 import Username from '../Username/Username';
-import { convertToRaw, convertFromRaw } from 'draft-js';
 import JsxParser from 'react-jsx-parser'
-
-const mentionPlugin = createMentionPlugin({
-    mentionComponent: (mentionProps) => (
-        <CustomUserName mentionProps={mentionProps} />
-    ),
-});
-
-const linkifyPlugin = createLinkifyPlugin();
-
-let plugins = [mentionPlugin, linkifyPlugin]
+import helper from '../../services/Helper/helper';
+import { connect } from 'react-redux';
+import CommentInput from '../CommentInput/CommentInput'
 
 const Post = (props) => {
 
-    const [value, setValue] = useState("");
-    const [isLike, setIsLike] = useState(false)
+    const [isLike, setIsLike] = useState(false);
+    const [showComment, setShowComment] = useState(false);
 
-    const { data } = props;
+    const { data, user } = props;
 
     useEffect(() => {
 
@@ -55,9 +40,9 @@ const Post = (props) => {
                 <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: 'flex' }}>
                         <AccountCircleSharpIcon className="avatar" color="disabled" />
-                        <div>
-                            <Typography className="username">Quân Nguyễn</Typography>
-                            <p>23 hours ago</p>
+                        <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-around" }}>
+                            <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} />
+                            <p>{helper.formatCreatedTime(data.created_at)}</p>
                         </div>
                     </div>
                     <MoreVertIcon />
@@ -73,8 +58,9 @@ const Post = (props) => {
             </div>
 
             <div className="post-media">
-                <ImageGallery images={data?.images} startCount={5} />
+                <ImageGallery upload={data?.upload} startCount={5} />
             </div>
+
             <div className="post-info">
                 <div className="post-info-item">
                     <ThumbUpIcon color="primary" />
@@ -101,9 +87,19 @@ const Post = (props) => {
                     <span>Resnap</span>
                 </div>
             </div>
+
+            <div className="post-comment-container">
+                <CommentInput user={user} />
+            </div>
         </Paper>
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        user: state.userReducer.user
+    }
+}
 
-export default Post;
+
+export default connect(mapStateToProps)(Post);

@@ -1,10 +1,6 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { Button } from '@material-ui/core';
-import ImageIcon from '@material-ui/icons/Image';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import GifIcon from '@material-ui/icons/Gif';
-import Helper from '../../services/Helper/helper';
+import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { connect } from 'react-redux'
 import ApiService from '../../services/ApiService/ApiService';
 import DataService from '../../network/DataService';
@@ -15,11 +11,11 @@ import createMentionPlugin from 'draft-js-mention-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import CustomUserName from '../CustomUserName/CustomUserName';
-import CloseIcon from '@material-ui/icons/Close';
-import CustomTooltip from '../CustomTooltip/CustomTooltip';
-import draftToHtml from 'draftjs-to-html';
 import { convertToRaw, convertFromRaw } from 'draft-js';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import draftToHtml from 'draftjs-to-html';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
+import CloseIcon from '@material-ui/icons/Close';
+import Helper from '../../services/Helper/helper';
 
 const emptyContentState = convertFromRaw({
     entityMap: {},
@@ -43,15 +39,11 @@ const linkifyPlugin = createLinkifyPlugin();
 
 let plugins = [mentionPlugin, linkifyPlugin]
 
-const CreatePostInput = (props) => {
-
-    const { user } = props;
-
-    const { showCreatePost } = props;
+const CommentInput = (props) => {
+    let { user } = props;
 
     const editor = useRef(null)
 
-    const [loading, setLoading] = useState(false);
     const [content, setContent] = useState(() => EditorState.createWithContent(emptyContentState))
     const [markupContent, setMarkupContent] = useState("<p></p>");
     const [mentions, setMentions] = useState([]);
@@ -88,12 +80,6 @@ const CreatePostInput = (props) => {
         setContent(editorState)
     };
 
-    const handleOpenCreate = () => {
-        if (!showCreatePost) {
-            ApiService.toggleCreatePost()
-        }
-    }
-
     const hanldeUpload = async (e) => {
         let rs;
         if (e.target.files[0].type.includes("image")) {
@@ -118,8 +104,7 @@ const CreatePostInput = (props) => {
         setLoading(true)
         let data = {
             content: markupContent,
-            upload,
-            mentions
+            upload
         }
         let rs = await DataService.createPost(data)
         if (rs.code == 0) {
@@ -131,55 +116,46 @@ const CreatePostInput = (props) => {
     }
 
     const onAddMention = (e) => {
+        console.log(e)
         setMentions([...mentions, e])
     }
 
     const { MentionSuggestions } = mentionPlugin;
 
     return (
-        <>
-            {loading && <LinearProgress />}
-            <div style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
-                <input
-                    accept="image/*,video/*"
-                    style={{ display: "none" }}
-                    id="upload"
-                    multiple
-                    type="file"
-                    onChange={hanldeUpload}
-                />
-                <div className="create-post-container" onClick={handleOpenCreate}>
-                    <div className="create-post-body">
-                        <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
-
-                            <Avatar alt={user.firstName} src={user.avatar} className="avatar" />
-
-                            <div className="create-post-text" style={{ width: "80%" }}>
-                                <div onClick={focus}>
-                                    <Editor
-                                        readOnly={!showCreatePost}
-                                        editorState={content}
-                                        onChange={onChange}
-                                        plugins={plugins}
-                                        ref={editor}
-                                        placeholder={'Snap your feeling here...'}
-                                    />
-                                    <MentionSuggestions
-                                        onSearchChange={onSearchChange}
-                                        suggestions={suggestions}
-                                        onAddMention={onAddMention}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div className="post-comment-input">
+            <input
+                accept="image/*,video/*"
+                style={{ display: "none" }}
+                id="upload-comment"
+                multiple
+                type="file"
+                onChange={hanldeUpload}
+            />
+            <div style={{ width: "7%" }}>
+                <Avatar className="avatar" src={user.avatar} />
+            </div>
+            <div className="input" onClick={focus}>
+                <div className="text-area">
+                    <Editor
+                        style={{ height: "100%" }}
+                        editorState={content}
+                        onChange={onChange}
+                        plugins={plugins}
+                        ref={editor}
+                    />
+                    <MentionSuggestions
+                        onSearchChange={onSearchChange}
+                        suggestions={suggestions}
+                        onAddMention={onAddMention}
+                    />
                     {
                         upload.length > 0 && (
-                            <div className="create-post-media">
+                            <div className="comment-media">
                                 {
                                     upload.map((upLoad, index) => {
                                         return (
-                                            <div className="create-post-media-item" key={upLoad.id}>
+                                            <div className="comment-media-item" key={upLoad.id}>
                                                 {
                                                     upLoad.fileType.includes("image") ? (
                                                         <img src={upLoad.url} />
@@ -199,7 +175,7 @@ const CreatePostInput = (props) => {
                                                     <CustomTooltip theme="dark" title="Remove">
                                                         <CloseIcon
                                                             onClick={() => handleRemoveImages(index)}
-                                                            className="create-post-media-item-close"
+                                                            className="comment-media-item-close"
                                                         />
                                                     </CustomTooltip>
                                                 </div>
@@ -210,50 +186,26 @@ const CreatePostInput = (props) => {
                             </div>
                         )
                     }
-                    <div className="create-post-option">
-                        <label htmlFor="upload">
-                            <div className="create-post-option-item">
-                                <ImageIcon />
-                                <span>Video/Image</span>
-                            </div>
-                        </label>
-
-                        <div className="create-post-option-item">
-                            <AssignmentIndIcon />
-                            <span>Tag friend</span>
-                        </div>
-                        <div className="create-post-option-item">
-                            <GifIcon style={{ fontSize: 44 }} />
-                            <span>Import GIF</span>
-                        </div>
-                    </div>
+                </div>
+                <div className="options">
                     {
-                        showCreatePost && (
-                            <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
-                                <Button
-                                    color="primary"
-                                    disabled={markupContent.trim() == "<p></p>" && upload.length === 0}
-                                    style={{ width: "100%", }}
-                                    variant="contained"
-                                    onClick={handleCreatePost}
-                                >
-                                    Snap
-                            </Button>
-                            </div>
+                        upload.length == 0 && (
+                            <label htmlFor="upload-comment">
+                                <PhotoCameraOutlinedIcon className="options-item" />
+                            </label>
                         )
                     }
                 </div>
-            </ div >
-        </>
-
+            </div>
+        </div>
     )
+
 }
 
 const mapStateToProps = state => {
     return {
-        showCreatePost: state.uiReducer.showCreatePost,
         user: state.userReducer.user
     }
 }
 
-export default connect(mapStateToProps)(CreatePostInput);
+export default connect(mapStateToProps)(CommentInput);

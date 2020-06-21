@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import classNames from 'classnames';
 
-const PreviewImage = ({ indexOfImage, images, isOpen, toggle }) => {
-  const [ index, setIndex ] = useState(indexOfImage || 0);
-  
+const PreviewImage = ({ indexOfImage, upload, isOpen, toggle }) => {
+  const [index, setIndex] = useState(indexOfImage || 0);
+
   useEffect(() => {
     const previewImageDOM = document.querySelector('.preview-image');
 
@@ -22,25 +22,25 @@ const PreviewImage = ({ indexOfImage, images, isOpen, toggle }) => {
     return () => {
       previewImageDOM.removeEventListener('click', clickOutSide);
     }
-  }, [ isOpen ]);
+  }, [isOpen]);
 
   const onClickPrevious = useCallback(() => {
     setIndex(index - 1);
-  }, [ index ]);
+  }, [index]);
 
   const onClickNext = useCallback(() => {
     setIndex(index + 1);
-  }, [ index ])
+  }, [index])
 
   const canNext = useMemo(() => {
-    return index === images.length - 1;
-  }, [ index ]);
+    return index === upload.length - 1;
+  }, [index]);
 
   const canPrevious = useMemo(() => {
     return index === 0
-  }, [ index ]);
-  
-  if (!images) {
+  }, [index]);
+
+  if (!upload) {
     return null;
   }
 
@@ -50,7 +50,15 @@ const PreviewImage = ({ indexOfImage, images, isOpen, toggle }) => {
         <MdNavigateBefore />
       </button>
       <div className="preview-image__content">
-        <img src={images[index]} alt="image" />
+        {
+          upload[index]['fileType'].includes("image") ? <img src={upload[index]['url']} alt="image" /> : (
+            <React.Fragment key={upload[index]['url']}>
+              <video controls>
+                <source src={upload[index]['url']} type="video/mp4" />
+              </video>
+            </React.Fragment>
+          )
+        }
       </div>
       <button className="preview-image__next" onClick={onClickNext} disabled={canNext}>
         <MdNavigateNext />

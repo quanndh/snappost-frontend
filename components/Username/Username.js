@@ -8,7 +8,7 @@ import DataService from '../../network/DataService';
 import Router from 'next/dist/next-server/server/router';
 
 const CustomUserName = props => {
-    let { name, id } = props;
+    let { name, id, size } = props;
 
     const [open, setOpen] = React.useState(false);
     const mentionRef = React.useRef(null);
@@ -54,6 +54,7 @@ const CustomUserName = props => {
             <span
                 ref={mentionRef}
                 className="username"
+                style={{ fontSize: size == "large" ? 20 : 16 }}
                 onClick={() => Router.push(`/profile/${userId}`)}
                 onMouseOver={handleToggleMention}
                 onMouseLeave={handleClose}

@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 export default {
     formatSecond: seconds => {
@@ -35,5 +36,16 @@ export default {
         string.replace("\n", "")
         string.replace("p", "div")
         return string;
+    },
+
+    formatCreatedTime: (time) => {
+        let now = moment();
+        var hours = moment.duration(now.diff(moment(time))).asHours();
+        if (hours < 20) {
+            return moment(time).fromNow(true)
+        } else {
+            return moment(time).format("HH:mm MMM D YYYY")
+        }
+
     }
 }

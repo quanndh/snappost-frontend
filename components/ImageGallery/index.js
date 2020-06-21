@@ -2,16 +2,16 @@ import React, { useEffect, useState, Fragment } from "react";
 import classNames from 'classnames';
 import PreviewImage from "./PreviewImage";
 
-const ImageGallery = ({ images, startCount }) => {
+const ImageGallery = ({ upload, startCount }) => {
   const [openPreview, setOpenPreview] = useState(false);
   const [countImg, setCountImg] = useState(0);
   const [indexOfImage, setIndexOfImage] = useState(0);
 
   useEffect(() => {
-    if (images && images.length > startCount) {
-      setCountImg(images.length - startCount);
+    if (upload && upload.length > startCount) {
+      setCountImg(upload.length - startCount);
     }
-  }, [images]);
+  }, [upload]);
 
   const togglePrivew = () => {
     setOpenPreview(!openPreview);
@@ -26,18 +26,25 @@ const ImageGallery = ({ images, startCount }) => {
     return index === startCount - 1 && countImg;
   }
 
-  if (!images) {
+  if (!upload) {
     return null;
   }
 
   return (
     <Fragment>
-      {openPreview && <PreviewImage indexOfImage={indexOfImage} images={images} isOpen={openPreview} toggle={togglePrivew} />}
+      {openPreview && <PreviewImage indexOfImage={indexOfImage} upload={upload} isOpen={openPreview} toggle={togglePrivew} />}
 
       <div className="image-gallery">
-        {images.slice(0, startCount).map((img, index) => (
-          <div key={img + index} className="image-gallery__item" onClick={onClickToImage(index)}>
-            <img src={img} />
+        {upload.slice(0, startCount).map((item, index) => (
+          <div key={item + index} className="image-gallery__item" onClick={onClickToImage(index)}>
+            {
+              item.fileType.includes("image") ? <img src={item.url} /> : (
+                <video autoPlay={index === 0 ? true : false} loop muted>
+                  <source src={item.url} type="video/mp4" />
+                </video>
+              )
+            }
+
             <div className={classNames("overlay", { "is-more": activeOverlay(index, countImg) })}>
               <span className="image-count"> {activeOverlay(index, countImg) && '+ ' + countImg}</span>
             </div>
