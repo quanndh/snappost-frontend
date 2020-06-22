@@ -34,5 +34,11 @@ export default {
     },
     getParentComment: data => {
         return request('/comment/get-comment', data, "POST");
+    },
+    toggleLikePost: data => {
+        return request("/post/toggle-like", data, "POST");
+    },
+    toggleLikeComment: data => {
+        return request("/comment/toggle-like", data, "POST");
     }
 };

@@ -18,13 +18,14 @@ import CommentParent from '../CommentParent/CommentParent';
 
 const Post = (props) => {
 
-    const [isLike, setIsLike] = useState(false);
-    const [showComment, setShowComment] = useState(false);
-
     const { data, user } = props;
 
-    const toggleLike = () => {
+    const [isLike, setIsLike] = useState(data.isLike);
+    const [showComment, setShowComment] = useState(false);
+
+    const toggleLike = async () => {
         setIsLike(!isLike)
+        let rs = await DataService.toggleLikePost({ postId: data.id })
         ApiService.toggleLikePost({ postId: data.id, like: !isLike })
     }
 

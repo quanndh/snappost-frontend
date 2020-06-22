@@ -3,6 +3,8 @@ import axios from 'axios'
 import config from '../constants';
 import ApiService from '../services/ApiService/ApiService';
 
+const instance = axios.create({ httpsAgent })
+
 const request = async (url, data, method) => {
 
     url = config.apiHost + url;
@@ -14,7 +16,7 @@ const request = async (url, data, method) => {
     console.log("%c-----------" + method + "------------", 'color: green; font-size: 16px')
     console.log(url, data, headers)
     try {
-        let response = await axios({
+        let response = await instance({
             headers,
             method,
             url,

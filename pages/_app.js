@@ -49,10 +49,6 @@ export default function MyApp({ Component, pageProps }) {
 
 		ApiService.login(user, token)
 
-		if (pathname == "/auth" && user) {
-			Router.push('/')
-		}
-
 		if (pathname != "/auth" && !user) {
 			Router.push('/auth')
 		}

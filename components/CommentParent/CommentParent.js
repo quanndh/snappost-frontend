@@ -7,13 +7,15 @@ import classNames from 'classnames';
 import { Paper } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ApiService from '../../services/ApiService/ApiService';
+import DataService from '../../network/DataService';
 
 const CommentParent = ({ data, postId }) => {
 
-    const [isLike, setIsLike] = useState(false);
+    const [isLike, setIsLike] = useState(data.isLike);
 
-    const toggleLike = () => {
+    const toggleLike = async () => {
         setIsLike(!isLike)
+        let rs = await DataService.toggleLikeComment({ commentId: data.id })
         ApiService.toggleLikeComment({ postId, commentId: data.id, like: !isLike })
     }
 
