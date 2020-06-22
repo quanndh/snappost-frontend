@@ -2,9 +2,7 @@
 import axios from 'axios'
 import config from '../constants';
 import ApiService from '../services/ApiService/ApiService';
-const httsAgent = new https.Agent({ rejectUnauthorized: false });
 
-const instance = axios.create({ httpsAgent })
 
 const request = async (url, data, method) => {
 
