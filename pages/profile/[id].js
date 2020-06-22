@@ -45,7 +45,7 @@ const Profile = (props) => {
                 </Grid>
                 <Grid item xs={7}>
                     <CreatePostInput />
-                    <Post />
+                    {/* <Post /> */}
                 </Grid>
             </Grid>
         </Container >
