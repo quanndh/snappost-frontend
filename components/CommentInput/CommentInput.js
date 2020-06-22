@@ -109,6 +109,7 @@ const CommentInput = (props) => {
         }
         let rs = await DataService.comment(data)
         if (rs.code == 0) {
+
             setUpload([])
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
