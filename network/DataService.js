@@ -28,5 +28,11 @@ export default {
     },
     getPost: data => {
         return request('/post/get-posts', data, "POST");
+    },
+    comment: data => {
+        return request('/comment/create', data, "POST");
+    },
+    getParentComment: data => {
+        return request('/comment/get-comment', data, "POST");
     }
 };

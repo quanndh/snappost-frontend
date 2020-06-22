@@ -40,9 +40,9 @@ const linkifyPlugin = createLinkifyPlugin();
 let plugins = [mentionPlugin, linkifyPlugin]
 
 const CommentInput = (props) => {
-    let { user } = props;
+    let { user, postId } = props;
 
-    const editor = useRef(null)
+    const editor = useRef(null);
 
     const [content, setContent] = useState(() => EditorState.createWithContent(emptyContentState))
     const [markupContent, setMarkupContent] = useState("<p></p>");
@@ -100,24 +100,32 @@ const CommentInput = (props) => {
         setUpload(tempUpload)
     }
 
-    const handleCreatePost = async () => {
-        setLoading(true)
+    const handleCreateComment = async () => {
         let data = {
             content: markupContent,
-            upload
+            upload,
+            mentions,
+            postId
         }
-        let rs = await DataService.createPost(data)
+        let rs = await DataService.comment(data)
         if (rs.code == 0) {
             setUpload([])
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
+            ApiService.setCommentForPost({ postId, data: [rs.data], newComment: true })
         }
-        setLoading(false)
     }
 
     const onAddMention = (e) => {
-        console.log(e)
         setMentions([...mentions, e])
+    }
+
+    const hanldeKeyUp = e => {
+        if (e.keyCode === 13) {
+            if (upload.length > 0 || markupContent != "<p></p>") {
+                handleCreateComment()
+            }
+        }
     }
 
     const { MentionSuggestions } = mentionPlugin;
@@ -143,6 +151,8 @@ const CommentInput = (props) => {
                         onChange={onChange}
                         plugins={plugins}
                         ref={editor}
+                        keyBindingFn={hanldeKeyUp}
+                        customStyleMap={{ height: "100%" }}
                     />
                     <MentionSuggestions
                         onSearchChange={onSearchChange}

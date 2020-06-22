@@ -23,4 +23,17 @@ export default {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
     },
+
+    setNewFeed: data => {
+        store.dispatch({ type: 'SET_POST', data })
+    },
+    setCommentForPost: data => {
+        store.dispatch({ type: 'SET_POST_COMMENT', data })
+    },
+    toggleLikePost: data => {
+        store.dispatch({ type: 'TOGGLE_LIKE_POST', data })
+    },
+    toggleLikeComment: data => {
+        store.dispatch({ type: 'TOGGLE_LIKE_COMMENT', data })
+    }
 }

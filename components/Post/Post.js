@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, Avatar, Typography, Button, Link } from '@material-ui/core';
-import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Helper from '../../services/Helper/helper';
 import ImageGallery from '../ImageGallery';
@@ -11,9 +10,11 @@ import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineO
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import Username from '../Username/Username';
 import JsxParser from 'react-jsx-parser'
-import helper from '../../services/Helper/helper';
 import { connect } from 'react-redux';
 import CommentInput from '../CommentInput/CommentInput'
+import DataService from '../../network/DataService';
+import ApiService from '../../services/ApiService/ApiService';
+import CommentParent from '../CommentParent/CommentParent';
 
 const Post = (props) => {
 
@@ -22,16 +23,23 @@ const Post = (props) => {
 
     const { data, user } = props;
 
-    useEffect(() => {
-
-    }, [])
-
-    const change = () => {
-
-    }
-
     const toggleLike = () => {
         setIsLike(!isLike)
+        ApiService.toggleLikePost({ postId: data.id, like: !isLike })
+    }
+
+    const handleShowComment = async () => {
+        let rs = await DataService.getParentComment({
+            postId: data.id,
+            skip: data?.comments.length,
+            limit: 8
+        });
+        ApiService.setCommentForPost({ postId: data.id, data: rs.data })
+        setShowComment(true)
+    }
+
+    if (!data) {
+        return null;
     }
 
     return (
@@ -39,10 +47,10 @@ const Post = (props) => {
             <div className="post-header">
                 <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: 'flex' }}>
-                        <AccountCircleSharpIcon className="avatar" color="disabled" />
+                        <Avatar className="avatar" src={data.postBy.avatar} />
                         <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-around" }}>
                             <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} />
-                            <p>{helper.formatCreatedTime(data.created_at)}</p>
+                            <p style={{ marginTop: 8 }}>{Helper.formatCreatedTime(data.created_at)}</p>
                         </div>
                     </div>
                     <MoreVertIcon />
@@ -57,18 +65,32 @@ const Post = (props) => {
                 </div>
             </div>
 
-            <div className="post-media">
-                <ImageGallery upload={data?.upload} startCount={5} />
-            </div>
+            {
+                data?.upload.length > 0 ? (
+                    <div className="post-media">
+                        <ImageGallery upload={data?.upload} startCount={5} />
+                    </div>
+                ) : null
+            }
 
             <div className="post-info">
                 <div className="post-info-item">
-                    <ThumbUpIcon color="primary" />
-                    <span>4 likes</span>
+                    {
+                        data.totalLike > 0 && (
+                            <div style={{ display: 'flex', alignItems: "center" }}>
+                                <ThumbUpIcon color="primary" />
+                                <span>{data.totalLike}</span>
+                            </div>
+                        )
+                    }
                 </div>
                 <div className="post-info-item">
-                    <span>100 comments</span>
-                    <span>100 shares</span>
+                    {
+                        data?.totalComment > 0 ? <span>{data.totalComment} comments</span> : null
+                    }
+                    {
+                        data?.totalShare > 0 ? <span>{data.totalShare} shares</span> : null
+                    }
                 </div>
             </div>
             <div className="post-action">
@@ -78,7 +100,7 @@ const Post = (props) => {
                     }
                     <span className={classNames({ "like": isLike })}>Like</span>
                 </div>
-                <div className="primary-button">
+                <div className="primary-button" onClick={handleShowComment}>
                     <ChatBubbleOutlineOutlinedIcon />
                     <span>Comment</span>
                 </div>
@@ -87,10 +109,20 @@ const Post = (props) => {
                     <span>Resnap</span>
                 </div>
             </div>
-
-            <div className="post-comment-container">
-                <CommentInput user={user} />
-            </div>
+            {
+                showComment && (
+                    <div className="post-comment-container">
+                        {
+                            data?.comments?.length > 0 && (
+                                data.comments.map(comment => {
+                                    return <CommentParent postId={data.id} key={"comment" + comment.id} data={comment} />
+                                })
+                            )
+                        }
+                        <CommentInput user={user} postId={data.id} />
+                    </div>
+                )
+            }
         </Paper>
     )
 }

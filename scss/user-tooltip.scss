@@ -7,23 +7,24 @@
     transition: fade .3s;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px !important;
+    min-width: 400px;
 
     .user-tooltip-header {
         display: flex;
-        margin-bottom: 14px;
+        margin-bottom: 14px !important;
 
         .user-tooltip-avatar {
             img {
-                width: 100px;
-                border-radius: 50px;
+                width: 100px !important; 
+                border-radius: 50px !important;
             }
         }
 
         .user-tooltip-info {
             display: flex;
             flex-direction: column;
-            margin-left: 20px;
+            margin-left: 20px !important;
 
             .user-tooltip-name {
                 font-size: 30px;
@@ -37,7 +38,7 @@
                 margin-bottom: 10px !important;
                 
                 .icon {
-                    margin-right: 8px;
+                    margin-right: 8px !important;
                     font-weight: 500;
                 }
             }

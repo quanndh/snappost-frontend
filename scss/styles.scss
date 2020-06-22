@@ -45,13 +45,19 @@ html, body, .root{
             padding: 16px;
             padding-bottom: 10px;
             z-index: 3;
+            margin-bottom: 16px;
 
             .post-header {
-                margin-bottom: 10px;
+                margin-bottom: 16px;
                 
+                .avatar {
+                    width: 48px;
+                    height: 48px;
+                }
+
                 p {
                     margin: 0
-                }
+                }   
             }
 
             .post-text {
@@ -59,7 +65,7 @@ html, body, .root{
                 max-height: 200px;
                 word-break: break-all;
                 overflow: hidden;
-                font-size: 16px;
+                font-size: 18px;
             }
 
             .post-media {
@@ -67,16 +73,17 @@ html, body, .root{
             }
 
             .post-info {
-                height: 50px;
+                height: 36px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
+                line-height: 28px;
 
                 .post-info-item {
                     display: flex;
                     align-items: flex-end;
-                    font-size: 18px;
+                    font-size: 16px;
 
                     span {
                         margin-left: 8px;
@@ -89,10 +96,11 @@ html, body, .root{
                 align-items: center !important;
                 justify-content: space-around !important;
                 border-bottom: $border;
-                margin-bottom: 10px;
+                margin-bottom: 16px;
                 border-top: $border;
                 height: 60px;
                 padding: 0;
+                transition: 0.3s;
 
                 .primary-button {
                     width: 28%;
@@ -101,7 +109,69 @@ html, body, .root{
 
             .post-comment-container {
                 width: 100%;
-                height: 300px;
+
+                .comment-container{
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
+                    margin-bottom: 16px;
+
+                    .comment {
+                        display: flex;
+                        flex: 1;
+
+                        .content {
+                            min-height: 24px;
+                            display: flex;
+                            flex-direction: column;
+
+                            .text {
+                                border-radius: 16px;
+                                background-color: rgba(160, 156, 156, 0.2);
+                                padding: 8px;
+                                position: relative;
+                                padding-top: 0;
+                                padding-bottom: 0;
+                                width: fit-content;
+
+                                .like-count {
+                                    position: absolute;
+                                    border-radius: 16px;
+                                    padding: 6px;
+                                    font-size: 14px;
+                                    display: flex;
+                                    align-items: center;
+                                    right: 5px;
+                                    bottom: -12px;
+                                }
+                            }
+                        }
+                    }
+                    
+                    .comment-action {
+                        width: 93%;
+                        float: left;
+                        padding: 8px;
+                        padding-top: 4px;
+                        padding-bottom: 4px;
+                        font-size: 14px;
+
+                        span {
+                            color: rgba($main-color, 0.65);
+                            cursor: pointer;
+                            transition: .3s;
+                            font-weight: 600;
+                        }
+
+                        span:hover {
+                            color: rgba($main-color, 1);
+                        }
+
+                        .like {
+                            color: rgba($main-color, 1);
+                        }
+                    }
+                }
 
                 .post-comment-input {
                     display: flex;
