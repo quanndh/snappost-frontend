@@ -128,11 +128,14 @@ html, body, .root{
                             .text {
                                 border-radius: 16px;
                                 background-color: rgba(160, 156, 156, 0.2);
-                                padding: 8px;
+                                padding-left: 20px;
                                 position: relative;
                                 padding-top: 0;
                                 padding-bottom: 0;
+                                padding-right: 36px;
                                 width: fit-content;
+                                word-break: break-all;
+
 
                                 .like-count {
                                     position: absolute;
@@ -141,8 +144,8 @@ html, body, .root{
                                     font-size: 14px;
                                     display: flex;
                                     align-items: center;
-                                    right: 5px;
-                                    bottom: -12px;
+                                    right: -30px;
+                                    top: 60%;
                                 }
                             }
                         }
@@ -334,6 +337,19 @@ html, body, .root{
                 display: flex;
                 flex-wrap: wrap;
                 height: auto;
+
+                .loading {
+                    width: 23%;
+                    height: 120px;
+                    margin-right: 10px;
+                    margin-top: 10px;
+                    position: relative;
+                    background-color: rgba(0,0,0, 0.7);
+                    padding: 0;
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                }
 
                 .create-post-media-item {
                     width: 23%;

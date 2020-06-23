@@ -20,6 +20,7 @@ import CustomTooltip from '../CustomTooltip/CustomTooltip';
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw, convertFromRaw } from 'draft-js';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const emptyContentState = convertFromRaw({
     entityMap: {},
@@ -45,9 +46,7 @@ let plugins = [mentionPlugin, linkifyPlugin]
 
 const CreatePostInput = (props) => {
 
-    const { user } = props;
-
-    const { showCreatePost } = props;
+    const { showCreatePost, createPostUploadPercent, user } = props;
 
     const editor = useRef(null)
 
@@ -96,11 +95,13 @@ const CreatePostInput = (props) => {
 
     const hanldeUpload = async (e) => {
         let rs;
+        setLoading(true)
         if (e.target.files[0].type.includes("image")) {
             rs = await DataService.uploadImage({ data: e.target.files[0], type: "images" })
         } else {
             rs = await DataService.uploadVideo({ data: e.target.files[0], type: "files" })
         }
+        setLoading(false)
         setUpload([...upload, ...rs.data])
     }
 
@@ -127,6 +128,7 @@ const CreatePostInput = (props) => {
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
         }
+        ApiService.setCreatePostUploadPercent(0)
         setLoading(false)
     }
 
@@ -173,43 +175,47 @@ const CreatePostInput = (props) => {
                             </div>
                         </div>
                     </div>
-                    {
-                        upload.length > 0 && (
-                            <div className="create-post-media">
-                                {
-                                    upload.map((upLoad, index) => {
-                                        return (
-                                            <div className="create-post-media-item" key={upLoad.id}>
-                                                {
-                                                    upLoad.fileType.includes("image") ? (
-                                                        <img src={upLoad.url} />
-                                                    ) : (
-                                                            <>
-                                                                <video src={upLoad.url} onLoadedMetadata={(e) => handleLoadMetadata(e, index)} />
-                                                            </>
-                                                        )
-                                                }
-                                                {upLoad.length && (
-                                                    <div className="duration">
-                                                        <span style={{ color: "white" }}>{Helper.formatSecond(upLoad.length)}</span>
-                                                    </div>
-                                                )}
-
-                                                <div className="overlay">
-                                                    <CustomTooltip theme="dark" title="Remove">
-                                                        <CloseIcon
-                                                            onClick={() => handleRemoveImages(index)}
-                                                            className="create-post-media-item-close"
-                                                        />
-                                                    </CustomTooltip>
-                                                </div>
+                    <div className="create-post-media">
+                        {
+                            upload.length > 0 && upload.map((upLoad, index) => {
+                                return (
+                                    <div className="create-post-media-item" key={upLoad.id}>
+                                        {
+                                            upLoad.fileType.includes("image") ? (
+                                                <img src={upLoad.url} />
+                                            ) : (
+                                                    <>
+                                                        <video src={upLoad.url} onLoadedMetadata={(e) => handleLoadMetadata(e, index)} />
+                                                    </>
+                                                )
+                                        }
+                                        {upLoad.length && (
+                                            <div className="duration">
+                                                <span style={{ color: "white" }}>{Helper.formatSecond(upLoad.length)}</span>
                                             </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        )
-                    }
+                                        )}
+
+                                        <div className="overlay">
+                                            <CustomTooltip theme="dark" title="Remove">
+                                                <CloseIcon
+                                                    onClick={() => handleRemoveImages(index)}
+                                                    className="create-post-media-item-close"
+                                                />
+                                            </CustomTooltip>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        {
+                            loading && (
+                                <div className="loading">
+                                    <CircularProgress style={{ color: "white" }} variant="static" value={createPostUploadPercent} />
+                                </div>
+                            )
+                        }
+                    </div>
+
                     <div className="create-post-option">
                         <label htmlFor="upload">
                             <div className="create-post-option-item">
@@ -252,7 +258,8 @@ const CreatePostInput = (props) => {
 const mapStateToProps = state => {
     return {
         showCreatePost: state.uiReducer.showCreatePost,
-        user: state.userReducer.user
+        user: state.userReducer.user,
+        createPostUploadPercent: state.uploadReducer.createPostUploadPercent
     }
 }
 

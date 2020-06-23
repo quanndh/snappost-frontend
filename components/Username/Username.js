@@ -5,7 +5,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import { Paper } from '@material-ui/core';
 import DataService from '../../network/DataService';
-import Router from 'next/dist/next-server/server/router';
+import Router from 'next/router';;
 
 const CustomUserName = props => {
     let { name, id, size } = props;
@@ -14,24 +14,22 @@ const CustomUserName = props => {
     const mentionRef = React.useRef(null);
     const [userInfo, setUserInfo] = useState({})
 
-    const handleToggleMention = async () => {
+    let delay;
 
-        if (userInfo) {
-            setOpen((prevOpen) => !prevOpen);
-            if (open) {
-                setOpen((prevOpen) => !prevOpen);
+    const handleToggleMention = async () => {
+        delay = setTimeout(() => {
+            if (userInfo) {
+                setOpen(!open);
+
             }
-        }
-    };
+        }, 300)
+    }
 
     const handleClose = (event) => {
-        if (mentionRef.current && mentionRef.current.contains(event.target)) {
-            return;
-        }
+        clearTimeout(delay)
         setOpen(false);
+        setUserInfo(null);
     };
-
-    const prevOpen = React.useRef(open);
 
     React.useEffect(() => {
         const getProfile = async () => {
@@ -43,10 +41,6 @@ const CustomUserName = props => {
         }
 
         getProfile();
-        if (prevOpen.current === true && open === false) {
-            mentionRef.current.focus();
-        }
-        prevOpen.current = open;
     }, [open]);
 
     return (
@@ -55,7 +49,7 @@ const CustomUserName = props => {
                 ref={mentionRef}
                 className="username"
                 style={{ fontSize: size == "large" ? 20 : 16 }}
-                onClick={() => Router.push(`/profile/${userId}`)}
+                onClick={() => Router.push(`/profile/${id}`)}
                 onMouseOver={handleToggleMention}
                 onMouseLeave={handleClose}
             >
@@ -63,8 +57,8 @@ const CustomUserName = props => {
             </span>
 
             {
-                userInfo ? (
-                    <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={open} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
+                userInfo && open ? (
+                    <Popper style={{ zIndex: 20, marginTop: 20 }} onMouseLeave={handleClose} open={true} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
                         {({ TransitionProps, placement }) => (
                             <Grow
                                 {...TransitionProps}

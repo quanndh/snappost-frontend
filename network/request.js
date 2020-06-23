@@ -15,7 +15,7 @@ const request = async (url, data, method) => {
     console.log("%c-----------" + method + "------------", 'color: green; font-size: 16px')
     console.log(url, data, headers)
     try {
-        let response = await instance({
+        let response = await axios({
             headers,
             method,
             url,

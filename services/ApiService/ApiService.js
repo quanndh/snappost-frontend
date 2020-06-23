@@ -35,5 +35,8 @@ export default {
     },
     toggleLikeComment: data => {
         store.dispatch({ type: 'TOGGLE_LIKE_COMMENT', data })
+    },
+    setCreatePostUploadPercent: data => {
+        store.dispatch({ type: 'SET_CREATE_POST_UPLOAD_PERCENT', data })
     }
 }

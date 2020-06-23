@@ -15,11 +15,15 @@ const upload = async (url, data) => {
         headers: {
             Authorization: "Bearer " + token,
             'content-type': 'multipart/form-data',
+        },
+
+        onUploadProgress: progressEvent => {
+            ApiService.setCreatePostUploadPercent(Math.ceil(progressEvent.loaded / data.data.size * 100))
         }
     }
 
     console.log("%c-----------" + "post" + "------------", 'color: green; font-size: 16px')
-    // console.log(url, finalData.getAll("images"), headers)
+
     try {
         let response = await post(url, finalData, options)
         console.log("%c-----------RESPONSE-----------", 'color: red; font-size: 16px')
