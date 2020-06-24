@@ -30,13 +30,17 @@ const Post = (props) => {
     }
 
     const handleShowComment = async () => {
-        let rs = await DataService.getParentComment({
-            postId: data.id,
-            skip: data?.comments.length,
-            limit: 8
-        });
-        ApiService.setCommentForPost({ postId: data.id, data: rs.data })
-        setShowComment(true)
+        if (!showComment) {
+            let rs = await DataService.getParentComment({
+                postId: data.id,
+                skip: data?.comments.length,
+                limit: 3
+            });
+            ApiService.setCommentForPost({ postId: data.id, data: rs.data })
+            setShowComment(true)
+        } else {
+            setShowComment(false)
+        }
     }
 
     if (!data) {
@@ -114,9 +118,9 @@ const Post = (props) => {
                 showComment && (
                     <div className="post-comment-container">
                         {
-                            data?.comments?.length > 0 && (
+                            data?.comments?.length && showComment > 0 && (
                                 data.comments.map(comment => {
-                                    return <CommentParent postId={data.id} key={"comment" + comment.id} data={comment} />
+                                    return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
                                 })
                             )
                         }

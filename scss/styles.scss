@@ -114,7 +114,6 @@ html, body, .root{
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: flex-end;
-                    margin-bottom: 16px;
 
                     .comment {
                         display: flex;
@@ -158,12 +157,16 @@ html, body, .root{
                         padding-top: 4px;
                         padding-bottom: 4px;
                         font-size: 14px;
+                        display: flex;
+                        margin-bottom: 4px;
 
                         span {
-                            color: rgba($main-color, 0.5);
+                            color: rgba($main-color, 0.65);
                             cursor: pointer;
                             transition: .3s;
                             font-weight: 600;
+                            margin-right: 14px;
+
                         }
 
                         span:hover {
@@ -172,6 +175,39 @@ html, body, .root{
 
                         .like {
                             color: rgba($main-color, 1);
+                        }
+
+                    }
+
+                    .comment-reply-container {
+                        width: 93%;
+                        float: left;
+                        padding: 8px;
+                        padding-top: 4px;
+                        padding-bottom: 4px;
+                        font-size: 14px;
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+                        align-items: flex-end;
+                        margin-bottom: 8px;
+                        
+                        .comment {
+                            width: 100%;
+                            flex: 1;
+                        }
+
+                        .comment-action {
+                            margin-bottom: 8px;
+                        }
+
+                        .avatar {
+                            width: 32px;
+                            height: 32px;
+                        }
+
+                        .input {
+                            min-height: 24px;
                         }
                     }
                 }

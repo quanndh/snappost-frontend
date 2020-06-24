@@ -40,7 +40,8 @@ const linkifyPlugin = createLinkifyPlugin();
 let plugins = [mentionPlugin, linkifyPlugin]
 
 const CommentInput = (props) => {
-    let { user, postId } = props;
+
+    let { user, postId, commentId } = props;
 
     const editor = useRef(null);
 
@@ -105,7 +106,8 @@ const CommentInput = (props) => {
             content: markupContent,
             upload,
             mentions,
-            postId
+            postId,
+            parentId: commentId ? commentId : "0"
         }
         let rs = await DataService.comment(data)
         if (rs.code == 0) {
@@ -113,7 +115,11 @@ const CommentInput = (props) => {
             setUpload([])
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
-            ApiService.setCommentForPost({ postId, data: [rs.data], newComment: true })
+            if (!commentId) {
+                ApiService.setCommentForPost({ postId, data: [rs.data], newComment: true })
+            } else {
+                ApiService.setReplyForComment({ postId, data: [rs.data], newComment: true, parent: commentId })
+            }
         }
     }
 

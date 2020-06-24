@@ -30,11 +30,17 @@ export default {
     setCommentForPost: data => {
         store.dispatch({ type: 'SET_POST_COMMENT', data })
     },
+    setReplyForComment: data => {
+        store.dispatch({ type: 'SET_COMMENT_REPLY', data })
+    },
     toggleLikePost: data => {
         store.dispatch({ type: 'TOGGLE_LIKE_POST', data })
     },
     toggleLikeComment: data => {
         store.dispatch({ type: 'TOGGLE_LIKE_COMMENT', data })
+    },
+    toggleLikeReply: data => {
+        store.dispatch({ type: 'TOGGLE_LIKE_REPLY', data })
     },
     setCreatePostUploadPercent: data => {
         store.dispatch({ type: 'SET_CREATE_POST_UPLOAD_PERCENT', data })

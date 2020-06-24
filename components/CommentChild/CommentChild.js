@@ -8,38 +8,19 @@ import { Paper } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ApiService from '../../services/ApiService/ApiService';
 import DataService from '../../network/DataService';
-import CommentInput from '../CommentInput/CommentInput';
-import CommentChild from '../CommentChild/CommentChild';
 
-const CommentParent = ({ data, postId, user }) => {
-
+const CommentChild = ({ data, postId, user }) => {
     const [isLike, setIsLike] = useState(data.isLike);
-    const [showReply, setShowReply] = useState(false);
 
     const toggleLike = async () => {
         setIsLike(!isLike)
-        let rs = await DataService.toggleLikeComment({ commentId: data.id })
-        ApiService.toggleLikeComment({ postId, commentId: data.id, like: !isLike })
-    }
-
-    const handleShowReply = async () => {
-        if (!showReply) {
-            let rs = await DataService.getReplyComment({
-                skip: data?.reply.length,
-                limit: 8,
-                postId,
-                commentId: data.id,
-            })
-            ApiService.setReplyForComment({ postId, data: rs.data, parent: data.id })
-            setShowReply(true);
-        } else {
-            setShowReply(false);
-        }
+        await DataService.toggleLikeComment({ commentId: data.id })
+        ApiService.toggleLikeReply({ postId, like: !isLike, parent: data.parent, replyId: data.id })
     }
 
     return (
-        <div className="comment-container">
-            <div className="comment">
+        <>
+            <div className="comment" key={"reply" + data.id}>
                 <div style={{ width: "7%" }}>
                     <Avatar className="avatar" src={data.user.avatar} />
                 </div>
@@ -62,33 +43,18 @@ const CommentParent = ({ data, postId, user }) => {
                                 </Paper>
                             )
                         }
-
                     </div>
                 </div>
             </div>
+
             <div className="comment-action">
                 <div onClick={toggleLike} >
                     <span className={classNames({ "like": isLike })}>Like</span>
                 </div>
-                <div onClick={handleShowReply} >
-                    <span className="like">{data?.totalReply > 0 ? `${data.totalReply} Replies` : "Reply"}</span>
-                </div>
             </div>
-            <div className="comment-reply-container">
-                {
-                    data?.reply && showReply ? data.reply.map(r => {
-                        return (
-                            <CommentChild key={"reply" + r.id} data={r} postId={postId} user={user} />
-                        )
-                    }) : null
-                }
+        </>
 
-                {
-                    showReply && <CommentInput commentId={data.id} user={user} postId={postId} />
-                }
-            </div>
-        </div >
     )
 }
 
-export default CommentParent;
+export default CommentChild;
