@@ -25,18 +25,18 @@ const Post = (props) => {
 
     const toggleLike = async () => {
         setIsLike(!isLike)
-        let rs = await DataService.toggleLikePost({ postId: data.id })
         ApiService.toggleLikePost({ postId: data.id, like: !isLike })
+        await DataService.toggleLikePost({ postId: data.id })
     }
 
     const handleShowComment = async () => {
         if (!showComment) {
+            ApiService.setCommentForPost({ postId: data.id, data: rs.data })
             let rs = await DataService.getParentComment({
                 postId: data.id,
                 skip: data?.comments.length,
                 limit: 3
             });
-            ApiService.setCommentForPost({ postId: data.id, data: rs.data })
             setShowComment(true)
         } else {
             setShowComment(false)

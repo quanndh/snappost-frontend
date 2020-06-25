@@ -116,7 +116,8 @@ const CreatePostInput = (props) => {
     }
 
     const handleCreatePost = async () => {
-        setLoading(true)
+        ApiService.setCreatePostUploadPercent(0)
+
         let data = {
             content: markupContent,
             upload,
@@ -128,8 +129,6 @@ const CreatePostInput = (props) => {
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
         }
-        ApiService.setCreatePostUploadPercent(0)
-        setLoading(false)
     }
 
     const onAddMention = (e) => {

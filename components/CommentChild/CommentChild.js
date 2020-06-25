@@ -14,8 +14,8 @@ const CommentChild = ({ data, postId, user }) => {
 
     const toggleLike = async () => {
         setIsLike(!isLike)
-        await DataService.toggleLikeComment({ commentId: data.id })
         ApiService.toggleLikeReply({ postId, like: !isLike, parent: data.parent, replyId: data.id })
+        await DataService.toggleLikeComment({ commentId: data.id })
     }
 
     return (
