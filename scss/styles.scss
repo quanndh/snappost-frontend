@@ -343,16 +343,17 @@ html, body, .root{
             z-index: 30;
 
             .create-post-body {
-                height: 70%;
+                height: 10%;
                 margin: 0 16px;
                 display: flex;
                 cursor: text;
                 align-items: flex-start;
                 padding-top: 16px ;
-                padding-bottom: 16px;
+                padding-bottom: 0px;
 
                 .avatar {
-                    margin-bottom: 40px;
+                    // margin-bottom: 40px;
+                    align-self: flex-start;
                 }
 
                 .create-post-input::-webkit-scrollbar {
@@ -362,9 +363,9 @@ html, body, .root{
                 .create-post-text {
                     font-weight: 500;
                     font-size: 20px;
-                    height: 100%;
+                    height: auto;
                     display: block;
-                    margin-bottom: 60px;
+                    // margin-bottom: 60px;
                     
                     p {
                         word-break: break-all;

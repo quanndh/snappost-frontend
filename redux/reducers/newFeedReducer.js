@@ -8,7 +8,7 @@ const newFeedReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'SET_POST':
-            return { ...state, posts: action.data }
+            return { ...state, posts: [...action.data, ...tempPost] }
         case 'SET_POST_COMMENT':
             postIndex = tempPost.findIndex(post => post.id == action.data.postId);
             if (postIndex !== -1) {

@@ -101,6 +101,7 @@ const CreatePostInput = (props) => {
         } else {
             rs = await DataService.uploadVideo({ data: e.target.files[0], type: "files" })
         }
+        ApiService.setCreatePostUploadPercent(0)
         setLoading(false)
         setUpload([...upload, ...rs.data])
     }
@@ -116,8 +117,6 @@ const CreatePostInput = (props) => {
     }
 
     const handleCreatePost = async () => {
-        ApiService.setCreatePostUploadPercent(0)
-
         let data = {
             content: markupContent,
             upload,
@@ -128,6 +127,8 @@ const CreatePostInput = (props) => {
             setUpload([])
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
+            ApiService.toggleCreatePost();
+            ApiService.setNewFeed([rs.data])
         }
     }
 
@@ -174,46 +175,50 @@ const CreatePostInput = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="create-post-media">
-                        {
-                            upload.length > 0 && upload.map((upLoad, index) => {
-                                return (
-                                    <div className="create-post-media-item" key={upLoad.id}>
-                                        {
-                                            upLoad.fileType.includes("image") ? (
-                                                <img src={upLoad.url} />
-                                            ) : (
-                                                    <>
-                                                        <video src={upLoad.url} onLoadedMetadata={(e) => handleLoadMetadata(e, index)} />
-                                                    </>
-                                                )
-                                        }
-                                        {upLoad.length && (
-                                            <div className="duration">
-                                                <span style={{ color: "white" }}>{Helper.formatSecond(upLoad.length)}</span>
-                                            </div>
-                                        )}
+                    {
+                        upload.length > 0 ? (
+                            <div className="create-post-media">
+                                {
+                                    upload.map((upLoad, index) => {
+                                        return (
+                                            <div className="create-post-media-item" key={upLoad.id}>
+                                                {
+                                                    upLoad.fileType.includes("image") ? (
+                                                        <img src={upLoad.url} />
+                                                    ) : (
+                                                            <>
+                                                                <video src={upLoad.url} onLoadedMetadata={(e) => handleLoadMetadata(e, index)} />
+                                                            </>
+                                                        )
+                                                }
+                                                {upLoad.length && (
+                                                    <div className="duration">
+                                                        <span style={{ color: "white" }}>{Helper.formatSecond(upLoad.length)}</span>
+                                                    </div>
+                                                )}
 
-                                        <div className="overlay">
-                                            <CustomTooltip theme="dark" title="Remove">
-                                                <CloseIcon
-                                                    onClick={() => handleRemoveImages(index)}
-                                                    className="create-post-media-item-close"
-                                                />
-                                            </CustomTooltip>
+                                                <div className="overlay">
+                                                    <CustomTooltip theme="dark" title="Remove">
+                                                        <CloseIcon
+                                                            onClick={() => handleRemoveImages(index)}
+                                                            className="create-post-media-item-close"
+                                                        />
+                                                    </CustomTooltip>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                                {
+                                    loading && (
+                                        <div className="loading">
+                                            <CircularProgress style={{ color: "white" }} variant="static" value={createPostUploadPercent} />
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
-                        {
-                            loading && (
-                                <div className="loading">
-                                    <CircularProgress style={{ color: "white" }} variant="static" value={createPostUploadPercent} />
-                                </div>
-                            )
-                        }
-                    </div>
+                                    )
+                                }
+                            </div>
+                        ) : null
+                    }
 
                     <div className="create-post-option">
                         <label htmlFor="upload">
