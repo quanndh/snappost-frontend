@@ -118,11 +118,11 @@ const Post = (props) => {
                 showComment && (
                     <div className="post-comment-container">
                         {
-                            data?.comments?.length && showComment > 0 && (
+                            data?.comments?.length && showComment > 0 ? (
                                 data.comments.map(comment => {
                                     return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
                                 })
-                            )
+                            ) : null
                         }
                         <CommentInput user={user} postId={data.id} />
                     </div>
