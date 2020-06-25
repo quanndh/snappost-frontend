@@ -15,6 +15,7 @@ import CommentInput from '../CommentInput/CommentInput'
 import DataService from '../../network/DataService';
 import ApiService from '../../services/ApiService/ApiService';
 import CommentParent from '../CommentParent/CommentParent';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Post = (props) => {
 
@@ -22,6 +23,7 @@ const Post = (props) => {
 
     const [isLike, setIsLike] = useState(data.isLike);
     const [showComment, setShowComment] = useState(false);
+    const [loadComment, setLoadComment] = useState(true);
 
     const toggleLike = async () => {
         setIsLike(!isLike)
@@ -31,13 +33,15 @@ const Post = (props) => {
 
     const handleShowComment = async () => {
         if (!showComment) {
-            ApiService.setCommentForPost({ postId: data.id, data: rs.data })
+            setShowComment(true)
+            setLoadComment(true)
             let rs = await DataService.getParentComment({
                 postId: data.id,
                 skip: data?.comments.length,
                 limit: 3
             });
-            setShowComment(true)
+            setLoadComment(false)
+            ApiService.setCommentForPost({ postId: data.id, data: rs.data })
         } else {
             setShowComment(false)
         }
@@ -118,13 +122,23 @@ const Post = (props) => {
                 showComment && (
                     <div className="post-comment-container">
                         {
-                            data?.comments?.length && showComment > 0 ? (
-                                data.comments.map(comment => {
-                                    return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
-                                })
-                            ) : null
+                            loadComment ? (
+                                <div style={{ width: '100%', display: 'flex', justifyContent: "center" }}>
+                                    <CircularProgress />
+                                </div>
+                            ) : (
+                                    <>
+                                        {
+                                            data?.comments?.length > 0 ? (
+                                                data.comments.map(comment => {
+                                                    return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
+                                                })
+                                            ) : null
+                                        }
+                                        <CommentInput user={user} postId={data.id} />
+                                    </>
+                                )
                         }
-                        <CommentInput user={user} postId={data.id} />
                     </div>
                 )
             }

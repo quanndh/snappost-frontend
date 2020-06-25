@@ -64,6 +64,22 @@ const CommentParent = ({ data, postId, user }) => {
                         }
 
                     </div>
+                    {
+                        data.upload.length > 0 ? (
+                            <div className="media">
+                                {
+                                    data.upload[0].fileType.includes("image") ? (
+                                        <img src={data.upload[0].url} />
+                                    ) : (
+                                            <video controls>
+                                                <source src={data.upload[0].url} />
+                                            </video>
+                                        )
+                                }
+                            </div>
+                        ) : null
+                    }
+
                 </div>
             </div>
             <div className="comment-action">

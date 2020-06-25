@@ -134,6 +134,7 @@ html, body, .root{
                                 padding-right: 36px;
                                 width: fit-content;
                                 word-break: break-all;
+                                margin-bottom: 10px;
 
 
                                 .like-count {
@@ -145,6 +146,16 @@ html, body, .root{
                                     align-items: center;
                                     right: -30px;
                                     top: 60%;
+                                }
+                            }
+
+                            .media {
+                                width: 100%;
+                                img, video {
+                                    width: 100%;
+                                    max-height: 400px;
+                                    border-radius: 16px;
+                                    background-color: black;
                                 }
                             }
                         }

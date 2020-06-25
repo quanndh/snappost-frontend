@@ -18,11 +18,17 @@ const CustomUserName = props => {
 
     const handleToggleMention = async () => {
         delay = setTimeout(() => {
-            if (userInfo) {
-                setOpen(!open);
+            getProfile();
+        }, 100)
+    }
 
-            }
-        }, 300)
+    const getProfile = async () => {
+        let rs = await DataService.getUserProfile({ userId: id });
+        if (rs.code === 0) {
+            rs.data.name = rs.data.firstName + " " + rs.data.lastName;
+            setUserInfo(rs.data)
+            setOpen(true)
+        }
     }
 
     const handleClose = (event) => {
@@ -30,18 +36,6 @@ const CustomUserName = props => {
         setOpen(false);
         setUserInfo(null);
     };
-
-    React.useEffect(() => {
-        const getProfile = async () => {
-            let rs = await DataService.getUserProfile({ userId: id });
-            if (rs.code === 0) {
-                rs.data.name = rs.data.firstName + " " + rs.data.lastName;
-                setUserInfo(rs.data)
-            }
-        }
-
-        getProfile();
-    }, [open]);
 
     return (
         <React.Fragment>
