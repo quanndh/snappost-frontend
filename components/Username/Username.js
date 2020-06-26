@@ -52,7 +52,7 @@ const CustomUserName = props => {
 
             {
                 userInfo && open ? (
-                    <Popper style={{ zIndex: 20, marginTop: 20 }} onMouseLeave={handleClose} open={true} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
+                    <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={true} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
                         {({ TransitionProps, placement }) => (
                             <Grow
                                 {...TransitionProps}
