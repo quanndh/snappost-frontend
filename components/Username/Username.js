@@ -15,11 +15,12 @@ const CustomUserName = props => {
     const [userInfo, setUserInfo] = useState({})
 
     let delay;
+    let hoverDelay;
 
     const handleToggleMention = async () => {
         delay = setTimeout(() => {
             getProfile();
-        }, 100)
+        }, 200)
     }
 
     const getProfile = async () => {
@@ -31,10 +32,17 @@ const CustomUserName = props => {
         }
     }
 
+    const hanldeMouseOver = () => {
+        clearTimeout(hoverDelay)
+    }
+
     const handleClose = (event) => {
-        clearTimeout(delay)
-        setOpen(false);
-        setUserInfo(null);
+        hoverDelay = setTimeout(() => {
+            clearTimeout(delay)
+            setOpen(false);
+            setUserInfo(null);
+        }, 200)
+
     };
 
     return (
@@ -52,7 +60,7 @@ const CustomUserName = props => {
 
             {
                 userInfo ? (
-                    <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={open} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
+                    <Popper style={{ zIndex: 20 }} onMouseOver={hanldeMouseOver} onMouseLeave={handleClose} open={open} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
                         {({ TransitionProps, placement }) => (
                             <Grow
                                 {...TransitionProps}
