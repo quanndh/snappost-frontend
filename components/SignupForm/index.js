@@ -122,7 +122,7 @@ const SignupForm = (props) => {
                 />
 
                 <Button onClick={handleSubmit} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
-                    {isLoading ? <CircularProgress /> : "Begin your adventure"}
+                    {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Begin your adventure"}
                 </Button>
             </div>
 

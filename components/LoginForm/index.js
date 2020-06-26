@@ -132,7 +132,7 @@ const LoginForm = (props) => {
                 />
 
                 <Button onClick={handleLogin} disabled={(errors.loginEmail || errors.loginPassword || loginEmail === "" || loginPassword === "") ? true : false} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
-                    {isLoading ? <CircularProgress /> : "Login"}
+                    {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Login"}
                 </Button>
             </div>
 
