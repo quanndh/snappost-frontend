@@ -50,22 +50,21 @@ const CustomUserName = props => {
                 {name}
             </span>
 
-            {
-                userInfo && open ? (
-                    <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={true} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                            >
-                                <div>
-                                    <UserInfoTooltip style={{ width: "auto" }} user={userInfo} />
-                                </div>
-                            </Grow>
-                        )}
-                    </Popper>
-                ) : null
-            }
+
+            <Popper style={{ zIndex: 20 }} onMouseLeave={handleClose} open={open} anchorEl={mentionRef.current} role={undefined} transition disablePortal>
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                    >
+                        <div>
+                            <UserInfoTooltip style={{ width: "auto" }} user={userInfo} />
+                        </div>
+                    </Grow>
+                )}
+            </Popper>
+
+
 
         </React.Fragment >
 
