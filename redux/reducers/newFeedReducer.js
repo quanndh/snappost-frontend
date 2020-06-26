@@ -34,6 +34,12 @@ const newFeedReducer = (state = initialState, action) => {
                     tempPost[postIndex]['totalComment']++;
                 }
             }
+        case 'SET_POST_TOTAL_SHARE':
+            postIndex = tempPost.findIndex(post => post.id == action.data.postId);
+            if (postIndex !== -1) {
+                tempPost[postIndex]['totalShare']++;
+            }
+            return { ...state, posts: tempPost }
         case 'TOGGLE_LIKE_POST':
             postIndex = tempPost.findIndex(post => post.id == action.data.postId);
             if (postIndex !== -1) {

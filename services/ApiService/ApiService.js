@@ -30,6 +30,9 @@ export default {
     setCommentForPost: data => {
         store.dispatch({ type: 'SET_POST_COMMENT', data })
     },
+    setPostTotalShare: data => {
+        store.dispatch({ type: 'SET_POST_TOTAL_SHARE', data })
+    },
     setReplyForComment: data => {
         store.dispatch({ type: 'SET_COMMENT_REPLY', data })
     },

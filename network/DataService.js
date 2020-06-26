@@ -43,5 +43,8 @@ export default {
     },
     toggleLikeComment: data => {
         return request("/comment/toggle-like", data, "POST");
+    },
+    sharePost: data => {
+        return request("/post/share", data, "POST")
     }
 };

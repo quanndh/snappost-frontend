@@ -46,7 +46,7 @@ let plugins = [mentionPlugin, linkifyPlugin]
 
 const CreatePostInput = (props) => {
 
-    const { showCreatePost, createPostUploadPercent, user } = props;
+    const { showCreatePost, createPostUploadPercent, user, isShare, sharedPost, handleCloseShare } = props;
 
     const editor = useRef(null)
 
@@ -128,6 +128,24 @@ const CreatePostInput = (props) => {
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
             ApiService.toggleCreatePost();
+            ApiService.setNewFeed([rs.data])
+        }
+    }
+
+    const handleShare = async () => {
+        let data = {
+            content: markupContent,
+            mentions,
+            sharedPost
+        }
+        let rs = await DataService.sharePost(data);
+        if (rs.code == 0) {
+            setUpload([])
+            setMarkupContent("<p></p>")
+            setContent(() => EditorState.createWithContent(emptyContentState))
+            ApiService.toggleCreatePost();
+            handleCloseShare();
+            ApiService.setPostTotalShare({ postId: sharedPost })
             ApiService.setNewFeed([rs.data])
         }
     }
@@ -220,23 +238,28 @@ const CreatePostInput = (props) => {
                         ) : null
                     }
 
-                    <div className="create-post-option">
-                        <label htmlFor="upload">
-                            <div className="create-post-option-item">
-                                <ImageIcon />
-                                <span>Video/Image</span>
-                            </div>
-                        </label>
+                    {
+                        !isShare ? (
+                            <div className="create-post-option">
+                                <label htmlFor="upload">
+                                    <div className="create-post-option-item">
+                                        <ImageIcon />
+                                        <span>Video/Image</span>
+                                    </div>
+                                </label>
 
-                        <div className="create-post-option-item">
-                            <AssignmentIndIcon />
-                            <span>Tag friend</span>
-                        </div>
-                        <div className="create-post-option-item">
-                            <GifIcon style={{ fontSize: 44 }} />
-                            <span>Import GIF</span>
-                        </div>
-                    </div>
+                                <div className="create-post-option-item">
+                                    <AssignmentIndIcon />
+                                    <span>Tag friend</span>
+                                </div>
+                                <div className="create-post-option-item">
+                                    <GifIcon style={{ fontSize: 44 }} />
+                                    <span>Import GIF</span>
+                                </div>
+                            </div>
+                        ) : null
+                    }
+
                     {
                         showCreatePost && (
                             <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
@@ -245,10 +268,10 @@ const CreatePostInput = (props) => {
                                     disabled={markupContent.trim() == "<p></p>" && upload.length === 0}
                                     style={{ width: "100%", }}
                                     variant="contained"
-                                    onClick={handleCreatePost}
+                                    onClick={isShare ? handleShare : handleCreatePost}
                                 >
-                                    Snap
-                            </Button>
+                                    {isShare ? "Resnap" : "Snap"}
+                                </Button>
                             </div>
                         )
                     }
