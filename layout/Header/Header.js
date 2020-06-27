@@ -159,7 +159,7 @@ function Header({ user }) {
 	}, [openMore, openNotification]);
 
 	return (
-		<div className={classes.grow} style={{
+		<Paper className={classes.grow} style={{
 			position: "fixed",
 			width: "100%",
 			zIndex: 999,
@@ -316,7 +316,7 @@ function Header({ user }) {
 					</Grid>
 				</Grid>
 			</AppBar>
-		</div>
+		</Paper>
 	);
 }
 

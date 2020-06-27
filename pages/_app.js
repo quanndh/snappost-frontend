@@ -16,10 +16,12 @@ import { toast, ToastContainer, Slide } from 'react-toastify';
 import LightOff from '../components/LightOff/LightOff';
 import ApiService from '../services/ApiService/ApiService';
 import { connect, useSelector } from "react-redux";
+import { Paper } from '@material-ui/core';
 
 const theme = createMuiTheme({
 	palette: {
 		primary: { main: "#1e88e5" },
+		type: 'dark'
 	},
 
 });
@@ -67,9 +69,11 @@ export default function MyApp({ Component, pageProps }) {
 			return (
 				<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
 					<Grid item xs={10}>
-						<LightOff />
-						<Component {...pageProps} />
-						<ChatContainer />
+						<Paper>
+							<LightOff />
+							<Component {...pageProps} />
+							<ChatContainer />
+						</Paper>
 					</Grid>
 					<Grid item xs={2} style={{ zIndex: 1, position: "relative" }}>
 						<ContactBar />

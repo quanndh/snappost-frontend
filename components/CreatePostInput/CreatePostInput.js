@@ -1,9 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { Button } from '@material-ui/core';
+import { Button, Paper } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import GifIcon from '@material-ui/icons/Gif';
 import Helper from '../../services/Helper/helper';
 import { connect } from 'react-redux'
 import ApiService from '../../services/ApiService/ApiService';
@@ -158,7 +156,7 @@ const CreatePostInput = (props) => {
     return (
         <>
             {loading && <LinearProgress />}
-            <div style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
+            <Paper elevation={3} style={{ position: 'relative', zIndex: showCreatePost ? 12 : 0 }} >
                 <input
                     accept="image/*,video/*"
                     style={{ display: "none" }}
@@ -275,7 +273,7 @@ const CreatePostInput = (props) => {
                         )
                     }
                 </div>
-            </ div >
+            </Paper >
         </>
 
     )

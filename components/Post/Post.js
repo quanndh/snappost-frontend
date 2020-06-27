@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Paper, Avatar, Typography, Button, Link, ClickAwayListener, IconButton } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Paper, Avatar, Button, IconButton } from '@material-ui/core';
 import Helper from '../../services/Helper/helper';
 import ImageGallery from '../ImageGallery';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -95,7 +95,7 @@ const Post = (props) => {
             </Dialog>
 
             <SharePostModal user={user} open={showShare} sharedPost={data} handleClose={() => setShowShare(false)} />
-            <Paper elevation={0} className="post-container">
+            <Paper elevation={3} className="post-container">
                 <div className="post-header">
                     <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ display: 'flex' }}>

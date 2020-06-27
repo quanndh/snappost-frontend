@@ -17,6 +17,10 @@ html, body, .root{
     font-family: sans-serif;
     height: auto;
 
+    .dark {
+        background-color: rgba(#424242, 0.6)
+    }
+
     .lightoff {
         position: absolute;
         height: 100%;
@@ -38,7 +42,6 @@ html, body, .root{
         position: relative;
 
         .post-container {
-            border: $border;
             width: 100%;
             border-radius: $main-radius;
             display: flex;
@@ -96,9 +99,9 @@ html, body, .root{
                 display: flex !important;
                 align-items: center !important;
                 justify-content: space-around !important;
-                border-bottom: $border;
+                // border-bottom: $border;
                 margin-bottom: 16px;
-                border-top: $border;
+                // border-top: $border;
                 height: 60px;
                 padding: 0;
                 transition: 0.3s;
@@ -381,7 +384,7 @@ html, body, .root{
         border-left: 1px solid #bcbcbc;
         position: fixed;
         z-index: 1;
-        background-color: $bg-color-newfeed;
+        // background-color: $bg-color-newfeed;
 
         .contact-bar-people {
             height: 95vh;
@@ -393,7 +396,7 @@ html, body, .root{
             }
 
             .contact-bar-people-item:hover{
-                background-color: $hover-background;
+                // background-color: $hover-background;
 
             }
         }

@@ -3,7 +3,8 @@ import UserInfoTooltip from '../UserInfoTooltip/UserInfoTooltip';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
 import DataService from '../../network/DataService';
-import Router from 'next/router';;
+import Router from 'next/router'; import { Paper } from '@material-ui/core';
+;
 
 const CustomUserName = props => {
     let { name, id, size } = props;
@@ -64,9 +65,9 @@ const CustomUserName = props => {
                                 {...TransitionProps}
                                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                             >
-                                <div>
+                                <Paper>
                                     <UserInfoTooltip style={{ width: "auto" }} user={userInfo} />
-                                </div>
+                                </Paper>
                             </Grow>
                         )}
                     </Popper>

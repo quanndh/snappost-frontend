@@ -1,11 +1,10 @@
 .create-post-container{
     height: auto;
     border-radius: $main-radius;
-    background-color: white;
-    border: $border;
     position: relative;
     margin-bottom: 16px;
     z-index: 30;
+    padding-bottom: 1px;
 
     .create-post-body {
         height: 10%;

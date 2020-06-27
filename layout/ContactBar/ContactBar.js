@@ -14,6 +14,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import VideocamIcon from '@material-ui/icons/Videocam';
+import { Paper } from '@material-ui/core';
 
 const StyledBadge = withStyles((theme) => ({
     badge: {
@@ -128,13 +129,13 @@ const ContactBar = () => {
     })) : null
 
     return (
-        <div className="contact-bar-container" id="contactBar">
+        <Paper className="contact-bar-container" id="contactBar">
             <List className="contact-bar-people">
                 {
                     renderListContact
                 }
             </List>
-            <div className="contact-bar-searchbox" style={{ backgroundColor: "white" }}>
+            <Paper elevation={0} className="contact-bar-searchbox" >
                 <IconButton style={{ padding: 10 }} aria-label="search">
                     <SearchIcon />
                 </IconButton>
@@ -148,8 +149,8 @@ const ContactBar = () => {
                         <GroupAddIcon />
                     </IconButton>
                 </CustomTooltip>
-            </div>
-        </div>
+            </Paper>
+        </Paper>
     )
 }
 

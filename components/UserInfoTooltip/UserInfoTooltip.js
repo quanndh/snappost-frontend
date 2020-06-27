@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 import Link from 'next/link';
 import PeopleIcon from '@material-ui/icons/People';
 import HomeIcon from '@material-ui/icons/Home';
@@ -13,7 +13,7 @@ const UserInfoTooltip = props => {
     let { user } = props;
 
     return (
-        <div style={{ zIndex: 30 }} className="user-tooltip-container">
+        <Paper style={{ zIndex: 30 }} className="user-tooltip-container">
             <div className="user-tooltip-header">
                 <div className="user-tooltip-avatar">
                     <img src={user.avatar} alt="User avatar" />
@@ -38,7 +38,7 @@ const UserInfoTooltip = props => {
                     <VideocamIcon />
                 </div>
             </div>
-        </div >
+        </Paper >
     )
 }
 
