@@ -19,7 +19,7 @@ const CustomUserName = props => {
     const handleToggleMention = async () => {
         delay = setTimeout(() => {
             getProfile();
-        }, 200)
+        }, 500)
     }
 
     const getProfile = async () => {
