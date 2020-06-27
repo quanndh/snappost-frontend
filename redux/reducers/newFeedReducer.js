@@ -79,6 +79,18 @@ const newFeedReducer = (state = initialState, action) => {
                 }
             }
             return { ...state, posts: tempPost }
+        case "UPDATE_POST":
+            postIndex = tempPost.findIndex(post => post.id == action.data.postId);
+            if (postIndex !== -1) {
+                tempPost[postIndex] = action.data.data
+            }
+            return { ...state, posts: tempPost }
+        case "DELETE_POST":
+            postIndex = tempPost.findIndex(post => post.id == action.data.postId);
+            if (postIndex !== -1) {
+                tempPost = [...tempPost.slice(0, postIndex), ...tempPost.slice(postIndex + 1)]
+            }
+            return { ...state, posts: tempPost }
         default:
             return state;
     }

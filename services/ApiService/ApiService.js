@@ -47,5 +47,11 @@ export default {
     },
     setCreatePostUploadPercent: data => {
         store.dispatch({ type: 'SET_CREATE_POST_UPLOAD_PERCENT', data })
+    },
+    deletePost: data => {
+        store.dispatch({ type: "DELETE_POST", data })
+    },
+    updatePost: data => {
+        store.dispatch({ type: "UPDATE_POST", data })
     }
 }

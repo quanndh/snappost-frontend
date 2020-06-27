@@ -162,7 +162,7 @@ function Header({ user }) {
 		<div className={classes.grow} style={{
 			position: "fixed",
 			width: "100%",
-			zIndex: 9998,
+			zIndex: 999,
 		}}>
 			<AppBar position="static">
 				<Grid container>

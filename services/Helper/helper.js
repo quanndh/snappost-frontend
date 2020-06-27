@@ -26,7 +26,11 @@ export default {
     },
 
     activateToast: (type, message) => {
-        toast[type](message)
+        if (type == "default") {
+            toast(message);
+        } else {
+            toast[type](message)
+        }
     },
 
     formatMention: (string, mentions) => {

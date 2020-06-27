@@ -46,5 +46,11 @@ export default {
     },
     sharePost: data => {
         return request("/post/share", data, "POST")
+    },
+    deletePost: data => {
+        return request("/post/delete", data, "DELETE")
+    },
+    updatePost: data => {
+        return request("/post/edit", data, "PATCH")
     }
 };

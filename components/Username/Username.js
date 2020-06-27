@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import UserInfoTooltip from '../UserInfoTooltip/UserInfoTooltip';
 import Grow from '@material-ui/core/Grow';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
-import { Paper } from '@material-ui/core';
 import DataService from '../../network/DataService';
 import Router from 'next/router';;
 

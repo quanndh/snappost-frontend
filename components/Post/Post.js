@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Avatar, Typography, Button, Link } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Paper, Avatar, Typography, Button, Link, ClickAwayListener, IconButton } from '@material-ui/core';
 import Helper from '../../services/Helper/helper';
 import ImageGallery from '../ImageGallery';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -17,15 +16,36 @@ import ApiService from '../../services/ApiService/ApiService';
 import CommentParent from '../CommentParent/CommentParent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SharePostModal from '../SharePostModal/SharePostModal';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import EditPostModal from '../EditPostModal/EditPostModal';
 
 const Post = (props) => {
 
     const { data, user, sharing } = props;
 
+    if (!data) {
+        return (
+            <div className="post-container">
+                <div className="post-text" style={{ display: 'flex', alignItems: 'center' }}>
+                    This post is not exist anymore  <SentimentVeryDissatisfiedIcon />
+                </div>
+            </div>
+        )
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false)
+
     const [isLike, setIsLike] = useState(data.isLike);
     const [showComment, setShowComment] = useState(false);
     const [loadComment, setLoadComment] = useState(true);
     const [showShare, setShowShare] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
     const toggleLike = async () => {
         setIsLike(!isLike)
@@ -49,13 +69,31 @@ const Post = (props) => {
         }
     }
 
-
-    if (!data) {
-        return null;
+    const handleDeletePost = async () => {
+        await DataService.deletePost({ id: data.id })
+        ApiService.deletePost({ postId: data.id })
     }
 
     return (
         <>
+            <EditPostModal data={data} user={user} open={showEdit} handleClose={() => setShowEdit(false)} />
+            <Dialog
+                open={deleteModal}
+                onClose={() => setDeleteModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">This post will be deleted ?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => setDeleteModal(false)} color="secondary">
+                        Cancel
+                     </Button>
+                    <Button onClick={handleDeletePost} color="primary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <SharePostModal user={user} open={showShare} sharedPost={data} handleClose={() => setShowShare(false)} />
             <Paper elevation={0} className="post-container">
                 <div className="post-header">
@@ -67,7 +105,27 @@ const Post = (props) => {
                                 <p style={{ marginTop: 8 }}>{Helper.formatCreatedTime(data.created_at)}</p>
                             </div>
                         </div>
-                        {!sharing ? <MoreVertIcon /> : null}
+                        {
+                            !sharing ? (
+                                <div>
+                                    <CustomTooltip title="Edit">
+                                        <IconButton
+                                            onClick={() => setShowEdit(true)} >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </CustomTooltip>
+
+                                    <CustomTooltip title="Delete">
+                                        <IconButton
+                                            onClick={() => setDeleteModal(true)}
+                                        >
+                                            <DeleteForeverIcon />
+                                        </IconButton>
+                                    </CustomTooltip>
+
+                                </div>
+                            ) : null
+                        }
 
                     </div>
 

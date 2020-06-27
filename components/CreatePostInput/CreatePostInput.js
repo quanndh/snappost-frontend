@@ -168,7 +168,7 @@ const CreatePostInput = (props) => {
                     type="file"
                     onChange={hanldeUpload}
                 />
-                <div className="create-post-container" onClick={handleOpenCreate}>
+                <div className="create-post-container" onClick={!isShare ? handleOpenCreate : null}>
                     <div className="create-post-body">
                         <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
 
@@ -177,7 +177,7 @@ const CreatePostInput = (props) => {
                             <div className="create-post-text" style={{ width: "80%" }}>
                                 <div onClick={focus}>
                                     <Editor
-                                        readOnly={!showCreatePost}
+                                        readOnly={!isShare ? !showCreatePost : false}
                                         editorState={content}
                                         onChange={onChange}
                                         plugins={plugins}
@@ -248,20 +248,20 @@ const CreatePostInput = (props) => {
                                     </div>
                                 </label>
 
-                                <div className="create-post-option-item">
+                                {/* <div className="create-post-option-item">
                                     <AssignmentIndIcon />
                                     <span>Tag friend</span>
                                 </div>
                                 <div className="create-post-option-item">
                                     <GifIcon style={{ fontSize: 44 }} />
                                     <span>Import GIF</span>
-                                </div>
+                                </div> */}
                             </div>
                         ) : null
                     }
 
                     {
-                        showCreatePost && (
+                        showCreatePost || isShare && (
                             <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
                                 <Button
                                     color="primary"
