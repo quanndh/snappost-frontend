@@ -143,7 +143,6 @@ const CreatePostInput = (props) => {
             setUpload([])
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
-            ApiService.toggleCreatePost();
             handleCloseShare();
             ApiService.setPostTotalShare({ postId: sharedPost })
             ApiService.setNewFeed([rs.data])
