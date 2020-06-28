@@ -126,7 +126,7 @@ const CreatePostInput = (props) => {
             setMarkupContent("<p></p>")
             setContent(() => EditorState.createWithContent(emptyContentState))
             ApiService.toggleCreatePost();
-            ApiService.setNewFeed([rs.data])
+            ApiService.setNewFeed({ data: [rs.data], newPost: true })
         }
     }
 
@@ -143,7 +143,7 @@ const CreatePostInput = (props) => {
             setContent(() => EditorState.createWithContent(emptyContentState))
             handleCloseShare();
             ApiService.setPostTotalShare({ postId: sharedPost })
-            ApiService.setNewFeed([rs.data])
+            ApiService.setNewFeed({ data: [rs.data], newPost: true })
         }
     }
 
@@ -258,7 +258,7 @@ const CreatePostInput = (props) => {
                     }
 
                     {
-                        showCreatePost || isShare && (
+                        showCreatePost || isShare ? (
                             <div style={{ margin: "0 16px", width: "95%", marginBottom: 20, marginTop: 20 }}>
                                 <Button
                                     color="primary"
@@ -270,7 +270,7 @@ const CreatePostInput = (props) => {
                                     {isShare ? "Resnap" : "Snap"}
                                 </Button>
                             </div>
-                        )
+                        ) : null
                     }
                 </div>
             </Paper >

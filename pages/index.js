@@ -8,17 +8,34 @@ import AuthComponent from '../components/AuthComponent/AuthComponent';
 import DataService from '../network/DataService';
 import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const Index = ({ posts }) => {
 
+	const [loadMore, setLoadMore] = useState(true);
+
 	const getNewFeedPost = async () => {
-		let rs = await DataService.getPost({ limit: 3, skip: 0 });
-		ApiService.setNewFeed(rs.data)
+		if (loadMore) {
+			let rs = await DataService.getPost({ limit: 3, skip: posts?.length });
+			ApiService.setNewFeed({ data: rs.data, newPost: false })
+			setLoadMore(false)
+		}
+
 	}
 
 	useEffect(() => {
 		getNewFeedPost()
-	}, []);
+
+		window.addEventListener("scroll", () => {
+			if (document.body.clientHeight - window.scrollY - window.innerHeight < 100) {
+				setLoadMore(true)
+			}
+		})
+
+		return () => {
+			window.removeEventListener("scroll", () => { })
+		}
+	}, [loadMore]);
 
 	return (
 		<div>
@@ -27,7 +44,7 @@ const Index = ({ posts }) => {
 					<Grid item xs={12} md={2} className="newfeed-left">
 						<SideMenu />
 					</Grid>
-					<Grid item xs={12} md={7} className="newfeed-right">
+					<Grid item xs={12} md={7} className="newfeed-right" >
 						<CreatePostInput style={{ zIndex: 4 }} />
 						{
 							posts && posts?.length > 0 ? posts.map(post => {
@@ -37,7 +54,7 @@ const Index = ({ posts }) => {
 					</Grid>
 				</Grid>
 			</Container>
-		</div>
+		</div >
 	);
 }
 
