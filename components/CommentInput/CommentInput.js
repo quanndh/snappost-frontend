@@ -130,7 +130,7 @@ const CommentInput = (props) => {
     const hanldeKeyUp = e => {
         if (!e.shiftKey) {
             if (e.keyCode == 13) {
-                if (upload.length > 0 || markupContent != "<p></p>") {
+                if (upload.length > 0 || markupContent.trim() != "<p></p>") {
                     handleCreateComment()
                 }
             }

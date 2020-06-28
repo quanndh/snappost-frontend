@@ -53,5 +53,11 @@ export default {
     },
     updatePost: data => {
         store.dispatch({ type: "UPDATE_POST", data })
+    },
+    deleteComment: data => {
+        store.dispatch({ type: "DELETE_COMMENT", data })
+    },
+    deleteCommentChild: data => {
+        store.dispatch({ type: "DELETE_COMMENT_CHILD", data })
     }
 }

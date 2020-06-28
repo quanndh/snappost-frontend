@@ -4,13 +4,19 @@ import Username from '../Username/Username';
 import Helper from '../../services/Helper/helper';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
-import { Paper } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ApiService from '../../services/ApiService/ApiService';
 import DataService from '../../network/DataService';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import helper from '../../services/Helper/helper';
 
 const CommentChild = ({ data, postId, user }) => {
+
     const [isLike, setIsLike] = useState(data.isLike);
+    const [deleteModal, setDeleteModal] = useState(false)
 
     const toggleLike = async () => {
         setIsLike(!isLike)
@@ -18,8 +24,30 @@ const CommentChild = ({ data, postId, user }) => {
         await DataService.toggleLikeComment({ commentId: data.id })
     }
 
+    const handleDeleteComment = async () => {
+        let rs = await DataService.deleteComment({ commentId: data.id })
+        ApiService.deleteCommentChild({ postId, commentId: data.id, parent: data.parent })
+        helper.activateToast("default", rs.message)
+    }
+
     return (
         <>
+            <Dialog
+                open={deleteModal}
+                onClose={() => setDeleteModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">This reply will be deleted ?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => setDeleteModal(false)} color="secondary">
+                        Cancel
+                     </Button>
+                    <Button onClick={handleDeleteComment} color="primary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div className="comment" key={"reply" + data.id}>
                 <div style={{ width: "7%" }}>
                     <Avatar className="avatar" src={data.user.avatar} />
@@ -50,6 +78,9 @@ const CommentChild = ({ data, postId, user }) => {
             <div className="comment-action">
                 <div onClick={toggleLike} >
                     <span className={classNames({ "like": isLike })}>Like</span>
+                </div>
+                <div onClick={() => setDeleteModal(true)} >
+                    <span>Delete</span>
                 </div>
             </div>
         </>

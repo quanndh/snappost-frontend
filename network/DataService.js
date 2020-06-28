@@ -52,5 +52,8 @@ export default {
     },
     updatePost: data => {
         return request("/post/edit", data, "PATCH")
+    },
+    deleteComment: data => {
+        return request("/comment/delete", data, "DELETE")
     }
 };

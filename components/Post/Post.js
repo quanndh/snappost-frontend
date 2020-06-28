@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, Avatar, Button, IconButton } from '@material-ui/core';
 import Helper from '../../services/Helper/helper';
 import ImageGallery from '../ImageGallery';
@@ -40,7 +40,7 @@ const Post = (props) => {
     }
 
     const [deleteModal, setDeleteModal] = useState(false)
-
+    const [loadMoreComment, setLoadMoreComment] = useState(false)
     const [isLike, setIsLike] = useState(data.isLike);
     const [showComment, setShowComment] = useState(false);
     const [loadComment, setLoadComment] = useState(true);
@@ -53,19 +53,22 @@ const Post = (props) => {
         await DataService.toggleLikePost({ postId: data.id })
     }
 
+    useEffect(() => {
+        handleShowComment()
+    }, [loadMoreComment])
+
     const handleShowComment = async () => {
-        if (!showComment) {
+        if (loadMoreComment) {
             setShowComment(true)
             setLoadComment(true)
             let rs = await DataService.getParentComment({
                 postId: data.id,
                 skip: data?.comments.length,
-                limit: 3
+                limit: 10
             });
             setLoadComment(false)
+            setLoadMoreComment(false)
             ApiService.setCommentForPost({ postId: data.id, data: rs.data })
-        } else {
-            setShowComment(false)
         }
     }
 
@@ -186,7 +189,7 @@ const Post = (props) => {
                                     }
                                     <span className={classNames({ "like": isLike })}>Like</span>
                                 </div>
-                                <div className="primary-button" onClick={handleShowComment}>
+                                <div className="primary-button" onClick={() => setLoadMoreComment(true)}>
                                     <ChatBubbleOutlineOutlinedIcon />
                                     <span>Comment</span>
                                 </div>
@@ -199,23 +202,29 @@ const Post = (props) => {
                                 showComment && (
                                     <div className="post-comment-container">
                                         {
+                                            (data.totalComment - data.totalReplyComment) > data.comments.length ? (
+                                                <div className="more">
+                                                    <span onClick={() => setLoadMoreComment(true)}>Read {(data.totalComment - data.totalReplyComment) - data.comments.length} more {(data.totalComment - data.totalReplyComment) - data.comments.length > 1 ? "comments" : "comment"}</span>
+                                                </div>
+                                            ) : null
+                                        }
+                                        {
                                             loadComment ? (
                                                 <div style={{ width: '100%', display: 'flex', justifyContent: "center" }}>
                                                     <CircularProgress />
                                                 </div>
-                                            ) : (
-                                                    <>
-                                                        {
-                                                            data?.comments?.length > 0 ? (
-                                                                data.comments.map(comment => {
-                                                                    return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
-                                                                })
-                                                            ) : null
-                                                        }
-                                                        <CommentInput user={user} postId={data.id} />
-                                                    </>
-                                                )
+                                            ) : null
                                         }
+                                        <>
+                                            {
+                                                data?.comments?.length > 0 ? (
+                                                    data.comments.map(comment => {
+                                                        return <CommentParent user={user} postId={data.id} key={"comment" + comment.id} data={comment} />
+                                                    })
+                                                ) : null
+                                            }
+                                            <CommentInput user={user} postId={data.id} />
+                                        </>
                                     </div>
                                 )
                             }

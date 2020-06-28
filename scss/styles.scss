@@ -114,6 +114,19 @@ html, body, .root{
             .post-comment-container {
                 width: 100%;
 
+                .more {
+                    margin-bottom: 16px;
+                    span {
+                        font-weight: 600;
+                        color: $main-color;
+                        cursor: pointer;
+                    }
+
+                    span:hover {
+                        text-decoration: underline;
+                    }
+                }
+
                 .comment-container{
                     display: flex;
                     flex-wrap: wrap;
@@ -206,6 +219,11 @@ html, body, .root{
                         flex-wrap: wrap;
                         align-items: flex-end;
                         margin-bottom: 8px;
+
+                        .more {
+                            margin-top: 10px;
+                            align-self: flex-start;
+                        }
                         
                         .comment {
                             width: 100%;
