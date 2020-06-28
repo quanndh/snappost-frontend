@@ -25,6 +25,11 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
 import { connect } from 'react-redux';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Router from 'next/router';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 
 const useStyles = makeStyles(theme => ({
 	grow: {
@@ -98,7 +103,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Header({ user }) {
+function Header({ user, toggleDarkMood, isDark }) {
 	const classes = useStyles();
 
 	const [openMore, setOpenMore] = React.useState(false);
@@ -234,8 +239,7 @@ function Header({ user }) {
 															<MenuItem onClick={handleClose} style={{ display: 'flex', alignItems: "center" }}>
 																<Avatar alt={user.firstName} src={user.avatar} style={{ fontSize: 50, marginRight: 8 }} />
 																<div>
-																	<Typography variant="h5">Quan Nguyen</Typography>
-																	<Typography variant="subtitile1">@quannguyen</Typography>
+																	<Typography variant="h5">{user.firstName + user.lastName}</Typography>
 																</div>
 															</MenuItem>
 															<Divider />
@@ -281,17 +285,33 @@ function Header({ user }) {
 												<Paper style={{ minWidth: 350, minHeight: 200 }}>
 													<ClickAwayListener onClickAway={handleClose}>
 														<MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
-															<Link href={`/profile/${user.id}`}>
-																<MenuItem style={{ display: 'flex', alignItems: "center" }}>
-																	<Avatar alt={user.firstName} src={user.avatar} style={{ fontSize: 50, marginRight: 8 }} />
-																	<div>
-																		<Typography variant="h5">{user.firstName} {user.lastName}</Typography>
-																		<Typography variant="subtitle1">@quannguyen</Typography>
-																	</div>
-																</MenuItem>
-															</Link>
+															<MenuItem onClick={() => Router.push(`/profile/${user.id}`)} style={{ display: 'flex', alignItems: "center" }}>
+																<Avatar alt={user.firstName} src={user.avatar} style={{ fontSize: 50, marginRight: 8 }} />
+																<div>
+																	<Typography variant="h5">{user.firstName} {user.lastName}</Typography>
+																</div>
+															</MenuItem>
 
 															<Divider />
+															<MenuItem style={{ marginTop: 12 }}>
+																<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+																	<Brightness7Icon color="action" fontSize="large" />
+																	<FormControlLabel
+																		style={{ margin: 0 }}
+																		control={
+																			<Switch
+																				checked={isDark}
+																				onChange={() => {
+																					toggleDarkMood();
+																					localStorage.setItem("isDark", JSON.stringify(event.target.checked))
+																				}}
+																				color="primary"
+																			/>
+																		}
+																	/>
+																	<Brightness4Icon color="action" fontSize="large" />
+																</div>
+															</MenuItem>
 															<MenuItem style={{ marginTop: 12 }}>
 																<SettingsIcon color="action" fontSize="large" style={{ marginRight: 8 }} />
 																<Typography variant="subtitle1">Setting</Typography>

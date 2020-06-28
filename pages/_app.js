@@ -18,14 +18,6 @@ import ApiService from '../services/ApiService/ApiService';
 import { connect, useSelector } from "react-redux";
 import { Paper } from '@material-ui/core';
 
-const theme = createMuiTheme({
-	palette: {
-		primary: { main: "#1e88e5" },
-		type: 'dark'
-	},
-
-});
-
 Router.events.on('routeChangeStart', url => {
 	console.log(`Loading: ${url}`);
 	NProgress.start()
@@ -41,6 +33,7 @@ export default function MyApp({ Component, pageProps }) {
 	let router = useRouter();
 
 	let [pathname, setPathname] = useState(router.pathname);
+	const [isDark, setIsDark] = useState(false)
 
 	useEffect(() => {
 		setPathname(router.pathname)
@@ -55,13 +48,23 @@ export default function MyApp({ Component, pageProps }) {
 			Router.push('/auth')
 		}
 
+		setIsDark(JSON.parse(localStorage.getItem('isDark')));
+
 	}, [router.pathname])
 
-	const header = () => {
-		if (pathname !== "/auth") {
-			return <Header />
-		} else return null
-	}
+
+	const theme = createMuiTheme({
+		palette: {
+			primary: { main: "#1e88e5" },
+			type: isDark ? "dark" : "light"
+		},
+	});
+
+	// const header = () => {
+	// 	if (pathname !== "/auth") {
+	// 		return
+	// 	} else return null
+	// }
 
 	const body = () => {
 
@@ -88,7 +91,9 @@ export default function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
-				{header()}
+				{
+					pathname != "auth" ? <Header isDark={isDark} toggleDarkMood={() => { setIsDark(!isDark); }} /> : null
+				}
 				{body()}
 				<ToastContainer
 					pauseOnFocusLoss={false}

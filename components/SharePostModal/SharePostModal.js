@@ -6,7 +6,7 @@ import Post from '../Post/Post';
 
 const SharePostModal = ({ open, handleClose, sharedPost, user }) => {
 
-    if (sharedPost.isShare && !sharedPost.sharedPost) {
+    if (sharedPost.isShared && !sharedPost.sharedPost) {
         return null;
     } else {
         return (

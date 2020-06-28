@@ -26,8 +26,13 @@ export default {
     },
 
     activateToast: (type, message) => {
+        let isDark = JSON.parse(localStorage.getItem('isDark'))
         if (type == "default") {
-            toast(message);
+            if (isDark) {
+                toast['dark'](message);
+            } else {
+                toast(message);
+            }
         } else {
             toast[type](message)
         }

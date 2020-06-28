@@ -70,8 +70,9 @@ const Post = (props) => {
     }
 
     const handleDeletePost = async () => {
-        await DataService.deletePost({ id: data.id })
+        let rs = await DataService.deletePost({ id: data.id })
         ApiService.deletePost({ postId: data.id })
+        Helper.activateToast("default", rs.message)
     }
 
     return (
