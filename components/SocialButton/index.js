@@ -30,6 +30,10 @@ const SocialButton = () => {
         }
     }
 
+    const googleFail = (response) => {
+        console.log(response)
+    }
+
     const responseGoogle = async (response) => {
         let { name, email, googleId, imageUrl } = response.profileObj;
         const user = {
@@ -69,10 +73,11 @@ const SocialButton = () => {
             />
 
             <GoogleLogin
+                autoLoad={false}
                 clientId={GoogleClientId}
                 buttonText="Login with Google"
                 onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onFailure={googleFail}
                 cookiePolicy={'single_host_origin'}
                 render={renderProps => (
                     <Button
