@@ -13,6 +13,14 @@ hr {
 
 .container-content {
   width: 100%;
-  // background-color: $bg-color-newfeed;
+  background-color: $bg-color-newfeed;
+  height: 100%;
+  position: relative;
+}
 
+.container-content-dark {
+  width: 100%;
+  background-color: $bg-color-newfeed-dark;
+  height: 100%;
+  position: relative;
 }

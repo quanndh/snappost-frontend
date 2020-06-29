@@ -99,8 +99,8 @@ const Post = (props) => {
             </Dialog>
 
             <SharePostModal user={user} open={showShare} sharedPost={data} handleClose={() => setShowShare(false)} />
-            <Paper elevation={3} className="post-container">
-                <div className="post-header">
+            <Paper elevation={!sharing ? 3 : 6} className="post-container">
+                <div className="post-header" style={sharing ? { padding: 12 } : {}}>
                     <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ display: 'flex' }}>
                             <Avatar className="avatar" src={data.postBy.avatar} />

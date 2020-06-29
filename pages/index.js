@@ -9,7 +9,7 @@ import DataService from '../network/DataService';
 import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
 
-const Index = ({ posts }) => {
+const Index = ({ posts, isDark }) => {
 
 	const [loadMore, setLoadMore] = useState(true);
 
@@ -37,7 +37,7 @@ const Index = ({ posts }) => {
 	}, [loadMore]);
 
 	return (
-		<div>
+		<div style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }}>
 			<Container fixed className="newfeed-root">
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={2} className="newfeed-left">
@@ -59,7 +59,8 @@ const Index = ({ posts }) => {
 
 const mapStateToProps = state => {
 	return {
-		posts: state.newFeedReducer.posts
+		posts: state.newFeedReducer.posts,
+		isDark: state.uiReducer.isDark
 	}
 }
 

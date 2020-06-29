@@ -15,6 +15,7 @@ import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import { Paper } from '@material-ui/core';
+import { connect } from "react-redux";
 
 const StyledBadge = withStyles((theme) => ({
     badge: {
@@ -90,7 +91,7 @@ const People = (props) => {
     )
 }
 
-const ContactBar = () => {
+const ContactBar = ({ isDark }) => {
 
     const data = [
         { name: "quan" },
@@ -129,7 +130,7 @@ const ContactBar = () => {
     })) : null
 
     return (
-        <Paper className="contact-bar-container" id="contactBar">
+        <Paper style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }} className="contact-bar-container" id="contactBar">
             <List className="contact-bar-people">
                 {
                     renderListContact
@@ -154,4 +155,10 @@ const ContactBar = () => {
     )
 }
 
-export default ContactBar;
+const mapStateToProps = state => {
+    return {
+        isDark: state.uiReducer.isDark
+    }
+}
+
+export default connect(mapStateToProps)(ContactBar);

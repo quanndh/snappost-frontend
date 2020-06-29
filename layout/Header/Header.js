@@ -30,6 +30,7 @@ import Switch from '@material-ui/core/Switch';
 import Router from 'next/router';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
+import ApiService from '../../services/ApiService/ApiService';
 
 const useStyles = makeStyles(theme => ({
 	grow: {
@@ -303,7 +304,7 @@ function Header({ user, toggleDarkMood, isDark }) {
 																				checked={isDark}
 																				onChange={() => {
 																					toggleDarkMood();
-																					localStorage.setItem("isDark", JSON.stringify(event.target.checked))
+																					ApiService.toggleDarkMood({ isDark: event.target.checked });
 																				}}
 																				color="primary"
 																			/>

@@ -60,41 +60,33 @@ export default function MyApp({ Component, pageProps }) {
 		},
 	});
 
-	// const header = () => {
-	// 	if (pathname !== "/auth") {
-	// 		return
-	// 	} else return null
-	// }
-
-	const body = () => {
-
-		if (pathname !== "/auth") {
-			return (
-				<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
-					<Grid item xs={10}>
-						<Paper>
-							<LightOff />
-							<Component {...pageProps} />
-							<ChatContainer />
-						</Paper>
-					</Grid>
-					<Grid item xs={2} style={{ zIndex: 1, position: "relative" }}>
-						<ContactBar />
-					</Grid>
-				</Grid>
-			)
-		} else {
-			return <Component {...pageProps} />
-		}
-	}
-
 	return (
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
 				{
-					pathname != "/auth" ? <Header isDark={isDark} toggleDarkMood={() => { setIsDark(!isDark); }} /> : null
+					pathname != "/auth" ? <Header isDark={isDark} toggleDarkMood={() => {
+						setIsDark(!isDark);
+					}} /> : null
 				}
-				{body()}
+
+				{
+					pathname !== "/auth" ? (
+						<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
+							<Grid item xs={10} >
+								<Paper>
+									<LightOff />
+									<Component {...pageProps} />
+									<ChatContainer />
+								</Paper>
+							</Grid>
+							<Grid item xs={2} style={{ zIndex: 1, position: "relative" }}>
+								<ContactBar />
+							</Grid>
+						</Grid>
+					) : (
+							<Component {...pageProps} />
+						)
+				}
 				<ToastContainer
 					pauseOnFocusLoss={false}
 					autoClose={3000}
