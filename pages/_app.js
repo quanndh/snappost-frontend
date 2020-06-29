@@ -92,7 +92,7 @@ export default function MyApp({ Component, pageProps }) {
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
 				{
-					pathname != "auth" ? <Header isDark={isDark} toggleDarkMood={() => { setIsDark(!isDark); }} /> : null
+					pathname != "/auth" ? <Header isDark={isDark} toggleDarkMood={() => { setIsDark(!isDark); }} /> : null
 				}
 				{body()}
 				<ToastContainer

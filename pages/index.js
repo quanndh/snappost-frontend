@@ -8,7 +8,6 @@ import AuthComponent from '../components/AuthComponent/AuthComponent';
 import DataService from '../network/DataService';
 import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
-import InfiniteScroll from 'react-infinite-scroller';
 
 const Index = ({ posts }) => {
 
