@@ -14,11 +14,12 @@ const SocialButton = () => {
     const responseFacebook = async (response) => {
         console.log(response)
         const { name, email, userID, picture } = response;
+        let avatar = picture.data.url;
         const user = {
             name,
             email,
             id: userID,
-            avatar: picture.data.url,
+            avatar,
             type: "facebook"
         }
         let rs = await DataService.loginSocialNetwork(user);

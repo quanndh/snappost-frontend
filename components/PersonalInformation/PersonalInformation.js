@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -11,17 +11,45 @@ import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
+import DataService from '../../network/DataService';
+import helper from '../../services/Helper/helper';
+import ApiService from '../../services/ApiService/ApiService';
 
-
-const PersonalInformation = ({ profile }) => {
+const PersonalInformation = ({ company, school, currentLocation, bornIn, handleUpdateUserCB }) => {
 
     const [openEdit, setOpenEdit] = useState(false)
+
     const [info, setInfo] = useState({
-        company: profile?.company,
-        school: profile?.school,
-        currentLocation: profile?.currentLocation,
-        bornIn: profile?.bornIn
+        company: company,
+        school: school,
+        currentLocation: currentLocation,
+        bornIn: bornIn
     })
+
+    useEffect(() => {
+        setInfo({
+            company: company,
+            school: school,
+            currentLocation: currentLocation,
+            bornIn: bornIn
+        })
+    }, [])
+
+    const handleChange = (e) => {
+        let temp = { ...info };
+        temp[e.target.name] = e.target.value;
+        setInfo(temp)
+    }
+
+    const handleUpdateUser = async () => {
+        let rs = await DataService.updateUserInfo({ ...info })
+        if (rs.code == 0) {
+            setOpenEdit(false);
+            handleUpdateUserCB({ ...info })
+            ApiService.setUserInfoOnly(rs.data);
+            helper.activateToast("default", rs.message);
+        }
+    }
 
     return (
         <>
@@ -31,8 +59,10 @@ const PersonalInformation = ({ profile }) => {
                     <FormControl style={{ marginBottom: 16 }} fullWidth variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-amount">Company</InputLabel>
                         <OutlinedInput
+                            controls
                             value={info?.company}
-                            onChange={null}
+                            name="company"
+                            onChange={handleChange}
                             startAdornment={<InputAdornment position="start"><WorkOutlineOutlinedIcon /></InputAdornment>}
                             labelWidth={60}
                         />
@@ -40,8 +70,10 @@ const PersonalInformation = ({ profile }) => {
                     <FormControl style={{ marginBottom: 16 }} fullWidth variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-amount">School</InputLabel>
                         <OutlinedInput
+                            controls
                             value={info?.school}
-                            onChange={null}
+                            name="school"
+                            onChange={handleChange}
                             startAdornment={<InputAdornment position="start"><SchoolOutlinedIcon /></InputAdornment>}
                             labelWidth={60}
                         />
@@ -49,8 +81,10 @@ const PersonalInformation = ({ profile }) => {
                     <FormControl style={{ marginBottom: 16 }} fullWidth variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-amount">Current location</InputLabel>
                         <OutlinedInput
+                            controls
                             value={info?.currentLocation}
-                            onChange={null}
+                            name="currentLocation"
+                            onChange={handleChange}
                             startAdornment={<InputAdornment position="start"><HomeOutlinedIcon /></InputAdornment>}
                             labelWidth={60}
                         />
@@ -58,54 +92,56 @@ const PersonalInformation = ({ profile }) => {
                     <FormControl style={{ marginBottom: 16 }} fullWidth variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-amount">Borned in</InputLabel>
                         <OutlinedInput
+                            controls
                             value={info?.bornIn}
-                            onChange={null}
+                            name="bornIn"
+                            onChange={handleChange}
                             startAdornment={<InputAdornment position="start"><RoomOutlinedIcon /></InputAdornment>}
                             labelWidth={60}
                         />
                     </FormControl>
-                    <Button style={{ marginBottom: 16 }} color="primary" fullWidth variant="contained">Save</Button>
+                    <Button onClick={handleUpdateUser} style={{ marginBottom: 16 }} color="primary" fullWidth variant="contained">Save</Button>
                 </DialogContent>
             </Dialog>
             <Paper elevation={0} className="personal-information-container">
                 {
-                    !info?.company && !info?.school && !info?.currentLocation && !info?.bornIn ? (
+                    !company && !school && !currentLocation && !bornIn ? (
                         <Typography variant="subtitle1" align="center">Fill in so more people can recognize you.</Typography>
                     ) : null
                 }
                 {
-                    info?.company ? (
+                    company ? (
                         <div>
                             <WorkOutlineOutlinedIcon />
-                            <p>Working at {info?.company}</p>
+                            <p>{company}</p>
                         </div>
                     ) : null
                 }
 
                 {
-                    info?.school ? (
+                    school ? (
                         <div>
                             <SchoolOutlinedIcon />
-                            <p>Graduated at {info?.school}</p>
+                            <p>{school}</p>
                         </div>
                     ) : null
                 }
 
 
                 {
-                    info?.currentLocation ? (
+                    currentLocation ? (
                         <div>
                             <HomeOutlinedIcon />
-                            <p>Currently living in {info?.currentLocation}</p>
+                            <p>{currentLocation}</p>
                         </div>
                     ) : null
                 }
 
                 {
-                    info?.bornIn ? (
+                    bornIn ? (
                         <div>
                             <RoomOutlinedIcon />
-                            <p>Borned in {info?.bornIn}</p>
+                            <p>{bornIn}</p>
                         </div>
                     ) : null
                 }

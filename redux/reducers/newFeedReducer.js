@@ -28,7 +28,6 @@ const newFeedReducer = (state = initialState, action) => {
                     })
                 }
             }
-
             return { ...state, posts: tempPost }
         case "SET_COMMENT_REPLY":
             postIndex = tempPost.findIndex(post => post.id == action.data.postId);

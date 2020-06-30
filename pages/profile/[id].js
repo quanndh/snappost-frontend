@@ -29,7 +29,6 @@ const Profile = ({ posts, isMore }) => {
     const getNewFeedPost = async () => {
         if (loadMore && isMore) {
             setIsLoading(true)
-            console.log(id, 111)
             let rs = await DataService.getPost({ limit: 3, skip: posts?.length, userId: id });
             setIsLoading(false)
             ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
@@ -60,22 +59,30 @@ const Profile = ({ posts, isMore }) => {
         }
     }, [loadMore]);
 
+    const handleUpdateUser = object => {
+        let tempUser = { ...profile };
+        for (let i in object) {
+            tempUser[i] = object[i];
+        }
+        setProfile(tempUser);
+    }
+
     return (
         <Container className="profile-container" maxWidth="lg">
             <Paper className="profile-header">
                 {
-                    profile.wallImage ? (
+                    profile?.wallImage ? (
                         <img src={profile.wallImage} className="profile-wall-pic" />
                     ) : (
                             <div className="profile-wall-pic" />
                         )
                 }
                 <div className="profile-user">
-                    <img src={profile.avatar} className="profile-avatar" />
+                    <img src={profile?.avatar} className="profile-avatar" />
                     <Paper elevation={0}>
-                        <Typography variant="h4">{profile.firstName + " " + profile.lastName}</Typography>
+                        <Typography variant="h4">{profile?.firstName + " " + profile?.lastName}</Typography>
                         {
-                            profile.nickname ? <Typography variant="h5">({profile.nickname})</Typography> : null
+                            profile?.nickname ? <Typography variant="h5">({profile?.nickname})</Typography> : null
                         }
 
                     </Paper>
@@ -94,7 +101,18 @@ const Profile = ({ posts, isMore }) => {
                 <Grid item xs={5}>
                     <Paper elevation={3} className="profile-description">
                         <PersonalDescription />
-                        <PersonalInformation profile={profile} />
+                        {
+                            Object.keys(profile).length > 0 ? (
+                                <PersonalInformation
+                                    school={profile?.school}
+                                    company={profile?.company}
+                                    currentLocation={profile?.currentLocation}
+                                    bornIn={profile?.bornIn}
+                                    handleUpdateUserCB={handleUpdateUser}
+                                />
+                            ) : null
+                        }
+
                     </Paper>
                 </Grid>
                 <Grid item xs={7}>
@@ -110,7 +128,6 @@ const Profile = ({ posts, isMore }) => {
                                 <Post loading={true} style={{ zIndex: 3 }} />
                                 <Post loading={true} style={{ zIndex: 3 }} />
                                 <Post loading={true} style={{ zIndex: 3 }} />
-
                             </>
                         ) : null
                     }

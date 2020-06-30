@@ -66,5 +66,9 @@ export default {
     toggleDarkMood: (data) => {
         store.dispatch({ type: "TOGGLE_DARK_MOOD" });
         localStorage.setItem("isDark", JSON.stringify(data.isDark))
+    },
+    setUserInfoOnly: data => {
+        localStorage.setItem("user", JSON.stringify(data))
+        store.dispatch({ type: "SET_USER_INFO_ONLY", data })
     }
 }
