@@ -1,7 +1,7 @@
 .profile-container {
-    margin-top: 80px;
     height: auto;
-
+    padding-top: 80px;
+    
     .profile-header{
         border-radius: $main-radius;
         width: 100%;
@@ -34,14 +34,11 @@
     .profile-nav-container{
         border-radius: 4px;
         width: 100%;
-        background-color: white;
         height: 60px;
         display: flex;
         justify-content: flex-end;
         padding: 0;
         margin-bottom: 16px;
-        border: $border;
-
 
         .profile-nav {
             width: 75%;
@@ -55,10 +52,11 @@
                 line-height: 60px;
                 width: 100%;
                 height: 100%;
-                border-left: $border;
-                color: $main-color;
                 cursor: pointer;
                 z-index: 2;
+                transition: 0.3s;
+                font-weight: 600;
+                font-size: 16px;
             }
 
             .profile-nav-item:hover{
@@ -73,12 +71,10 @@
 
         .profile-description {
             padding: 20px;
-            border: $border;
 
             .personal-description-container {
                 height: auto;
                 width: 100%;
-                border-bottom: $border;
                 padding-bottom: 16px;
                 margin-bottom: 16px;
             }
@@ -86,7 +82,6 @@
             .personal-information-container {
                 height: auto;
                 width: 100%;
-                border-bottom: $border;
                 padding-bottom: 16px;
                 margin-bottom: 16px;
 
@@ -99,22 +94,22 @@
                     }
                 }
 
-                button {
-                    border: $border;
-                    height: 40px;
-                    border-radius: $main-radius;
-                    width: 100%;
-                    cursor: pointer;
-                    font-weight: 600;
-                    font-size: 14px;
-                    outline: none;
-                    background-color: rgba(134, 133, 133, 0.15);
-                    transition: 0.2s ease-out;
-                }
+                // button {
+                //     border: $border;
+                //     height: 40px;
+                //     border-radius: $main-radius;
+                //     width: 100%;
+                //     cursor: pointer;
+                //     font-weight: 600;
+                //     font-size: 14px;
+                //     outline: none;
+                //     background-color: rgba(134, 133, 133, 0.15);
+                //     transition: 0.2s ease-out;
+                // }
 
-                button:hover {
-                    background-color: rgba(134, 133, 133, 0.25);
-                }
+                // button:hover {
+                //     background-color: rgba(134, 133, 133, 0.25);
+                // }
             }
         }
         

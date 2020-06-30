@@ -23,7 +23,9 @@ const PersonalDescription = () => {
                     <div>
                         <Typography variant="subtitle1" align="center">Create a short description for people to understand you.</Typography>
                         <br />
-                        <Typography onClick={() => setIsAddDescription(true)} variant="subtitle2" align="center" className="link">Add description</Typography>
+                        <div className="primary-button" onClick={() => setIsAddDescription(true)}>
+                            <span>Add description</span>
+                        </div>
                     </div>
                 ) : (
                         <div style={{ width: "100%", textAlign: "center", height: "auto" }}>

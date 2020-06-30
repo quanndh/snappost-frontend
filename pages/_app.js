@@ -79,7 +79,7 @@ export default function MyApp({ Component, pageProps }) {
 					pathname !== "/auth" ? (
 						<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
 							<Grid item xs={10} >
-								<Paper>
+								<Paper style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }}>
 									<LightOff />
 									<Component {...pageProps} />
 									<ChatContainer />

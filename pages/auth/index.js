@@ -6,7 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import SocialButton from '../../components/SocialButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import PublicComponent from '../../components/PublicComponent/PublicComponent';
+import { Paper } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 const loginSchema = Yup.object({
     loginEmail: Yup.string("Enter your email")
@@ -36,7 +37,7 @@ const loginInit = { loginEmail: "", loginPassword: "" }
 
 const signupInit = { firstName: "", lastName: "", email: "", password: "", phone: "" }
 
-const Login = () => {
+const Login = ({ isDark }) => {
 
     let [isLoginForm, setIsLoginForm] = useState(true);
 
@@ -61,7 +62,7 @@ const Login = () => {
     }
 
     return (
-        <Grid container className="login-container">
+        <Grid container className="login-container" style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE", color: isDark ? "white" : "black" }}>
             <Grid className="login-image-container" item xs={6} >
                 <img src="/static/assets/loginImage.png" />
             </Grid>
@@ -72,7 +73,7 @@ const Login = () => {
                 <br />
 
                 <div className="form-container">
-                    <Typography className="dashline" variant="subtitle1"><span>or</span></Typography>
+                    <Typography style={{ color: isDark ? "white" : "#bcbcbc" }} className={isDark ? "dashline-dark" : "dashline"} variant="subtitle1"><span>or</span></Typography>
                 </div>
 
                 <br />
@@ -85,4 +86,10 @@ const Login = () => {
     )
 }
 
-export default Login;
+const mapStateToProps = state => {
+    return {
+        isDark: state.uiReducer.isDark,
+    }
+}
+
+export default connect(mapStateToProps)(Login);

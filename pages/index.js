@@ -9,17 +9,17 @@ import DataService from '../network/DataService';
 import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
 
-const Index = ({ posts, isDark }) => {
+const Index = ({ posts, isDark, isMore }) => {
 
 	const [loadMore, setLoadMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false)
 
 	const getNewFeedPost = async () => {
-		if (loadMore) {
+		if (loadMore && isMore) {
 			setIsLoading(true)
 			let rs = await DataService.getPost({ limit: 3, skip: posts?.length });
 			setIsLoading(false)
-			ApiService.setNewFeed({ data: rs.data, newPost: false })
+			ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
 			setLoadMore(false)
 		}
 
@@ -73,7 +73,8 @@ const Index = ({ posts, isDark }) => {
 const mapStateToProps = state => {
 	return {
 		posts: state.newFeedReducer.posts,
-		isDark: state.uiReducer.isDark
+		isDark: state.uiReducer.isDark,
+		isMore: state.newFeedReducer.isMore
 	}
 }
 

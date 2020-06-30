@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import Container from '@material-ui/core/Container';
 import { Typography, Grid } from '@material-ui/core';
@@ -7,59 +7,124 @@ import PersonalDescription from '../../components/PersonalDescription/PersonalDe
 import Paper from '@material-ui/core/Paper';
 import PersonalInformation from '../../components/PersonalInformation/PersonalInformation';
 import Post from '../../components/Post/Post';
+import { connect } from 'react-redux';
 import AuthComponent from '../../components/AuthComponent/AuthComponent';
+import DataService from '../../network/DataService';
+import ApiService from '../../services/ApiService/ApiService';
 
-const Profile = (props) => {
+const Profile = ({ posts, isMore }) => {
 
     const router = useRouter()
     const { id } = router.query;
 
+    if (!id) {
+        return null
+    }
+
+    const [loadMore, setLoadMore] = useState(true);
+    const [isLoading, setIsLoading] = useState(false)
+    const [profile, setProfile] = useState({});
+    const [init, setInit] = useState(true)
+
+    const getNewFeedPost = async () => {
+        if (loadMore && isMore) {
+            setIsLoading(true)
+            console.log(id, 111)
+            let rs = await DataService.getPost({ limit: 3, skip: posts?.length, userId: id });
+            setIsLoading(false)
+            ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
+            setLoadMore(false)
+        }
+    }
+
+    const getUserInfo = async () => {
+        let rs = await DataService.getUserProfile({ userId: id })
+        setProfile(rs.data)
+    }
+
+    useEffect(() => {
+        if (init) {
+            getUserInfo()
+        }
+        getNewFeedPost()
+        window.addEventListener("scroll", () => {
+            if (document.body.clientHeight - window.scrollY - window.innerHeight < 100) {
+                setLoadMore(true)
+            }
+        })
+
+        setInit(false)
+
+        return () => {
+            window.removeEventListener("scroll", () => { })
+        }
+    }, [loadMore]);
+
     return (
         <Container className="profile-container" maxWidth="lg">
-            <div className="profile-header">
-                <img src="https://picsum.photos/700/800" className="profile-wall-pic" />
+            <Paper className="profile-header">
+                {
+                    profile.wallImage ? (
+                        <img src={profile.wallImage} className="profile-wall-pic" />
+                    ) : (
+                            <div className="profile-wall-pic" />
+                        )
+                }
                 <div className="profile-user">
-                    <img src="https://picsum.photos/200/200" className="profile-avatar" />
-                    <div>
-                        <Typography variant="h4">Quan Nguyen</Typography>
-                        <Typography variant="h5">(Ghê vl)</Typography>
-                    </div>
+                    <img src={profile.avatar} className="profile-avatar" />
+                    <Paper elevation={0}>
+                        <Typography variant="h4">{profile.firstName + " " + profile.lastName}</Typography>
+                        {
+                            profile.nickname ? <Typography variant="h5">({profile.nickname})</Typography> : null
+                        }
+
+                    </Paper>
                 </div>
-            </div>
-            <div className="profile-nav-container">
-                <div className="profile-nav">
-                    <Typography variant="h5" className="profile-nav-item">Timeline</Typography>
-                    <Typography variant="h5" className="profile-nav-item">Friend</Typography>
-                    <Typography variant="h5" className="profile-nav-item">Picture</Typography>
-                    <Typography variant="h5" className="profile-nav-item">Infor</Typography>
-                </div>
-            </div>
+            </Paper>
+            <Paper className="profile-nav-container">
+                <Paper elevation={0} className="profile-nav">
+                    <span className="profile-nav-item">Timeline</span>
+                    <span className="profile-nav-item">Friend</span>
+                    <span className="profile-nav-item">Picture</span>
+                    <span className="profile-nav-item">Infor</span>
+                </Paper>
+            </Paper>
 
             <Grid container spacing={3} className="profile-body">
                 <Grid item xs={5}>
-                    <Paper elevation={0} className="profile-description">
+                    <Paper elevation={3} className="profile-description">
                         <PersonalDescription />
-                        <PersonalInformation />
-
+                        <PersonalInformation profile={profile} />
                     </Paper>
                 </Grid>
                 <Grid item xs={7}>
                     <CreatePostInput />
-                    {/* <Post /> */}
+                    {
+                        posts && posts?.length > 0 ? posts.map(post => {
+                            return <Post key={"post" + post.id} style={{ zIndex: 3 }} data={post} />
+                        }) : null
+                    }
+                    {
+                        isLoading ? (
+                            <>
+                                <Post loading={true} style={{ zIndex: 3 }} />
+                                <Post loading={true} style={{ zIndex: 3 }} />
+                                <Post loading={true} style={{ zIndex: 3 }} />
+
+                            </>
+                        ) : null
+                    }
                 </Grid>
             </Grid>
         </Container >
     )
 }
 
-// export async function getServerSideProps({ params }) {
-//     console.log(params)
-//     let rs = await fetch("http://localhost:9000/profiles/" + params.id);
-//     rs = await rs.json();
-//     console.log(rs)
-//     return {
-//         props: { ...rs }
-//     }
-// }
+const mapStateToProps = state => {
+    return {
+        posts: state.newFeedReducer.posts,
+        isMore: state.newFeedReducer.isMore
+    }
+}
 
-export default Profile;
+export default connect(mapStateToProps)(Profile);

@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DataService from '../../network/DataService';
 import helper from '../../services/Helper/helper';
 import Router from 'next/router'
+import { Paper } from '@material-ui/core';
 
 const SignupForm = (props) => {
 
@@ -60,8 +61,8 @@ const SignupForm = (props) => {
         <>
             <Typography className="title" variant="subtitle1">Become a member of Snappost</Typography>
             <br />
-            <div className="form-container">
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+            <Paper className="form-container">
+                <Paper style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
                     <TextField
                         name="firstName"
                         helperText={touched.firstName ? errors.firstName : ""}
@@ -83,7 +84,7 @@ const SignupForm = (props) => {
                         label="Last Name"
                         variant="outlined"
                     />
-                </div>
+                </Paper>
                 <TextField
                     name="phone"
                     helperText={touched.phone ? errors.phone : ""}
@@ -124,7 +125,7 @@ const SignupForm = (props) => {
                 <Button onClick={handleSubmit} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
                     {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Begin your adventure"}
                 </Button>
-            </div>
+            </Paper>
 
             <br />
             <Typography className="title" variant="subtitle1">Already have account? <span onClick={props.changeRoute} className="link">Login here.</span></Typography>

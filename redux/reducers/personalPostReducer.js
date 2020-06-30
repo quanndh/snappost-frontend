@@ -1,9 +1,8 @@
 const initialState = {
-    posts: [],
-    isMore: true
+    posts: []
 }
 
-const newFeedReducer = (state = initialState, action) => {
+const personalPostReducer = (state = initialState, action) => {
     let tempPost = [...state.posts];
     let postIndex, commentIndex;
 
@@ -12,7 +11,7 @@ const newFeedReducer = (state = initialState, action) => {
             if (action.data.newPost) {
                 return { ...state, posts: [...action.data.data, ...tempPost] }
             } else {
-                return { ...state, posts: [...tempPost, ...action.data.data], isMore: action.data.isMore }
+                return { ...state, posts: [...tempPost, ...action.data.data] }
             }
         case 'SET_POST_COMMENT':
             postIndex = tempPost.findIndex(post => post.id == action.data.postId);
@@ -134,4 +133,4 @@ const newFeedReducer = (state = initialState, action) => {
     }
 }
 
-export default newFeedReducer;
+export default personalPostReducer;
