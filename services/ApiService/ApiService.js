@@ -60,8 +60,11 @@ export default {
     deleteCommentChild: data => {
         store.dispatch({ type: "DELETE_COMMENT_CHILD", data })
     },
-    toggleDarkMood: data => {
-        store.dispatch({ type: "TOGGLE_DARK_MOOD" })
+    setMood: data => {
+        store.dispatch({ type: "SET_MOOD", data })
+    },
+    toggleDarkMood: (data) => {
+        store.dispatch({ type: "TOGGLE_DARK_MOOD" });
         localStorage.setItem("isDark", JSON.stringify(data.isDark))
     }
 }

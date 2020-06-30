@@ -12,10 +12,13 @@ import ApiService from '../services/ApiService/ApiService';
 const Index = ({ posts, isDark }) => {
 
 	const [loadMore, setLoadMore] = useState(true);
+	const [isLoading, setIsLoading] = useState(false)
 
 	const getNewFeedPost = async () => {
 		if (loadMore) {
+			setIsLoading(true)
 			let rs = await DataService.getPost({ limit: 3, skip: posts?.length });
+			setIsLoading(false)
 			ApiService.setNewFeed({ data: rs.data, newPost: false })
 			setLoadMore(false)
 		}
@@ -49,6 +52,16 @@ const Index = ({ posts, isDark }) => {
 							posts && posts?.length > 0 ? posts.map(post => {
 								return <Post key={"post" + post.id} style={{ zIndex: 3 }} data={post} />
 							}) : null
+						}
+						{
+							isLoading ? (
+								<>
+									<Post loading={true} style={{ zIndex: 3 }} />
+									<Post loading={true} style={{ zIndex: 3 }} />
+									<Post loading={true} style={{ zIndex: 3 }} />
+
+								</>
+							) : null
 						}
 					</Grid>
 				</Grid>

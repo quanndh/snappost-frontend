@@ -48,7 +48,12 @@ export default function MyApp({ Component, pageProps }) {
 			Router.push('/auth')
 		}
 
+		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });
 		setIsDark(JSON.parse(localStorage.getItem('isDark')));
+
+		return () => {
+
+		}
 
 	}, [router.pathname])
 
@@ -64,7 +69,8 @@ export default function MyApp({ Component, pageProps }) {
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
 				{
-					pathname != "/auth" ? <Header isDark={isDark} toggleDarkMood={() => {
+					pathname != "/auth" ? <Header isDark={isDark} onToggleMood={() => {
+						ApiService.toggleDarkMood({ isDark: !isDark })
 						setIsDark(!isDark);
 					}} /> : null
 				}

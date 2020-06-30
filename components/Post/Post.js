@@ -24,12 +24,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import EditPostModal from '../EditPostModal/EditPostModal';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const Post = (props) => {
 
-    const { data, user, sharing } = props;
+    const { data, user, sharing, loading } = props;
 
-    if (!data) {
+    if (!data && !loading) {
         return (
             <div className="post-container">
                 <div className="post-text" style={{ display: 'flex', alignItems: 'center' }}>
@@ -41,7 +42,7 @@ const Post = (props) => {
 
     const [deleteModal, setDeleteModal] = useState(false)
     const [loadMoreComment, setLoadMoreComment] = useState(false)
-    const [isLike, setIsLike] = useState(data.isLike);
+    const [isLike, setIsLike] = useState(data?.isLike || false);
     const [showComment, setShowComment] = useState(false);
     const [loadComment, setLoadComment] = useState(true);
     const [showShare, setShowShare] = useState(false);
@@ -80,37 +81,52 @@ const Post = (props) => {
 
     return (
         <>
-            <EditPostModal data={data} user={user} open={showEdit} handleClose={() => setShowEdit(false)} />
-            <Dialog
-                open={deleteModal}
-                onClose={() => setDeleteModal(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">This post will be deleted ?</DialogTitle>
-                <DialogActions>
-                    <Button onClick={() => setDeleteModal(false)} color="secondary">
-                        Cancel
-                     </Button>
-                    <Button onClick={handleDeletePost} color="primary" autoFocus>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {
+                !loading ?
+                    (
+                        <>
+                            <EditPostModal data={data} user={user} open={showEdit} handleClose={() => setShowEdit(false)} />
+                            <Dialog
+                                open={deleteModal}
+                                onClose={() => setDeleteModal(false)}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">This post will be deleted ?</DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={() => setDeleteModal(false)} color="secondary">
+                                        Cancel
+                                </Button>
+                                    <Button onClick={handleDeletePost} color="primary" autoFocus>
+                                        Delete
+                                </Button>
+                                </DialogActions>
+                            </Dialog>
 
-            <SharePostModal user={user} open={showShare} sharedPost={data} handleClose={() => setShowShare(false)} />
+                            <SharePostModal user={user} open={showShare} sharedPost={data} handleClose={() => setShowShare(false)} />
+                        </>
+                    ) : null
+            }
+
             <Paper elevation={!sharing ? 3 : 6} className="post-container">
                 <div className="post-header" style={sharing ? { padding: 12 } : {}}>
                     <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ display: 'flex' }}>
-                            <Avatar className="avatar" src={data.postBy.avatar} />
+                            {
+                                !loading ? <Avatar className="avatar" src={data.postBy.avatar} /> : <Skeleton animation="wave" variant="circle" className="avatar" />
+
+                            }
                             <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-around" }}>
-                                <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} />
-                                <p style={{ marginTop: 8 }}>{Helper.formatCreatedTime(data.created_at)}</p>
+                                {
+                                    !loading ? <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} /> : <Skeleton animation="wave" height={32} width={150} style={{ marginBottom: 6 }} />
+                                }
+                                {
+                                    !loading ? <p style={{ marginTop: 8 }}>{Helper.formatCreatedTime(data.created_at)}</p> : <Skeleton animation="wave" height={16} width="80%" style={{ marginBottom: 6 }} />
+                                }
                             </div>
                         </div>
                         {
-                            !sharing ? (
+                            !sharing && !loading ? (
                                 <div>
                                     <CustomTooltip title="Edit">
                                         <IconButton
@@ -134,28 +150,43 @@ const Post = (props) => {
                     </div>
 
                     <div className="post-text">
-                        <JsxParser
-                            bindings={{}}
-                            components={{ Username }}
-                            jsx={Helper.formatMention(data?.content, data?.mentions)}
-                        />
+                        {
+                            !loading ? (
+                                <JsxParser
+                                    bindings={{}}
+                                    components={{ Username }}
+                                    jsx={Helper.formatMention(data?.content, data?.mentions)}
+                                />
+                            ) : (
+                                    <>
+                                        <Skeleton animation="wave" height={16} width="100%" style={{ marginBottom: 8 }} />
+                                        <Skeleton animation="wave" height={16} width="100%" style={{ marginBottom: 8 }} />
+                                        <Skeleton animation="wave" height={16} width="100%" style={{ marginBottom: 8 }} />
+                                    </>
+
+                                )
+                        }
+
                     </div>
                 </div>
 
                 {
-                    data?.upload.length > 0 ? (
-                        <div className="post-media">
-                            <ImageGallery upload={data?.upload} startCount={5} />
-                        </div>
-                    ) : null
+                    !loading ? (
+                        data?.upload.length > 0 ? (
+                            <div className="post-media">
+                                <ImageGallery upload={data?.upload} startCount={5} />
+                            </div>
+                        ) : null
+                    ) : <Skeleton animation="wave" variant="rect" className="post-media" height={350} width="100%" />
+                }
+
+
+                {
+                    data?.isShared && !loading ? <Post data={data.sharedPost} user={user} sharing={true} /> : null
                 }
 
                 {
-                    data?.isShared ? <Post data={data.sharedPost} user={user} sharing={true} /> : null
-                }
-
-                {
-                    !sharing ? (
+                    !sharing && !loading ? (
                         <>
                             {
                                 data.totalLike == 0 && data.totalComment == 0 && data.totalShare == 0 ? null : (
@@ -183,23 +214,38 @@ const Post = (props) => {
                             }
 
                             <div className="post-action">
-                                <div className="primary-button" onClick={toggleLike}>
-                                    {
-                                        isLike ? <ThumbUpIcon color="primary" /> : <ThumbUpOutlinedIcon />
-                                    }
-                                    <span className={classNames({ "like": isLike })}>Like</span>
-                                </div>
-                                <div className="primary-button" onClick={() => setLoadMoreComment(true)}>
-                                    <ChatBubbleOutlineOutlinedIcon />
-                                    <span>Comment</span>
-                                </div>
-                                <div className="primary-button" onClick={() => setShowShare(true)}>
-                                    <ShareOutlinedIcon />
-                                    <span>Resnap</span>
-                                </div>
+                                {
+                                    !loading ? (
+                                        <div className="primary-button" onClick={toggleLike}>
+                                            {
+                                                isLike ? <ThumbUpIcon color="primary" /> : <ThumbUpOutlinedIcon />
+                                            }
+                                            <span className={classNames({ "like": isLike })}>Like</span>
+                                        </div>
+                                    ) : <Skeleton animation="wave" variant="rect" className="primary-button" width="100%" />
+                                }
+
+                                {
+                                    !loading ? (
+                                        <div className="primary-button" onClick={() => setLoadMoreComment(true)}>
+                                            <ChatBubbleOutlineOutlinedIcon />
+                                            <span>Comment</span>
+                                        </div>
+                                    ) : <Skeleton animation="wave" variant="rect" className="primary-button" width="100%" />
+                                }
+
+                                {
+                                    !loading ? (
+                                        <div className="primary-button" onClick={() => setShowShare(true)}>
+                                            <ShareOutlinedIcon />
+                                            <span>Resnap</span>
+                                        </div>
+                                    ) : <Skeleton animation="wave" variant="rect" className="primary-button" width="100%" />
+                                }
                             </div>
+
                             {
-                                showComment && (
+                                showComment && !loading ? (
                                     <div className="post-comment-container">
                                         {
                                             (data.totalComment - data.totalReplyComment) > data.comments.length ? (
@@ -226,7 +272,7 @@ const Post = (props) => {
                                             <CommentInput user={user} postId={data.id} />
                                         </>
                                     </div>
-                                )
+                                ) : null
                             }
                         </>
                     ) : null

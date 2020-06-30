@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Header({ user, toggleDarkMood, isDark }) {
+function Header({ user, onToggleMood, isDark }) {
 	const classes = useStyles();
 
 	const [openMore, setOpenMore] = React.useState(false);
@@ -302,10 +302,7 @@ function Header({ user, toggleDarkMood, isDark }) {
 																		control={
 																			<Switch
 																				checked={isDark}
-																				onChange={() => {
-																					toggleDarkMood();
-																					ApiService.toggleDarkMood({ isDark: event.target.checked });
-																				}}
+																				onChange={onToggleMood}
 																				color="primary"
 																			/>
 																		}
