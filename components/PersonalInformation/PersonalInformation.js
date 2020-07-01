@@ -15,7 +15,7 @@ import DataService from '../../network/DataService';
 import helper from '../../services/Helper/helper';
 import ApiService from '../../services/ApiService/ApiService';
 
-const PersonalInformation = ({ company, school, currentLocation, bornIn, handleUpdateUserCB }) => {
+const PersonalInformation = ({ company, school, currentLocation, bornIn, handleUpdateUserCB, isMe }) => {
 
     const [openEdit, setOpenEdit] = useState(false)
 
@@ -46,7 +46,6 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
         if (rs.code == 0) {
             setOpenEdit(false);
             handleUpdateUserCB({ ...info })
-            ApiService.setUserInfoOnly(rs.data);
             helper.activateToast("default", rs.message);
         }
     }
@@ -146,7 +145,7 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
                     ) : null
                 }
 
-                <div className="primary-button" onClick={() => setOpenEdit(true)}>
+                <div className="primary-button" onClick={isMe ? () => setOpenEdit(true) : null}>
                     <span>Change information</span>
                 </div>
 
