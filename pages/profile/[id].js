@@ -44,7 +44,7 @@ const Profile = ({ posts, isMore, user }) => {
     const getNewFeedPost = async () => {
         if (loadMore && isMore) {
             setIsLoading(true)
-            let rs = await DataService.getPost({ limit: 3, skip: posts?.length, userId: id });
+            let rs = await DataService.getPost({ limit: 3, skip: posts ? posts.length : 0, userId: id });
             setIsLoading(false)
             ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
             setLoadMore(false)
@@ -260,7 +260,7 @@ const Profile = ({ posts, isMore, user }) => {
                     <Grid item xs={5}>
                         <Paper elevation={3} className="profile-description">
                             {
-                                Object.keys(profile).length > 0 ? (
+                                profile ? (
                                     <>
                                         <PersonalDescription
                                             bio={profile.bio}
