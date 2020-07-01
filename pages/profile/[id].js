@@ -30,6 +30,7 @@ const Profile = ({ posts, isMore, user }) => {
 
     const [loadMore, setLoadMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false)
+    const [userLoad, setUserLoad] = useState(false)
     const [profile, setProfile] = useState({});
     const [init, setInit] = useState(true)
     const [imageToChange, setImageToChange] = useState(null);
@@ -44,7 +45,7 @@ const Profile = ({ posts, isMore, user }) => {
     const getNewFeedPost = async () => {
         if (loadMore && isMore) {
             setIsLoading(true)
-            let rs = await DataService.getPost({ limit: 3, skip: posts ? posts.length : 0, userId: id });
+            let rs = await DataService.getPost({ limit: 3, skip: posts?.length, userId: id });
             setIsLoading(false)
             ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
             setLoadMore(false)
@@ -52,7 +53,9 @@ const Profile = ({ posts, isMore, user }) => {
     }
 
     const getUserInfo = async () => {
+        setUserLoad(true);
         let rs = await DataService.getUserProfile({ userId: id })
+        setUserLoad(false);
         if (rs.code == 404) {
             router.push("/404")
         }
@@ -286,9 +289,9 @@ const Profile = ({ posts, isMore, user }) => {
                     <Grid item xs={7}>
                         <CreatePostInput />
                         {
-                            posts && posts?.length > 0 ? posts.map(post => {
+                            posts.map(post => {
                                 return <Post key={"post" + post.id} style={{ zIndex: 3 }} data={post} />
-                            }) : null
+                            })
                         }
                         {
                             isLoading ? (

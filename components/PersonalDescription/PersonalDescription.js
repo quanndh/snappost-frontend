@@ -11,7 +11,7 @@ const PersonalDescription = ({ bio, handleUpdateUserCB, isMe }) => {
 
     useEffect(() => {
         setDesc(bio)
-        setLenght(100 - bio.length);
+        setLenght(100 - bio?.length);
     }, [])
 
     const handleChange = (e) => {
