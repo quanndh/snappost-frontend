@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router'
 import Container from '@material-ui/core/Container';
-import { Typography, Grid, IconButton, Button } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import CreatePostInput from '../../components/CreatePostInput/CreatePostInput';
 import PersonalDescription from '../../components/PersonalDescription/PersonalDescription';
 import Paper from '@material-ui/core/Paper';
@@ -13,11 +13,7 @@ import DataService from '../../network/DataService';
 import ApiService from '../../services/ApiService/ApiService';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import AvatarEditor from 'react-avatar-editor'
-import Slider from '@material-ui/core/Slider';
+import ImageEditor from "../../components/ImageEditor/ImageEditor";
 
 const Profile = ({ posts, isMore, user }) => {
 
@@ -37,10 +33,7 @@ const Profile = ({ posts, isMore, user }) => {
     const [imageType, setImageType] = useState(null);
     const [loadImage, setLoadImage] = useState(false)
     const [openEditImage, setOpenEditImage] = useState(false)
-    const [scale, setScale] = useState(1)
-    const [rotate, setRotate] = useState(0)
     const [editedImage, setEditedImage] = useState(null)
-    const imageRef = useRef(null)
 
     const getNewFeedPost = async () => {
         if (loadMore && isMore) {
@@ -102,76 +95,11 @@ const Profile = ({ posts, isMore, user }) => {
         setOpenEditImage(false)
     }
 
-    const onClickSaveImage = () => {
-        if (imageRef) {
-            let img = imageRef.current.getImageScaledToCanvas();
-            img.setAttribute("crossorigin", "*");
-            img.setAttribute("allow-taint", false);
-            img.toBlob(blob => {
-                if (blob) {
-                    console.log(blob)
-                }
-            })
-        }
-    }
-
     return (
         <>
             {
                 imageToChange ? (
-                    <Dialog style={{ zIndex: 1000 }} maxWidth="lg" fullWidth={true} open={openEditImage} onClose={handleCancelEditImage}>
-                        <DialogTitle>Image editor</DialogTitle>
-                        <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ width: "100%", display: 'flex', justifyContent: "space-between" }}>
-                                <div style={{ width: "60%" }}>
-                                    <AvatarEditor
-                                        ref={imageRef}
-                                        image={imageToChange.url}
-                                        width={700}
-                                        height={700}
-                                        border={50}
-                                        color={[255, 255, 255, 0.6]}
-                                        scale={scale}
-                                        borderRadius={350}
-                                        disableBoundaryChecks={true}
-                                        rotate={rotate}
-                                        disableHiDPIScaling={true}
-                                    />
-                                </div>
-                                <div style={{ width: "30%" }}>
-                                    <Typography id="discrete-slider-small-steps" gutterBottom>
-                                        Scale
-                                    </Typography>
-                                    <Slider
-                                        defaultValue={scale}
-                                        value={scale}
-                                        onChange={(event, newValue) => setScale(newValue)}
-                                        aria-labelledby="discrete-slider-small-steps"
-                                        step={0.2}
-                                        marks
-                                        min={0.5}
-                                        max={2}
-                                        valueLabelDisplay="auto"
-                                    />
-                                    <Typography id="discrete-slider-small-steps" gutterBottom>
-                                        Rotate
-                                    </Typography>
-                                    <Slider
-                                        defaultValue={rotate}
-                                        value={rotate}
-                                        onChange={(event, newValue) => setRotate(newValue)}
-                                        aria-labelledby="discrete-slider-small-steps"
-                                        step={45}
-                                        marks
-                                        min={0}
-                                        max={360}
-                                        valueLabelDisplay="auto"
-                                    />
-                                    <Button onClick={onClickSaveImage} style={{ marginBottom: 16 }} color="primary" fullWidth variant="contained">Save</Button>
-                                </div>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                    <ImageEditor handleCancelEditImage={handleCancelEditImage} imageToChange={imageToChange} />
                 ) : null
             }
 
