@@ -58,5 +58,8 @@ export default {
     },
     updateUserInfo: data => {
         return request("/user/update", data, "PATCH")
+    },
+    userChangeImage: data => {
+        return request("/user/change-image", data, "PATCH")
     }
 };

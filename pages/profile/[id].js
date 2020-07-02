@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router'
 import Container from '@material-ui/core/Container';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, IconButton, Button } from '@material-ui/core';
 import CreatePostInput from '../../components/CreatePostInput/CreatePostInput';
 import PersonalDescription from '../../components/PersonalDescription/PersonalDescription';
 import Paper from '@material-ui/core/Paper';
@@ -13,7 +13,10 @@ import DataService from '../../network/DataService';
 import ApiService from '../../services/ApiService/ApiService';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
-import ImageEditor from "../../components/ImageEditor/ImageEditor";
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import helper from '../../services/Helper/helper';
 
 const Profile = ({ posts, isMore, user }) => {
 
@@ -33,7 +36,6 @@ const Profile = ({ posts, isMore, user }) => {
     const [imageType, setImageType] = useState(null);
     const [loadImage, setLoadImage] = useState(false)
     const [openEditImage, setOpenEditImage] = useState(false)
-    const [editedImage, setEditedImage] = useState(null)
 
     const getNewFeedPost = async () => {
         if (loadMore && isMore) {
@@ -74,6 +76,7 @@ const Profile = ({ posts, isMore, user }) => {
     }, [loadMore]);
 
     const handleUpdateUser = object => {
+        console.log(object, 111)
         let tempUser = { ...profile };
         for (let i in object) {
             tempUser[i] = object[i];
@@ -95,11 +98,30 @@ const Profile = ({ posts, isMore, user }) => {
         setOpenEditImage(false)
     }
 
+    const onClickSaveImage = async () => {
+        let rs = await DataService.userChangeImage({ type: imageType, image: imageToChange });
+        if (rs.code == 0) {
+            handleUpdateUser(imageType == "avatar" ? { avatar: imageToChange.url } : { wallImage: imageToChange.url })
+            ApiService.login(rs.user, rs.token)
+            helper.activateToast("default", rs.message)
+            ApiService.setNewFeed({ data: [rs.data], newPost: true })
+            setOpenEditImage(false)
+        }
+    }
+
     return (
         <>
             {
                 imageToChange ? (
-                    <ImageEditor handleCancelEditImage={handleCancelEditImage} imageToChange={imageToChange} />
+                    <Dialog style={{ zIndex: 1000 }} maxWidth={imageType == "avatar" ? "xs" : "lg"} fullWidth={true} open={openEditImage} onClose={handleCancelEditImage}>
+                        <DialogTitle>Change avatar</DialogTitle>
+                        <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ width: "100%", display: 'flex', justifyContent: "center", marginBottom: 24 }}>
+                                <img src={imageToChange.url} style={{ width: "100%", height: "100%" }} />
+                            </div>
+                            <Button onClick={onClickSaveImage} style={{ marginBottom: 16 }} color="primary" fullWidth variant="contained">Save</Button>
+                        </DialogContent>
+                    </Dialog>
                 ) : null
             }
 
@@ -111,7 +133,7 @@ const Profile = ({ posts, isMore, user }) => {
                     multiple
                     type="file"
                     onChange={(e) => {
-                        setImageType("wallPic")
+                        setImageType("wallImage")
                         handleUpLoad(e)
                     }}
                 />
@@ -127,13 +149,16 @@ const Profile = ({ posts, isMore, user }) => {
                     }}
                 />
                 <Paper className="profile-header">
-                    {
-                        profile?.wallImage ? (
-                            <img src={profile.wallImage} className="profile-wall-pic" />
-                        ) : (
-                                <div className="profile-wall-pic" />
-                            )
-                    }
+                    <div className="profile-wall-pic" style={{ position: "relative" }}>
+                        {
+                            profile?.wallImage ? (
+                                <img src={profile.wallImage} className="profile-wall-pic" />
+                            ) : (
+                                    <div className="profile-wall-pic" />
+                                )
+                        }
+                        <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "100%", backgroundColor: "rgba(0,0,0,0.3)" }} />
+                    </div>
                     <div className="profile-user">
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{ position: 'relative' }}>
@@ -155,8 +180,8 @@ const Profile = ({ posts, isMore, user }) => {
                                 }
 
                             </div>
-                            <Paper elevation={0}>
-                                <Typography variant="h4">{profile?.firstName + " " + profile?.lastName}</Typography>
+                            <Paper elevation={0} style={{ background: "none" }}>
+                                <Typography variant="h4" >{profile?.firstName + " " + profile?.lastName}</Typography>
                                 {
                                     profile?.nickname ? <Typography variant="h5">({profile?.nickname})</Typography> : null
                                 }

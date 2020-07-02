@@ -69,15 +69,15 @@ export default function MyApp({ Component, pageProps }) {
 		<ThemeProvider theme={theme}>
 			<Provider store={store}>
 				{
-					pathname != "/auth" ? <Header isDark={isDark} onToggleMood={() => {
+					pathname != "/auth" && pathname !== "/welcome" ? <Header isDark={isDark} onToggleMood={() => {
 						ApiService.toggleDarkMood({ isDark: !isDark })
 						setIsDark(!isDark);
 					}} /> : null
 				}
 
 				{
-					pathname !== "/auth" ? (
-						<Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
+					pathname !== "/auth" && pathname !== "/welcome" ? (
+						< Grid className="container-content" container style={{ height: "100%", position: 'relative' }}>
 							<Grid item xs={10} >
 								<Paper style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }}>
 									<LightOff />
@@ -85,7 +85,7 @@ export default function MyApp({ Component, pageProps }) {
 									<ChatContainer />
 								</Paper>
 							</Grid>
-							<Grid item xs={2} style={{ zIndex: 1, position: "relative" }}>
+							<Grid item xs={2} style={{ zIndex: 1, position: "relative", height: "100%" }}>
 								<ContactBar />
 							</Grid>
 						</Grid>
@@ -100,6 +100,6 @@ export default function MyApp({ Component, pageProps }) {
 					transition={Slide}
 				/>
 			</Provider>
-		</ThemeProvider>
+		</ThemeProvider >
 	);
 }

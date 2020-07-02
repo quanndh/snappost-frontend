@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import SocialButton from '../../components/SocialButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Paper } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 const loginSchema = Yup.object({

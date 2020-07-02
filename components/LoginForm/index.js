@@ -58,7 +58,11 @@ const LoginForm = (props) => {
             helper.activateToast("error", rs.message)
         } else {
             ApiService.login(rs.data, rs.token)
-            Router.push("/")
+            if (rs.data.isNewUser) {
+                Router.push("/welcome")
+            } else {
+                Router.push("/")
+            }
         }
     }
 

@@ -67,4 +67,9 @@ export default {
         store.dispatch({ type: "TOGGLE_DARK_MOOD" });
         localStorage.setItem("isDark", JSON.stringify(data.isDark))
     },
+    userChangeImage: (data) => {
+        let user = JSON.parse(localStorage.getItem('user'))
+        user[data.type] = data.image;
+        store.dispatch({ type: "SET_USER_IMAGE", data })
+    }
 }

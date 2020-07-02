@@ -27,7 +27,11 @@ const SocialButton = () => {
             helpers.activateToast("error", rs.message)
         } else {
             ApiService.login(rs.data, rs.token)
-            Router.push("/")
+            if (rs.data.isNewUser) {
+                Router.push("/welcome")
+            } else {
+                Router.push("/")
+            }
         }
     }
 
@@ -49,7 +53,11 @@ const SocialButton = () => {
             helpers.activateToast("error", rs.message)
         } else {
             ApiService.login(rs.data, rs.token)
-            Router.push("/")
+            if (rs.data.isNewUser) {
+                Router.push("/welcome")
+            } else {
+                Router.push("/")
+            }
         }
 
     }

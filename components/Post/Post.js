@@ -118,7 +118,12 @@ const Post = (props) => {
                             }
                             <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-around" }}>
                                 {
-                                    !loading ? <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} /> : <Skeleton animation="wave" height={32} width={150} style={{ marginBottom: 6 }} />
+                                    !loading ? (
+                                        <p>
+                                            <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} />
+                                            <span>{data.action}</span>
+                                        </p>
+                                    ) : <Skeleton animation="wave" height={32} width={150} style={{ marginBottom: 6 }} />
                                 }
                                 {
                                     !loading ? <p style={{ marginTop: 8 }}>{Helper.formatCreatedTime(data.created_at)}</p> : <Skeleton animation="wave" height={16} width="80%" style={{ marginBottom: 6 }} />
