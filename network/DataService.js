@@ -64,5 +64,8 @@ export default {
     },
     getRecommendFriend: data => {
         return request("/user/recommend-friend", data, "POST")
+    },
+    setFriendRequest: data => {
+        return request("/user/send-friend-request", data, "POST")
     }
 };

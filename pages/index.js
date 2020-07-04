@@ -8,12 +8,13 @@ import AuthComponent from '../components/AuthComponent/AuthComponent';
 import DataService from '../network/DataService';
 import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
+import UserCard from "../components/UserCard/UserCard";
 
 const Index = ({ posts, isDark, isMore }) => {
 
 	const [loadMore, setLoadMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false)
-
+	const [recommendUser, setRecommendUser] = useState([])
 	const [init, setInit] = useState(true);
 
 	const getNewFeedPost = async () => {
@@ -27,7 +28,8 @@ const Index = ({ posts, isDark, isMore }) => {
 	}
 
 	const getRecommendFriend = async () => {
-		let rs = await DataService.getRecommendFriend({ limit: 10, page: 1 });
+		let rs = await DataService.getRecommendFriend({ limit: 5, page: 1 });
+		setRecommendUser(rs.data)
 	}
 
 	useEffect(() => {
@@ -72,6 +74,16 @@ const Index = ({ posts, isDark, isMore }) => {
 								</>
 							) : null
 						}
+					</Grid>
+					<Grid item xs={3}>
+						<div style={{ position: "sticky", top: "85px" }}>
+							{
+								recommendUser.map(user => {
+									return <UserCard key={"user" + user.id} user={user} />
+								})
+							}
+						</div>
+
 					</Grid>
 				</Grid>
 			</Container>

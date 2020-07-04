@@ -17,6 +17,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import helper from '../../services/Helper/helper';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const Profile = ({ posts, isMore, user }) => {
 
@@ -180,9 +181,15 @@ const Profile = ({ posts, isMore, user }) => {
 
                             </div>
                             <Paper elevation={0} style={{ background: "none" }}>
-                                <Typography variant="h4" >{profile?.firstName + " " + profile?.lastName}</Typography>
                                 {
-                                    profile?.nickname ? <Typography variant="h5">({profile?.nickname})</Typography> : null
+                                    !userLoad ? (
+                                        <Typography variant="h4" >{profile?.firstName + " " + profile?.lastName}</Typography>
+                                    ) : (
+                                            <Skeleton animation="wave" height={32} width={150} />
+                                        )
+                                }
+                                {
+                                    !userLoad ? <Typography variant="h5">({profile?.nickname})</Typography> : <Skeleton animation="wave" height={24} width={150} />
                                 }
 
                             </Paper>
