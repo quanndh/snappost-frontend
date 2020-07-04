@@ -44,8 +44,12 @@ export default function MyApp({ Component, pageProps }) {
 
 		ApiService.login(user, token)
 
-		if (pathname != "/auth" && !user) {
-			Router.push('/auth')
+		if (pathname != "/auth") {
+			if (!user) {
+				Router.push('/auth')
+			} else if (user.isNewUser) {
+				Router.push('/welcome')
+			}
 		}
 
 		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });

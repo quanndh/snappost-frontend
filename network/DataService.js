@@ -61,5 +61,8 @@ export default {
     },
     userChangeImage: data => {
         return request("/user/change-image", data, "PATCH")
+    },
+    getRecommendFriend: data => {
+        return request("/user/recommend-friend", data, "POST")
     }
 };

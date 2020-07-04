@@ -1,14 +1,82 @@
-import React from 'react';
-import { Paper, Typography, Avatar, IconButton } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Paper, Typography, Avatar, IconButton, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
+import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
+import DataService from '../../network/DataService';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Router from 'next/router';
+import helper from '../../services/Helper/helper';
+import ApiService from '../../services/ApiService/ApiService';
 
 const Welcome = ({ user, isDark }) => {
+
     const [activeStep, setActiveStep] = React.useState(0);
-    const steps = ['First impression', 'Major infomation', 'Create an ad'];
+    const [upload, setUpload] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [avatar, setAvatar] = useState(user.avatar);
+    const [nickname, setNickname] = useState("");
+
+    const [info, setInfo] = useState({
+        company: user.company,
+        school: user.school,
+        currentLocation: user.currentLocation,
+        bornIn: user.bornIn
+    })
+
+    const steps = ['First impression', 'Major infomation', 'Finishing'];
+
+    useEffect(() => {
+        setAvatar(user.avatar)
+        setInfo({
+            company: user.company,
+            school: user.school,
+            currentLocation: user.currentLocation,
+            bornIn: user.bornIn
+        })
+    }, [user.id])
+
+    const handleChange = (e) => {
+        let temp = { ...info };
+        temp[e.target.name] = e.target.value;
+        setInfo(temp)
+    }
+
+    const handleUpAvatar = async (e) => {
+        setUpload(true)
+        let rs = await DataService.uploadImage({ data: e.target.files[0], type: "images" })
+        setAvatar(rs.data[0].url)
+        setUpload(false)
+    }
+
+    const handleSaveNewUser = async () => {
+        setLoading(true)
+        let data = { ...info };
+        data.avatar = avatar;
+        data.nickname = nickname;
+        data.firstUpdate = true;
+        let rs = await DataService.updateUserInfo(data);
+        setLoading(false)
+        if (rs.code == 0) {
+            ApiService.login(rs.data, rs.token)
+            Router.push("/")
+        } else {
+            helper.activateToast("default", rs.message)
+        }
+
+    }
 
     const getStepContent = (stepIndex) => {
         switch (stepIndex) {
@@ -21,11 +89,11 @@ const Welcome = ({ user, isDark }) => {
                             id="initAvatar"
                             multiple
                             type="file"
-                            onChange={null}
+                            onChange={handleUpAvatar}
                         />
                         <span>Set avatar and nickname so people can recognize you</span>
-                        <div style={{ position: 'relative', marginTop: 16 }}>
-                            <Avatar src={user.avatar} style={{ width: 200, height: 200 }} />
+                        <div style={{ position: 'relative', marginTop: 16, marginBottom: 16 }}>
+                            <Avatar src={avatar} style={{ width: 200, height: 200 }} />
                             <div
                                 style={{
                                     height: "100%",
@@ -42,23 +110,76 @@ const Welcome = ({ user, isDark }) => {
                                 }}>
                                 <label htmlFor="initAvatar">
                                     <div className="primary-button">
-                                        <CameraAltIcon />
+                                        {
+                                            upload ? <CircularProgress /> : <CameraAltIcon />
+                                        }
                                     </div>
                                 </label>
                             </div>
                         </div>
+                        <TextField
+                            style={{ width: "100%", textAlign: "center" }}
+                            variant="outlined"
+                            label="Nickname"
+                            value={nickname}
+                            onChange={e => setNickname(e.target.value)}
+                        />
                     </div>
                 )
             case 1:
                 return (
-                    <div className="stepper-item">
-
+                    <div className="stepper-item" style={{ alignItems: "center", display: 'flex', flexDirection: "column", width: "50%" }}>
+                        <span>Fill in this information so we can find people you may know</span>
+                        <FormControl style={{ width: "100%", textAlign: "center", marginBottom: 16, marginTop: 16 }} fullWidth variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-amount">Company</InputLabel>
+                            <OutlinedInput
+                                controls
+                                value={info?.company}
+                                name="company"
+                                onChange={handleChange}
+                                startAdornment={<InputAdornment position="start"><WorkOutlineOutlinedIcon /></InputAdornment>}
+                                labelWidth={60}
+                            />
+                        </FormControl>
+                        <FormControl style={{ width: "100%", textAlign: "center", marginBottom: 16 }} fullWidth variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-amount">School</InputLabel>
+                            <OutlinedInput
+                                controls
+                                value={info?.school}
+                                name="school"
+                                onChange={handleChange}
+                                startAdornment={<InputAdornment position="start"><SchoolOutlinedIcon /></InputAdornment>}
+                                labelWidth={60}
+                            />
+                        </FormControl>
+                        <FormControl style={{ width: "100%", textAlign: "center", marginBottom: 16 }} fullWidth variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-amount">Current location</InputLabel>
+                            <OutlinedInput
+                                controls
+                                value={info?.currentLocation}
+                                name="currentLocation"
+                                onChange={handleChange}
+                                startAdornment={<InputAdornment position="start"><HomeOutlinedIcon /></InputAdornment>}
+                                labelWidth={60}
+                            />
+                        </FormControl>
+                        <FormControl style={{ width: "100%", textAlign: "center", marginBottom: 16 }} fullWidth variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-amount">Borned in</InputLabel>
+                            <OutlinedInput
+                                controls
+                                value={info?.bornIn}
+                                name="bornIn"
+                                onChange={handleChange}
+                                startAdornment={<InputAdornment position="start"><RoomOutlinedIcon /></InputAdornment>}
+                                labelWidth={60}
+                            />
+                        </FormControl>
                     </div>
                 )
             case 2:
                 return (
-                    <div className="stepper-item">
-
+                    <div style={{ alignItems: "center", display: 'flex', flexDirection: "column", width: "50%" }}>
+                        <span>Thank your for using Snappost. We hope you have a great time snapping post.</span>
                     </div>
                 )
             default:
@@ -67,11 +188,15 @@ const Welcome = ({ user, isDark }) => {
     }
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (activeStep < steps.length - 1) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        if (activeStep > 0) {
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
     };
 
     return (
@@ -95,11 +220,20 @@ const Welcome = ({ user, isDark }) => {
                         </Step>
                     ))}
                 </Stepper>
-                <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+                <div style={{ display: "flex", alignItems: "center", marginTop: 24, flexDirection: "column" }}>
                     {getStepContent(activeStep)}
+
+                    <div style={{ marginTop: 28, display: "flex", justifyContent: "space-around", width: "50%" }}>
+                        <Button color="secondary" disabled={activeStep == 0} variant="contained" onClick={handleBack}>Go back</Button>
+                        {
+                            activeStep < steps.length - 1 ? (
+                                <Button color="primary" variant="contained" onClick={handleNext}>Next</Button>
+                            ) : <Button color="primary" variant="contained" onClick={handleSaveNewUser}>Snap now</Button>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

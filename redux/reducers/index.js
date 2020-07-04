@@ -9,4 +9,5 @@ export default combineReducers({
   userReducer,
   newFeedReducer,
   uploadReducer,
+
 })

@@ -112,7 +112,7 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
                     company ? (
                         <div>
                             <WorkOutlineOutlinedIcon />
-                            <p>{company}</p>
+                            <p>Work at {company}</p>
                         </div>
                     ) : null
                 }
@@ -121,7 +121,7 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
                     school ? (
                         <div>
                             <SchoolOutlinedIcon />
-                            <p>{school}</p>
+                            <p>Learn at {school}</p>
                         </div>
                     ) : null
                 }
@@ -131,7 +131,7 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
                     currentLocation ? (
                         <div>
                             <HomeOutlinedIcon />
-                            <p>{currentLocation}</p>
+                            <p>Live in {currentLocation}</p>
                         </div>
                     ) : null
                 }
@@ -140,7 +140,7 @@ const PersonalInformation = ({ company, school, currentLocation, bornIn, handleU
                     bornIn ? (
                         <div>
                             <RoomOutlinedIcon />
-                            <p>{bornIn}</p>
+                            <p>Come form {bornIn}</p>
                         </div>
                     ) : null
                 }

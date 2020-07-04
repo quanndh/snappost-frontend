@@ -60,6 +60,7 @@ export default {
     deleteCommentChild: data => {
         store.dispatch({ type: "DELETE_COMMENT_CHILD", data })
     },
+
     setMood: data => {
         store.dispatch({ type: "SET_MOOD", data })
     },

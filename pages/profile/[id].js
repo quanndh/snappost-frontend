@@ -76,7 +76,6 @@ const Profile = ({ posts, isMore, user }) => {
     }, [loadMore]);
 
     const handleUpdateUser = object => {
-        console.log(object, 111)
         let tempUser = { ...profile };
         for (let i in object) {
             tempUser[i] = object[i];

@@ -14,6 +14,8 @@ const Index = ({ posts, isDark, isMore }) => {
 	const [loadMore, setLoadMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false)
 
+	const [init, setInit] = useState(true);
+
 	const getNewFeedPost = async () => {
 		if (loadMore && isMore) {
 			setIsLoading(true)
@@ -22,17 +24,24 @@ const Index = ({ posts, isDark, isMore }) => {
 			ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
 			setLoadMore(false)
 		}
+	}
 
+	const getRecommendFriend = async () => {
+		let rs = await DataService.getRecommendFriend({ limit: 10, page: 1 });
 	}
 
 	useEffect(() => {
 		getNewFeedPost()
-
+		if (init) {
+			getRecommendFriend()
+		}
 		window.addEventListener("scroll", () => {
 			if (document.body.clientHeight - window.scrollY - window.innerHeight < 100) {
 				setLoadMore(true)
 			}
 		})
+
+		setInit(false)
 
 		return () => {
 			window.removeEventListener("scroll", () => { })
