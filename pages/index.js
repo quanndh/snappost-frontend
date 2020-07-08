@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import ApiService from '../services/ApiService/ApiService';
 import UserCard from "../components/UserCard/UserCard";
 
-const Index = ({ posts, isDark, isMore }) => {
+const Index = ({ posts, isDark, isMore, user }) => {
 
 	const [loadMore, setLoadMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +20,7 @@ const Index = ({ posts, isDark, isMore }) => {
 	const getNewFeedPost = async () => {
 		if (loadMore && isMore) {
 			setIsLoading(true)
-			let rs = await DataService.getPost({ limit: 3, skip: posts?.length });
+			let rs = await DataService.getPost({ limit: 6, skip: init ? 0 : posts?.length });
 			setIsLoading(false)
 			ApiService.setNewFeed({ data: rs.data, newPost: false, isMore: rs.isMore })
 			setLoadMore(false)
@@ -55,7 +55,7 @@ const Index = ({ posts, isDark, isMore }) => {
 			<Container fixed className="newfeed-root">
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={2} className="newfeed-left">
-						<SideMenu />
+						<SideMenu user={user} />
 					</Grid>
 					<Grid item xs={12} md={7} className="newfeed-right" >
 						<CreatePostInput style={{ zIndex: 4 }} />
@@ -95,7 +95,8 @@ const mapStateToProps = state => {
 	return {
 		posts: state.newFeedReducer.posts,
 		isDark: state.uiReducer.isDark,
-		isMore: state.newFeedReducer.isMore
+		isMore: state.newFeedReducer.isMore,
+		user: state.userReducer.user
 	}
 }
 

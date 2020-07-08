@@ -108,7 +108,7 @@ const Post = (props) => {
                     ) : null
             }
 
-            <Paper elevation={!sharing ? 3 : 6} className="post-container">
+            <Paper elevation={2} className="post-container">
                 <div className="post-header" style={sharing ? { padding: 12 } : {}}>
                     <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ display: 'flex' }}>

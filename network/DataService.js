@@ -67,5 +67,11 @@ export default {
     },
     setFriendRequest: data => {
         return request("/user/send-friend-request", data, "POST")
+    },
+    getFriendRequest: data => {
+        return request("/user/get-list-friend-request", data, "POST")
+    },
+    handleFriendRequest: data => {
+        return request("/user/handle-friend-request", data, "POST")
     }
 };

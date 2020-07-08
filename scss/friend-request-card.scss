@@ -1,0 +1,36 @@
+.friend-request-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .avatar {
+        width: 62px;
+        height: 62px;
+    }
+
+    .friend-request-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+
+        .friend-request-user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+    }
+
+    .friend-request-action {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+
+        button {
+            margin-bottom: 8px;
+        }
+    }
+}

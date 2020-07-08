@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -109,6 +109,7 @@ function Header({ user, onToggleMood, isDark }) {
 
 	const [openMore, setOpenMore] = React.useState(false);
 	const [openNotification, setOpenNotification] = React.useState(false);
+	const [searchText, setSearchText] = useState("");
 
 	const moreRef = React.useRef(null);
 	const notificationRef = React.useRef(null);
@@ -164,6 +165,17 @@ function Header({ user, onToggleMood, isDark }) {
 		prevOpenNotification.current = openNotification;
 	}, [openMore, openNotification]);
 
+	const handleChange = (e) => {
+		setSearchText(e.target.value)
+	}
+
+	const handleKeyPress = e => {
+		if (e.key == "Enter") {
+			setSearchText("")
+			Router.push("/search?keyword=" + searchText);
+		}
+	}
+
 	return (
 		<Paper className={classes.grow} style={{
 			position: "fixed",
@@ -194,6 +206,9 @@ function Header({ user, onToggleMood, isDark }) {
 									</div>
 									<InputBase
 										placeholder="Search…"
+										value={searchText}
+										onChange={handleChange}
+										onKeyPress={handleKeyPress}
 										classes={{
 											root: classes.inputRoot,
 											input: classes.inputInput,

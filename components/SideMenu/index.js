@@ -1,20 +1,31 @@
 import React from "react";
 import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
-import { FcHome, FcSms, FcFilm } from 'react-icons/fc';
+import { FcHome, FcSms, FcFilm, FcBinoculars } from 'react-icons/fc';
+import Router from 'next/router';
 
 
-const SideMenu = (props) => {
-
+const SideMenu = ({ user }) => {
   const listMenu = [
     {
       image: <AccountCircleSharpIcon />,
-      label: 'Quan Nguyen',
-      onClick: () => { }
+      label: user.firstName + " " + user.lastName,
+      onClick: () => {
+        Router.push(`/profile/${user?.id}`)
+      }
     },
     {
       image: <FcHome />,
       label: 'Home',
-      onClick: () => { }
+      onClick: () => {
+        Router.push("/")
+      }
+    },
+    {
+      image: <FcBinoculars />,
+      label: "Friend requests",
+      onClick: () => {
+        Router.push("/friend-request")
+      }
     },
     {
       image: <FcSms />,

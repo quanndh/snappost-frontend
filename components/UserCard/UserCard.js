@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import Username from "../Username/Username";
 import DataService from '../../network/DataService';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
 
 const UserCard = ({ user }) => {
-
+    const [requested, setRequested] = useState(false)
     const handleAddFriend = async () => {
-        let rs = await DataService.setFriendRequest({ id: user.id });
+        await DataService.setFriendRequest({ id: user.id });
+        setRequested(!requested);
     }
 
     return (
@@ -18,10 +20,15 @@ const UserCard = ({ user }) => {
                     <Typography varient="subtitle1">{user.mutualFriend} mutual friends</Typography>
                 </div>
             </div>
-            <div className="primary-button" onClick={handleAddFriend}>
-                <span>Add friend</span>
-            </div>
-        </Paper>
+            <CustomTooltip title={requested ? "Click to remove friend request" : "Click to send friend request"}>
+                <div className="primary-button" onClick={handleAddFriend}>
+                    {
+                        requested ? <span>Friend request sent</span> : <span>Add friend</span>
+                    }
+                </div>
+            </CustomTooltip>
+
+        </Paper >
     )
 }
 

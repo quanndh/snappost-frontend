@@ -6,7 +6,7 @@
 @import './primary-button.scss';
 @import './createPostInput.scss';
 @import "./post.scss";
-@import './pages/welcome.scss';
+@import "./friend-request-card.scss";
 // Page
 @import "./pages/home.scss";
 @import './pages/login.scss';
@@ -15,6 +15,7 @@
 @import './image-gallery.scss';
 @import './side-menu.scss';
 @import './user-card.scss';
+@import './pages/welcome.scss';
 
 html, body, .root{
     font-family: sans-serif;
