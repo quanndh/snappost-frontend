@@ -50,6 +50,10 @@ export default function MyApp({ Component, pageProps }) {
 			} else if (user.isNewUser) {
 				Router.push('/welcome')
 			}
+		} else {
+			if (user) {
+				Router.push('/')
+			}
 		}
 
 		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });

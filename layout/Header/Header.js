@@ -171,9 +171,13 @@ function Header({ user, onToggleMood, isDark }) {
 
 	const handleKeyPress = e => {
 		if (e.key == "Enter") {
-			setSearchText("")
 			Router.push("/search?keyword=" + searchText);
 		}
+	}
+
+	const handleLogout = () => {
+		ApiService.logout();
+		Router.push("/auth");
 	}
 
 	return (
@@ -329,7 +333,7 @@ function Header({ user, onToggleMood, isDark }) {
 																<SettingsIcon color="action" fontSize="large" style={{ marginRight: 8 }} />
 																<Typography variant="subtitle1">Setting</Typography>
 															</MenuItem>
-															<MenuItem style={{ marginTop: 8 }}>
+															<MenuItem style={{ marginTop: 8 }} onClick={handleLogout}>
 																<ExitToAppIcon color="action" fontSize="large" style={{ marginRight: 8 }} />
 																<Typography variant="subtitle1">Logout</Typography>
 															</MenuItem>

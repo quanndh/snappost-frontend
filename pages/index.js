@@ -18,6 +18,9 @@ const Index = ({ posts, isDark, isMore, user }) => {
 	const [init, setInit] = useState(true);
 
 	const getNewFeedPost = async () => {
+		if (init && posts.length) {
+			return;
+		}
 		if (loadMore && isMore) {
 			setIsLoading(true)
 			let rs = await DataService.getPost({ limit: 6, skip: init ? 0 : posts?.length });

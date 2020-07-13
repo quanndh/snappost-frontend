@@ -13,26 +13,20 @@ import FriendRequestCard from '../../components/FriendRequestCard.js/FriendReque
 const Index = ({ isDark, user }) => {
 
     let router = useRouter();
-    console.log(router.query, 1111)
 
-    const [loadMore, setLoadMore] = useState(true);
+    const { keyword } = router.query;
+
     const [isLoading, setIsLoading] = useState(false)
     const [recommendUser, setRecommendUser] = useState([])
     const [init, setInit] = useState(true);
-    const [page, setPage] = useState(1)
-    const [request, setRequest] = useState([]);
-    const [totalRequest, setTotalRequest] = useState(0)
+    const [page, setPage] = useState(1);
+    const [type, setType] = useState(1);
 
-    // const getFriendRequest = async () => {
-    //     if (loadMore) {
-    //         setIsLoading(true)
-    //         let rs = await DataService.getFriendRequest({ limit: 10, skip: (page - 1) * 10 });
-    //         setRequest(rs.data)
-    //         setTotalRequest(rs.totalRecord);
-    //         setIsLoading(false)
-    //         setLoadMore(false)
-    //     }
-    // }
+    const getSearchResult = async () => {
+        if (keyword) {
+            let rs = await DataService.search({ keyword, type });
+        }
+    }
 
     const getRecommendFriend = async () => {
         let rs = await DataService.getRecommendFriend({ limit: 5, page: 1 });
@@ -40,7 +34,7 @@ const Index = ({ isDark, user }) => {
     }
 
     useEffect(() => {
-        // getFriendRequest()
+        getSearchResult()
         if (init) {
             getRecommendFriend()
         }
@@ -50,7 +44,7 @@ const Index = ({ isDark, user }) => {
         return () => {
 
         }
-    }, [loadMore]);
+    }, [keyword]);
 
     return (
         <div style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }}>

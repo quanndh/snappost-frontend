@@ -61,9 +61,9 @@ const Index = ({ isDark, user }) => {
                             <p>Total request: {totalRequest}</p>
                         </div>
                         {
-                            request.map(r => {
+                            request.length ? request.map(r => {
                                 return <FriendRequestCard key={r.id} requestId={r.id} user={r.from} />
-                            })
+                            }) : null
                         }
                     </Grid>
                     <Grid item xs={3}>

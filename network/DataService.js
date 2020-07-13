@@ -73,5 +73,8 @@ export default {
     },
     handleFriendRequest: data => {
         return request("/user/handle-friend-request", data, "POST")
+    },
+    search: data => {
+        return request("/user/search", data, "POST")
     }
 };

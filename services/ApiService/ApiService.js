@@ -20,8 +20,8 @@ export default {
     },
     logout: () => {
         store.dispatch({ type: 'SET_USER_INFO', data: { user: {}, token: "" } })
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
     },
 
     setNewFeed: data => {
