@@ -45,17 +45,17 @@ export default function MyApp({ Component, pageProps }) {
 		let user = JSON.parse(localStorage.getItem('user'));
 		let token = localStorage.getItem('token');
 
-		if (pathname != "/auth") {
-			if (!user) {
-				Router.replace('/auth')
-			} else if (user.isNewUser) {
-				Router.replace('/welcome')
-			}
-		} else {
-			if (user) {
-				Router.replace('/')
-			}
-		}
+		// if (pathname != "/auth") {
+		// 	if (!user) {
+		// 		Router.replace('/auth')
+		// 	} else if (user.isNewUser) {
+		// 		Router.replace('/welcome')
+		// 	}
+		// } else {
+		// 	if (user) {
+		// 		Router.replace('/')
+		// 	}
+		// }
 
 		ApiService.login(user, token)
 

@@ -10,6 +10,7 @@ import ApiService from '../../services/ApiService/ApiService';
 import UserCard from "../../components/UserCard/UserCard";
 import FriendRequestCard from '../../components/FriendRequestCard.js/FriendRequestCard';
 import Chip from '@material-ui/core/Chip';
+import AuthComponent from '../../components/AuthComponent/AuthComponent';
 
 const Index = ({ isDark, user }) => {
 
@@ -94,4 +95,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Index);
+export default AuthComponent(connect(mapStateToProps)(Index));

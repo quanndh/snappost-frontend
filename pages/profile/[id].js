@@ -278,4 +278,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Profile);
+export default AuthComponent(connect(mapStateToProps)(Profile));

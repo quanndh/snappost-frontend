@@ -19,6 +19,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Router from 'next/router';
 import helper from '../../services/Helper/helper';
 import ApiService from '../../services/ApiService/ApiService';
+import AuthComponent from '../../components/AuthComponent/AuthComponent';
 
 const Welcome = ({ user, isDark }) => {
 
@@ -244,4 +245,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Welcome);
+export default AuthComponent(connect(mapStateToProps)(Welcome));

@@ -1,11 +1,8 @@
 import socketIOClient from 'socket.io-client';
 import sailsIOClient from 'sails.io.js';
 import { backendHost } from '../../constants';
-let io;
-if (socketIOClient.sails) {
-    io = socketIOClient;
-} else {
-    io = sailsIOClient(socketIOClient);
-}
+
+let io = sailsIOClient(socketIOClient);
+io.sails.url = backendHost;
 
 export default io;

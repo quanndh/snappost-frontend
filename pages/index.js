@@ -103,4 +103,4 @@ const mapStateToProps = state => {
 	}
 }
 
-export default connect(mapStateToProps)(Index);
+export default AuthComponent(connect(mapStateToProps)(Index));
