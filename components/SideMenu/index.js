@@ -5,6 +5,7 @@ import Router from 'next/router';
 
 
 const SideMenu = ({ user }) => {
+  if (!user) return null
   const listMenu = [
     {
       image: <AccountCircleSharpIcon />,
