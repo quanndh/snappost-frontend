@@ -47,13 +47,13 @@ export default function MyApp({ Component, pageProps }) {
 
 		if (pathname != "/auth") {
 			if (!user) {
-				Router.push('/auth')
+				Router.replace('/auth')
 			} else if (user.isNewUser) {
-				Router.push('/welcome')
+				Router.replace('/welcome')
 			}
 		} else {
 			if (user) {
-				Router.push('/')
+				Router.replace('/')
 			}
 		}
 
