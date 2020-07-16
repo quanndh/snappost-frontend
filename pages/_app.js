@@ -59,14 +59,8 @@ export default function MyApp({ Component, pageProps }) {
 
 		ApiService.login(user, token)
 
-
-
 		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });
 		setIsDark(JSON.parse(localStorage.getItem('isDark')));
-
-		io.socket.on("notification", event => {
-			console.log("noti", event.data);
-		})
 
 		const getMessage = () => {
 			const messaging = firebase.messaging();
@@ -80,14 +74,18 @@ export default function MyApp({ Component, pageProps }) {
 					localStorage.setItem("fcm_token", token)
 					getMessage();
 				}
-				setInit(false)
 			} catch (error) {
 				console.log("error", error)
 			}
 		}
 
 		if (init) {
-			getFcmToken()
+			io.socket.on("notification", event => {
+				console.log("noti", event.data);
+			})
+
+			getFcmToken();
+			setInit(false);
 		}
 
 		return () => {
