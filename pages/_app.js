@@ -45,8 +45,6 @@ export default function MyApp({ Component, pageProps }) {
 		let user = JSON.parse(localStorage.getItem('user'));
 		let token = localStorage.getItem('token');
 
-		ApiService.login(user, token)
-
 		if (pathname != "/auth") {
 			if (!user) {
 				Router.push('/auth')
@@ -58,6 +56,10 @@ export default function MyApp({ Component, pageProps }) {
 				Router.push('/')
 			}
 		}
+
+		ApiService.login(user, token)
+
+
 
 		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });
 		setIsDark(JSON.parse(localStorage.getItem('isDark')));
