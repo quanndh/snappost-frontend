@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import ApiService from '../../services/ApiService/ApiService';
 import UserCard from "../../components/UserCard/UserCard";
 import FriendRequestCard from '../../components/FriendRequestCard.js/FriendRequestCard';
+import Chip from '@material-ui/core/Chip';
 
 const Index = ({ isDark, user }) => {
 
@@ -21,10 +22,12 @@ const Index = ({ isDark, user }) => {
     const [init, setInit] = useState(true);
     const [page, setPage] = useState(1);
     const [type, setType] = useState(1);
+    const [result, setResult] = useState([]);
 
     const getSearchResult = async () => {
         if (keyword) {
             let rs = await DataService.search({ keyword, type });
+            setResult(rs.data)
         }
     }
 
@@ -54,7 +57,19 @@ const Index = ({ isDark, user }) => {
                         <SideMenu user={user} />
                     </Grid>
                     <Grid item xs={12} md={7} className="newfeed-right" >
-
+                        <div className="option-container">
+                            <Chip
+                                variant={type == 1 ? "default" : "outlined"}
+                                label="People" className="option"
+                                onClick={() => setType(1)}
+                            />
+                            <Chip
+                                variant={type == 2 ? "default" : "outlined"}
+                                label="Post"
+                                className="option"
+                                onClick={() => setType(2)}
+                            />
+                        </div>
                     </Grid>
                     <Grid item xs={3}>
                         <div style={{ position: "sticky", top: "85px" }}>

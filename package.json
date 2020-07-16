@@ -28,8 +28,10 @@
     "draft-js-plugins-editor": "^3.0.0",
     "draftjs-to-html": "^0.9.1",
     "express": "^4.17.1",
+    "firebase": "^7.16.0",
     "formik": "^2.1.4",
     "install": "^0.13.0",
+    "localforage": "^1.7.4",
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
     "next": "^9.3.5",
@@ -50,8 +52,10 @@
     "recoil": "^0.0.7",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "sails.io.js": "^1.2.1",
     "slate": "^0.58.1",
     "slate-react": "^0.58.2",
+    "socket.io-client": "^2.3.0",
     "yup": "^0.28.3"
   },
   "devDependencies": {

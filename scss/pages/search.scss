@@ -1,0 +1,9 @@
+.option-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .option {
+        margin-right: 12px;
+    }
+}

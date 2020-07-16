@@ -15,8 +15,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer, Slide } from 'react-toastify';
 import LightOff from '../components/LightOff/LightOff';
 import ApiService from '../services/ApiService/ApiService';
-import { connect, useSelector } from "react-redux";
 import { Paper } from '@material-ui/core';
+import { firebaseCloudMessaging } from '../utils/webPush'
+import firebase from 'firebase/app';
+import io from '../utils/socket';
 
 Router.events.on('routeChangeStart', url => {
 	console.log(`Loading: ${url}`);
@@ -34,6 +36,7 @@ export default function MyApp({ Component, pageProps }) {
 
 	let [pathname, setPathname] = useState(router.pathname);
 	const [isDark, setIsDark] = useState(false)
+	const [init, setInit] = useState(true)
 
 	useEffect(() => {
 		setPathname(router.pathname)
@@ -58,6 +61,32 @@ export default function MyApp({ Component, pageProps }) {
 
 		ApiService.setMood({ isDark: JSON.parse(localStorage.getItem('isDark')) });
 		setIsDark(JSON.parse(localStorage.getItem('isDark')));
+
+		io.socket.on("notification", event => {
+			console.log("noti", event.data);
+		})
+
+		const getMessage = () => {
+			const messaging = firebase.messaging();
+			messaging.onMessage((message) => console.log('foreground', message));
+		}
+
+		const getFcmToken = async () => {
+			try {
+				const token = await firebaseCloudMessaging.init();
+				if (token) {
+					localStorage.setItem("fcm_token", token)
+					getMessage();
+				}
+				setInit(false)
+			} catch (error) {
+				console.log("error", error)
+			}
+		}
+
+		if (init) {
+			getFcmToken()
+		}
 
 		return () => {
 
