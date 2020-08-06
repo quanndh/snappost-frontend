@@ -1,0 +1,32 @@
+.search-people-container {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 16px;
+
+    .avatar {
+        width: 62px;
+        height: 62px;
+        background-size: contain;
+    }
+
+    .user-container {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+
+            .info { 
+                margin-bottom: 10px;
+            }
+        }
+
+        .action {
+                display: flex;
+                align-items: center;
+                height: 100%;
+        }
+    }
+}

@@ -96,10 +96,10 @@ const Post = (props) => {
                                 <DialogActions>
                                     <Button onClick={() => setDeleteModal(false)} color="secondary">
                                         Cancel
-                                </Button>
+                                    </Button>
                                     <Button onClick={handleDeletePost} color="primary" autoFocus>
                                         Delete
-                                </Button>
+                                    </Button>
                                 </DialogActions>
                             </Dialog>
 
@@ -119,10 +119,11 @@ const Post = (props) => {
                             <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-around" }}>
                                 {
                                     !loading ? (
-                                        <p>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <Username size="large" name={data.postBy.firstName + " " + data.postBy.lastName} id={data.postBy.id} />
+                                            &nbsp;
                                             <span>{data.action}</span>
-                                        </p>
+                                        </div>
                                     ) : <Skeleton animation="wave" height={32} width={150} style={{ marginBottom: 6 }} />
                                 }
                                 {

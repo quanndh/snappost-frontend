@@ -3,7 +3,8 @@ import UserInfoTooltip from '../UserInfoTooltip/UserInfoTooltip';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
 import DataService from '../../network/DataService';
-import Router from 'next/router'; import { Paper } from '@material-ui/core';
+import Router from 'next/router';
+import { Paper, Typography } from '@material-ui/core';
 
 const CustomUserName = props => {
     let { name, id, size } = props;
@@ -45,16 +46,16 @@ const CustomUserName = props => {
 
     return (
         <React.Fragment>
-            <span
+            <Typography
                 ref={mentionRef}
                 className="username"
-                style={{ fontSize: size == "large" ? 20 : 16 }}
+                style={{ fontSize: size == "large" ? 18 : 16 }}
                 onClick={() => Router.push(`/profile/${id}`)}
                 onMouseOver={handleToggleMention}
                 onMouseLeave={handleClose}
             >
                 {name}
-            </span>
+            </Typography>
 
             {
                 userInfo ? (

@@ -89,9 +89,10 @@ export default function MyApp({ Component, pageProps }) {
 		}
 
 		return () => {
-			io.socket.disconnect();
+			// if (io) {
+			// 	io.socket.disconnect();
+			// }
 		}
-
 	}, [router.pathname])
 
 

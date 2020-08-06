@@ -11,6 +11,8 @@ import UserCard from "../../components/UserCard/UserCard";
 import FriendRequestCard from '../../components/FriendRequestCard.js/FriendRequestCard';
 import Chip from '@material-ui/core/Chip';
 import AuthComponent from '../../components/AuthComponent/AuthComponent';
+import SearchPeople from '../../components/SearchPeople/SearchPeople';
+import { Paper } from '@material-ui/core';
 
 const Index = ({ isDark, user }) => {
 
@@ -27,7 +29,7 @@ const Index = ({ isDark, user }) => {
 
     const getSearchResult = async () => {
         if (keyword) {
-            let rs = await DataService.search({ keyword, type });
+            let rs = await DataService.search({ keyword, type, page, limit: 10 });
             setResult(rs.data)
         }
     }
@@ -48,7 +50,7 @@ const Index = ({ isDark, user }) => {
         return () => {
 
         }
-    }, [keyword]);
+    }, [keyword, type]);
 
     return (
         <div style={{ backgroundColor: isDark ? "#18191A" : "#E9EBEE" }}>
@@ -70,6 +72,13 @@ const Index = ({ isDark, user }) => {
                                 className="option"
                                 onClick={() => setType(2)}
                             />
+                        </div>
+                        <div className="search-result-container">
+                            {
+                                (type === 1 && result.length) && result.map(item => {
+                                    return <SearchPeople key={"searchPeople" + item.id} user={item} />
+                                })
+                            }
                         </div>
                     </Grid>
                     <Grid item xs={3}>
