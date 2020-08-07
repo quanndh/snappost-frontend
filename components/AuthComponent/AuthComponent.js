@@ -11,7 +11,7 @@ export default function privateRoute(WrappedComponent) {
         componentDidMount() {
             let token = localStorage.getItem("token")
             if (!token || token == "null" || token == null) {
-                window.location.href = "http://localhost:3000/auth"
+                window.location.href = process.env.NODE_ENV == "production" ? "https://snappost.vercel.app/auth" : "http://localhost:3000/auth"
             }
         }
 
