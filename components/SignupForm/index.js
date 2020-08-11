@@ -62,7 +62,7 @@ const SignupForm = (props) => {
             <Typography className="title" variant="subtitle1">Become a member of Snappost</Typography>
             <br />
             <div className="form-container">
-                <Paper style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
                     <TextField
                         name="firstName"
                         helperText={touched.firstName ? errors.firstName : ""}
@@ -84,7 +84,7 @@ const SignupForm = (props) => {
                         label="Last Name"
                         variant="outlined"
                     />
-                </Paper>
+                </div>
                 <TextField
                     name="phone"
                     helperText={touched.phone ? errors.phone : ""}
