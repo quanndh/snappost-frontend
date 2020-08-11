@@ -52,8 +52,7 @@ const SignupForm = (props) => {
         if (rs.code !== 0) {
             helper.activateToast("error", rs.message)
         } else {
-            ApiService.login(rs.data, rs.token)
-            // Router.push("/")
+            helper.activateToast("default", rs.message)
         }
     }
 
