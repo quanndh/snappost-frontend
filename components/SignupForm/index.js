@@ -61,7 +61,7 @@ const SignupForm = (props) => {
         <>
             <Typography className="title" variant="subtitle1">Become a member of Snappost</Typography>
             <br />
-            <Paper className="form-container">
+            <div className="form-container">
                 <Paper style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
                     <TextField
                         name="firstName"
@@ -125,7 +125,7 @@ const SignupForm = (props) => {
                 <Button onClick={handleSubmit} variant="contained" color="primary" style={{ width: "100%", height: 44 }}>
                     {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Begin your adventure"}
                 </Button>
-            </Paper>
+            </div>
 
             <br />
             <Typography className="title" variant="subtitle1">Already have account? <span onClick={props.changeRoute} className="link">Login here.</span></Typography>
