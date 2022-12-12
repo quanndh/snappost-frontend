@@ -27,7 +27,7 @@
     "draft-js-mention-plugin": "^3.1.5",
     "draft-js-plugins-editor": "^3.0.0",
     "draftjs-to-html": "^0.9.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase": "^7.16.0",
     "formik": "^2.1.4",
     "install": "^0.13.0",
